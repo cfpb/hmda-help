@@ -1,31 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import InputText from './InputText.js'
-import InputSubmit from './InputSubmit.js'
+import InputText from './InputText'
+import InputSubmit from './InputSubmit'
 
-class SearchForm extends Component {
-  constructor(props) {
-    super(props)
-
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleSubmit(event) {
-    event.preventDefault()
-    console.log('search submitted')
-    // TODO: make api call for institutions
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <InputText label="LEI" id="lei" />
-        <InputText label="Tax ID" id="taxId" />
-        <InputText label="Name" id="name" />
-        <InputSubmit actionType="search" />
-      </form>
-    )
-  }
+const SearchForm = props => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <InputText label="LEI" id="lei" />
+      <InputText label="Tax ID" id="taxId" />
+      <InputText label="Name" id="name" />
+      <InputSubmit actionType="search" />
+    </form>
+  )
 }
 
 export default SearchForm
