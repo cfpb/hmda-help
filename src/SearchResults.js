@@ -1,11 +1,21 @@
 import React from 'react'
 
-const renderAction = year => {
-  if (year === '2018') {
-    return 'Update'
+import { Link } from 'react-router-dom'
+
+const renderAction = institution => {
+  let pathname = '/add'
+  let linkText = 'Add'
+
+  if (institution.year === '2018') {
+    pathname = '/update'
+    linkText = 'Update'
   }
 
-  return 'Add'
+  return (
+    <Link to={{ pathname: pathname, state: { institution: institution } }}>
+      {linkText}
+    </Link>
+  )
 }
 
 const SearchResults = props => {
@@ -25,8 +35,7 @@ const SearchResults = props => {
               <dd>{institution.lei}</dd>
               <dt>Action</dt>
               <dd>
-                Result from {institution.year} -{' '}
-                {renderAction(institution.year)}
+                Result from {institution.year} - {renderAction(institution)}
               </dd>
             </dl>
           </React.Fragment>

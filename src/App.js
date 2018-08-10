@@ -14,6 +14,7 @@ class App extends Component {
 
           <Route exact path="/" component={Search} />
           <Route exact path="/add" component={InstitutionForm} />
+          <Route exact path="/update" component={InstitutionForm} />
         </div>
       </Switch>
     )
