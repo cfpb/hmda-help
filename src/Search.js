@@ -17,7 +17,10 @@ class Search extends Component {
   handleSubmit(event) {
     event.preventDefault()
     this.setState({
-      institutions: [{ name: 'test', lei: '12345', taxId: '54321' }]
+      institutions: [
+        { name: 'test', lei: '12345', taxId: '54321', year: '2018' },
+        { name: 'test2', lei: '09876', taxId: '67890', year: '2017' }
+      ]
     })
     // TODO: make api call for institutions
   }
