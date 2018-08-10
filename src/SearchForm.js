@@ -25,14 +25,14 @@ class SearchForm extends Component {
   handleSubmit(searchData) {
     // TODO: make api call for institutions
 
-    this.setState({ institutions: [] })
+    /*this.setState({ institutions: [] })*/
 
-    /*this.setState({
+    this.setState({
       institutions: [
         { name: 'test', lei: '12345', taxId: '54321', year: '2018' },
         { name: 'test2', lei: '09876', taxId: '67890', year: '2017' }
       ]
-    })*/
+    })
   }
 
   render() {
