@@ -19,11 +19,25 @@ const renderAction = institution => {
 }
 
 const SearchResults = props => {
-  if (!props.institutions) return null
+  const { institutions, name, taxId, lei } = props.results
+  if (!institutions) return null
+
+  if (institutions.length === 0) {
+    const institution = { lei: lei, name: name, taxId: taxId }
+    return (
+      <React.Fragment>
+        <h1>No results found!</h1>
+        <Link to={{ pathname: '/add', state: { institution: institution } }}>
+          Add
+        </Link>
+      </React.Fragment>
+    )
+  }
+
   return (
     <React.Fragment>
       <h1>Search results</h1>
-      {props.institutions.map((institution, i) => {
+      {institutions.map((institution, i) => {
         return (
           <React.Fragment key={i}>
             <dl>
