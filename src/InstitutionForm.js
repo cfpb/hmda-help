@@ -91,7 +91,106 @@ class InstitutionForm extends Component {
 
   renderOtherFields() {
     if (this.state.showOtherFields) {
-      return <h4>Other fields</h4>
+      return (
+        <React.Fragment>
+          <label>Institution Type</label>
+          <input
+            type="text"
+            name="institutionType"
+            id="institutionType"
+            value={this.state.institution.institutionType}
+            onChange={this.handleChange}
+          />
+          <label>Institution ID 2017</label>
+          <input
+            type="text"
+            name="institutionId2017"
+            id="institutionId2017"
+            value={this.state.institution.institutionId2017}
+            onChange={this.handleChange}
+          />
+          <label>RSSD</label>
+          <input
+            type="text"
+            name="RSSD"
+            id="RSSD"
+            value={this.state.institution.RSSD}
+            onChange={this.handleChange}
+          />
+          <label>Email Domains</label>
+          <input
+            type="text"
+            name="emailDomains"
+            id="emailDomains"
+            value={this.state.institution.emailDomains}
+            onChange={this.handleChange}
+          />
+          <label>Respondent State</label>
+          <input
+            type="text"
+            name="respondentState"
+            id="respondentState"
+            value={this.state.institution.respondentState}
+            onChange={this.handleChange}
+          />
+          <label>Respondent City</label>
+          <input
+            type="text"
+            name="respondentCity"
+            id="respondentCity"
+            value={this.state.institution.respondentCity}
+            onChange={this.handleChange}
+          />
+          <label>Parent ID RSSD</label>
+          <input
+            type="text"
+            name="parentIdRSSD"
+            id="parentIdRSSD"
+            value={this.state.institution.parentIdRSSD}
+            onChange={this.handleChange}
+          />
+          <label>Parent Name</label>
+          <input
+            type="text"
+            name="parentName"
+            id="parentName"
+            value={this.state.institution.parentName}
+            onChange={this.handleChange}
+          />
+          <label>Assets</label>
+          <input
+            type="text"
+            name="assets"
+            id="assets"
+            value={this.state.institution.assets}
+            onChange={this.handleChange}
+          />
+          <label>Other Lender Code</label>
+          <input
+            type="text"
+            name="otherLenderCode"
+            id="otherLenderCode"
+            value={this.state.institution.otherLenderCode}
+            onChange={this.handleChange}
+          />
+          <label>Top Holder ID RSSD</label>
+          <input
+            type="text"
+            name="topHolderIdRSSD"
+            id="topHolderIdRSSD"
+            value={this.state.institution.topHolderIdRSSD}
+            onChange={this.handleChange}
+          />
+          <label>Top Holder Name</label>
+          <input
+            type="text"
+            name="topHolderName"
+            id="topHolderName"
+            value={this.state.institution.topHolderName}
+            onChange={this.handleChange}
+          />
+        </React.Fragment>
+      )
     }
 
     return null
