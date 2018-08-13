@@ -93,6 +93,10 @@ class InstitutionForm extends Component {
     if (this.state.showOtherFields) {
       return (
         <React.Fragment>
+          <h2>
+            Note: if these fields need modified please update the ticket to get
+            help from Tier 1 support!
+          </h2>
           <label>Institution Type</label>
           <input
             type="text"
