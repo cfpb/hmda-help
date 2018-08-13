@@ -3,12 +3,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const renderAction = institution => {
-  let pathname = '/add'
-  let linkText = 'Add'
+  if (Object.getOwnPropertyNames(institution).length === 0) {
+    return <Link to={{ pathname: '/add' }}>Add</Link>
+  }
 
-  if (institution.year === '2018') {
-    pathname = '/update'
-    linkText = 'Update'
+  let pathname = '/update'
+  let linkText = 'Update'
+
+  if (institution.activityYear === 2017) {
+    pathname = '/add'
+    linkText = 'Add'
   }
 
   return (
@@ -19,17 +23,15 @@ const renderAction = institution => {
 }
 
 const SearchResults = props => {
-  const { institutions, name, taxId, lei } = props.results
+  const { institutions } = props.results
   if (!institutions) return null
 
   if (institutions.length === 0) {
-    const institution = { lei: lei, name: name, taxId: taxId }
+    const institution = {}
     return (
       <React.Fragment>
         <h1>No results found!</h1>
-        <Link to={{ pathname: '/add', state: { institution: institution } }}>
-          Add
-        </Link>
+        {renderAction(institution)}
       </React.Fragment>
     )
   }
@@ -41,15 +43,16 @@ const SearchResults = props => {
         return (
           <React.Fragment key={i}>
             <dl>
-              <dt>Name</dt>
-              <dd>{institution.name}</dd>
+              <dt>Respondent Name</dt>
+              <dd>{institution.respondentName}</dd>
               <dt>Tax Id</dt>
               <dd>{institution.taxId}</dd>
               <dt>LEI</dt>
               <dd>{institution.lei}</dd>
               <dt>Action</dt>
               <dd>
-                Result from {institution.year} - {renderAction(institution)}
+                Result from {institution.activityYear} -{' '}
+                {renderAction(institution)}
               </dd>
             </dl>
           </React.Fragment>
