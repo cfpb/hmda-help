@@ -1,12 +1,9 @@
 import React from 'react'
-
 import { Link } from 'react-router-dom'
 
-const renderAction = institution => {
-  if (Object.getOwnPropertyNames(institution).length === 0) {
-    return <Link to={{ pathname: '/add' }}>Add</Link>
-  }
+import './SearchResults.css'
 
+const renderAction = institution => {
   let pathname = '/update'
   let linkText = 'Update'
 
@@ -23,22 +20,48 @@ const renderAction = institution => {
 }
 
 const SearchResults = props => {
-  const { institutions } = props.results
+  const { institutions, lei, taxId, respondentName } = props.data
   if (!institutions) return null
 
   if (institutions.length === 0) {
-    const institution = {}
     return (
       <React.Fragment>
-        <h1>No results found!</h1>
-        {renderAction(institution)}
+        <h2>No results found!</h2>
+        <Link
+          to={{
+            pathname: '/add',
+            state: {
+              institution: {
+                lei: lei,
+                taxId: taxId,
+                respondentName: respondentName,
+                activityYear: '',
+                agencyCode: '',
+                institutionType: '',
+                institutionId2017: '',
+                RSSD: '',
+                emailDomains: [],
+                respondentState: '',
+                respondentCity: '',
+                parentIdRSSD: '',
+                parentName: '',
+                assets: '',
+                otherLenderCode: '',
+                topHolderIdRSSD: '',
+                topHolderName: ''
+              }
+            }
+          }}
+        >
+          Add
+        </Link>
       </React.Fragment>
     )
   }
 
   return (
-    <React.Fragment>
-      <h1>Search results</h1>
+    <div className="SearchResults">
+      <h2>Search results</h2>
       {institutions.map((institution, i) => {
         return (
           <React.Fragment key={i}>
@@ -58,7 +81,7 @@ const SearchResults = props => {
           </React.Fragment>
         )
       })}
-    </React.Fragment>
+    </div>
   )
 }
 

@@ -10,7 +10,7 @@ class SearchForm extends Component {
     this.state = {
       lei: '',
       taxId: '',
-      name: '',
+      respondentName: '',
       institutions: null
     }
 
@@ -26,7 +26,7 @@ class SearchForm extends Component {
     // TODO: make api call for institutions
 
     // not found
-    /*
+    //*
     this.setState({ institutions: [] })
     //*/
 
@@ -58,7 +58,7 @@ class SearchForm extends Component {
     //*/
 
     // 2017 found (not found for 2018)
-    //*
+    /*
     this.setState({
       institutions: [
         {
@@ -110,17 +110,17 @@ class SearchForm extends Component {
             value={this.state.taxId}
             onChange={this.handleChange}
           />
-          <label>Name</label>
+          <label>Respondent Name</label>
           <input
             type="text"
-            name="name"
-            id="name"
-            value={this.state.name}
+            name="respondentName"
+            id="respondentName"
+            value={this.state.respondentName}
             onChange={this.handleChange}
           />
           <InputSubmit actionType="search" />
         </form>
-        <SearchResults results={this.state} />
+        <SearchResults data={this.state} />
       </React.Fragment>
     )
   }
