@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
 import InputSubmit from './InputSubmit'
 
@@ -38,6 +39,7 @@ class InstitutionForm extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
   }
 
   handleChange(event) {
@@ -53,21 +55,10 @@ class InstitutionForm extends Component {
     this.setState({ isSubmitted: true })
   }
 
-  renderToggleButton() {
-    const buttonText = this.state.showOtherFields ? 'Hide' : 'Show'
-    return (
-      <button
-        className="toggleButton"
-        type="button"
-        onClick={() => {
-          this.setState((prevState, props) => ({
-            showOtherFields: !prevState.showOtherFields
-          }))
-        }}
-      >
-        {buttonText} other fields
-      </button>
-    )
+  toggleShowOtherFields() {
+    this.setState(prevState => ({
+      showOtherFields: !prevState.showOtherFields
+    }))
   }
 
   render() {
@@ -123,15 +114,22 @@ class InstitutionForm extends Component {
             value={this.state.emailDomains}
             onChange={this.handleChange}
           />
-          {this.renderToggleButton()}
+
+          <OtherFieldsToggleButton
+            showOtherFields={this.state.showOtherFields}
+            toggleShowOtherFields={this.toggleShowOtherFields}
+          />
+
           {this.state.showOtherFields ? (
             <OtherFields
               formData={this.state}
               handleChange={this.handleChange}
             />
           ) : null}
+
           <InputSubmit actionType={actionType} />
         </form>
+
         {this.state.isSubmitted ? (
           <h3>
             {submittedAction} Submitted for {this.state.lei}

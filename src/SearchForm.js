@@ -31,7 +31,7 @@ class SearchForm extends Component {
     //*/
 
     // 2018 found
-    /*
+    //*
     this.setState({
       institutions: [
         {
@@ -58,7 +58,7 @@ class SearchForm extends Component {
     //*/
 
     // 2017 found (not found for 2018)
-    //*
+    /*
     this.setState({
       institutions: [
         {

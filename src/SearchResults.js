@@ -4,18 +4,33 @@ import { Link } from 'react-router-dom'
 import './SearchResults.css'
 
 const renderAction = institution => {
-  let pathname = '/update'
-  let linkText = 'Update'
+  let link = {
+    pathname: '/update',
+    text: 'Update',
+    type: 'update'
+  }
 
   if (institution.activityYear === 2017) {
-    pathname = '/add'
-    linkText = 'Add'
+    link = {
+      pathname: '/add',
+      text: 'Add',
+      type: 'addition'
+    }
   }
 
   return (
-    <Link to={{ pathname: pathname, state: { institution: institution } }}>
-      {linkText}
-    </Link>
+    <React.Fragment>
+      <p>
+        Because this result is from the {institution.activityYear} dataset an{' '}
+        {link.type} is required.
+      </p>
+      <Link
+        to={{ pathname: link.pathname, state: { institution: institution } }}
+      >
+        {link.text} {institution.respondentName}{' '}
+        {link.type === 'addition' ? 'to the' : 'in the'} current year dataset.
+      </Link>
+    </React.Fragment>
   )
 }
 
@@ -64,21 +79,16 @@ const SearchResults = props => {
       <h2>Search results</h2>
       {institutions.map((institution, i) => {
         return (
-          <React.Fragment key={i}>
-            <dl>
-              <dt>Respondent Name</dt>
-              <dd>{institution.respondentName}</dd>
-              <dt>Tax Id</dt>
-              <dd>{institution.taxId}</dd>
-              <dt>LEI</dt>
-              <dd>{institution.lei}</dd>
-              <dt>Action</dt>
-              <dd>
-                Result from {institution.activityYear} -{' '}
-                {renderAction(institution)}
-              </dd>
-            </dl>
-          </React.Fragment>
+          <dl key={i}>
+            <dt>Respondent Name</dt>
+            <dd>{institution.respondentName}</dd>
+            <dt>Tax Id</dt>
+            <dd>{institution.taxId}</dd>
+            <dt>LEI</dt>
+            <dd>{institution.lei}</dd>
+            <dt>Action</dt>
+            <dd className="action">{renderAction(institution)}</dd>
+          </dl>
         )
       })}
     </div>

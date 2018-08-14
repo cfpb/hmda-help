@@ -5,3 +5,8 @@
 .SearchResults dd {
   margin: 3px 0 20px;
 }
+
+.action p {
+  font-style: italic;
+  margin: 0 0 3px;
+}
