@@ -26,7 +26,7 @@ class SearchForm extends Component {
     // TODO: make api call for institutions
 
     // not found
-    //*
+    /*
     this.setState({ institutions: [] })
     //*/
 
@@ -58,7 +58,7 @@ class SearchForm extends Component {
     //*/
 
     // 2017 found (not found for 2018)
-    /*
+    //*
     this.setState({
       institutions: [
         {
@@ -76,7 +76,7 @@ class SearchForm extends Component {
           parentIdRSSD: 34567,
           parentName: 'Bank 1 Parent',
           assets: 74348,
-          otherLenderCode: 0,
+          otherLenderCode: 2,
           topHolderIdRSSD: 324532,
           topHolderName: 'Bank 1 Top Holder'
         }

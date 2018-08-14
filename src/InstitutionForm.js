@@ -1,70 +1,50 @@
 import React, { Component } from 'react'
 
-import InputSubmit from './InputSubmit.js'
+import OtherFields from './OtherFields'
+import InputSubmit from './InputSubmit'
+
+import './InstitutionForm.css'
 
 class InstitutionForm extends Component {
   constructor(props) {
     super(props)
 
+    let institution
+    if (props.location.state.institution) {
+      institution = props.location.state.institution
+    }
+
     this.state = {
       isSubmitted: false,
       showOtherFields: false,
-      institution: {
-        activityYear: null,
-        lei: '',
-        agencyCode: null,
-        institutionType: null,
-        institutionId2017: '',
-        taxId: '',
-        RSSD: '',
-        emailDomains: [],
-        respondentName: '',
-        respondentState: '',
-        respondentCity: '',
-        parentIdRSSD: null,
-        parentName: '',
-        assets: null,
-        otherLenderCode: null,
-        topHolderIdRSSD: null,
-        topHolderName: ''
-      }
+      activityYear: institution.activityYear || '',
+      lei: institution.lei || '',
+      agencyCode: institution.agencyCode || '',
+      institutionType: institution.institutionType || '',
+      institutionId2017: institution.institutionId2017 || '',
+      taxId: institution.taxId || '',
+      RSSD: institution.RSSD || '',
+      emailDomains: institution.emailDomains || '',
+      respondentName: institution.respondentName || '',
+      respondentState: institution.respondentState || '',
+      respondentCity: institution.respondentCity || '',
+      parentIdRSSD: institution.parentIdRSSD || '',
+      parentName: institution.parentName || '',
+      assets: institution.assets || '',
+      otherLenderCode: institution.otherLenderCode || '',
+      topHolderIdRSSD: institution.topHolderIdRSSD || '',
+      topHolderName: institution.topHolderName || ''
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.renderOtherFields = this.renderOtherFields.bind(this)
-  }
-
-  componentWillMount() {
-    if (this.props.location.state) {
-      const { institution } = this.props.location.state
-
-      this.setState({
-        institution: {
-          activityYear: institution.activityYear,
-          lei: institution.lei,
-          agencyCode: institution.agencyCode,
-          institutionType: institution.institutionType,
-          institutionId2017: institution.institutionId2017,
-          taxId: institution.taxId,
-          RSSD: institution.RSSD,
-          emailDomains: institution.emailDomains,
-          respondentName: institution.respondentName,
-          respondentState: institution.respondentState,
-          respondentCity: institution.respondentCity,
-          parentIdRSSD: institution.parentIdRSSD,
-          parentName: institution.parentName,
-          assets: institution.assets,
-          otherLenderCode: institution.otherLenderCode,
-          topHolderIdRSSD: institution.topHolderIdRSSD,
-          topHolderName: institution.topHolderName
-        }
-      })
-    }
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value })
+    this.setState({
+      [event.target.name]: event.target.value,
+      isSubmitted: false
+    })
   }
 
   handleSubmit(event, pathname) {
@@ -77,6 +57,7 @@ class InstitutionForm extends Component {
     const buttonText = this.state.showOtherFields ? 'Hide' : 'Show'
     return (
       <button
+        className="toggleButton"
         type="button"
         onClick={() => {
           this.setState((prevState, props) => ({
@@ -89,117 +70,6 @@ class InstitutionForm extends Component {
     )
   }
 
-  renderOtherFields() {
-    if (this.state.showOtherFields) {
-      return (
-        <React.Fragment>
-          <h2>
-            Note: if these fields need modified please update the ticket to get
-            help from Tier 1 support!
-          </h2>
-          <label>Institution Type</label>
-          <input
-            type="text"
-            name="institutionType"
-            id="institutionType"
-            value={this.state.institution.institutionType}
-            onChange={this.handleChange}
-          />
-          <label>Institution ID 2017</label>
-          <input
-            type="text"
-            name="institutionId2017"
-            id="institutionId2017"
-            value={this.state.institution.institutionId2017}
-            onChange={this.handleChange}
-          />
-          <label>RSSD</label>
-          <input
-            type="text"
-            name="RSSD"
-            id="RSSD"
-            value={this.state.institution.RSSD}
-            onChange={this.handleChange}
-          />
-          <label>Email Domains</label>
-          <input
-            type="text"
-            name="emailDomains"
-            id="emailDomains"
-            value={this.state.institution.emailDomains}
-            onChange={this.handleChange}
-          />
-          <label>Respondent State</label>
-          <input
-            type="text"
-            name="respondentState"
-            id="respondentState"
-            value={this.state.institution.respondentState}
-            onChange={this.handleChange}
-          />
-          <label>Respondent City</label>
-          <input
-            type="text"
-            name="respondentCity"
-            id="respondentCity"
-            value={this.state.institution.respondentCity}
-            onChange={this.handleChange}
-          />
-          <label>Parent ID RSSD</label>
-          <input
-            type="text"
-            name="parentIdRSSD"
-            id="parentIdRSSD"
-            value={this.state.institution.parentIdRSSD}
-            onChange={this.handleChange}
-          />
-          <label>Parent Name</label>
-          <input
-            type="text"
-            name="parentName"
-            id="parentName"
-            value={this.state.institution.parentName}
-            onChange={this.handleChange}
-          />
-          <label>Assets</label>
-          <input
-            type="text"
-            name="assets"
-            id="assets"
-            value={this.state.institution.assets}
-            onChange={this.handleChange}
-          />
-          <label>Other Lender Code</label>
-          <input
-            type="text"
-            name="otherLenderCode"
-            id="otherLenderCode"
-            value={this.state.institution.otherLenderCode}
-            onChange={this.handleChange}
-          />
-          <label>Top Holder ID RSSD</label>
-          <input
-            type="text"
-            name="topHolderIdRSSD"
-            id="topHolderIdRSSD"
-            value={this.state.institution.topHolderIdRSSD}
-            onChange={this.handleChange}
-          />
-          <label>Top Holder Name</label>
-          <input
-            type="text"
-            name="topHolderName"
-            id="topHolderName"
-            value={this.state.institution.topHolderName}
-            onChange={this.handleChange}
-          />
-        </React.Fragment>
-      )
-    }
-
-    return null
-  }
-
   render() {
     const { pathname, state } = this.props.location
     const submittedAction = pathname === '/add' ? 'Addition' : 'Update'
@@ -209,13 +79,16 @@ class InstitutionForm extends Component {
 
     return (
       <React.Fragment>
-        <form onSubmit={event => this.handleSubmit(event, pathname)}>
+        <form
+          className="InstitutionForm"
+          onSubmit={event => this.handleSubmit(event, pathname)}
+        >
           <label>LEI</label>
           <input
             type="text"
             name="lei"
             id="lei"
-            value={this.state.institution.lei}
+            value={this.state.lei}
             onChange={this.handleChange}
           />
           <label>Tax Id</label>
@@ -223,7 +96,7 @@ class InstitutionForm extends Component {
             type="text"
             name="taxId"
             id="taxId"
-            value={this.state.institution.taxId}
+            value={this.state.taxId}
             onChange={this.handleChange}
           />
           <label>Respondent Name</label>
@@ -231,7 +104,7 @@ class InstitutionForm extends Component {
             type="text"
             name="respondentName"
             id="respondentName"
-            value={this.state.institution.respondentName}
+            value={this.state.respondentName}
             onChange={this.handleChange}
           />
           <label>Agency Code</label>
@@ -239,7 +112,7 @@ class InstitutionForm extends Component {
             type="text"
             name="agencyCode"
             id="agencyCode"
-            value={this.state.institution.agencyCode.toString()}
+            value={this.state.agencyCode}
             onChange={this.handleChange}
           />
           <label>Email Domains</label>
@@ -247,16 +120,21 @@ class InstitutionForm extends Component {
             type="text"
             name="emailDomains"
             id="emailDomains"
-            value={this.state.institution.emailDomains.toString()}
+            value={this.state.emailDomains}
             onChange={this.handleChange}
           />
           {this.renderToggleButton()}
-          {this.renderOtherFields()}
+          {this.state.showOtherFields ? (
+            <OtherFields
+              formData={this.state}
+              handleChange={this.handleChange}
+            />
+          ) : null}
           <InputSubmit actionType={actionType} />
         </form>
         {this.state.isSubmitted ? (
           <h3>
-            {submittedAction} Submitted for {this.state.institution.lei}
+            {submittedAction} Submitted for {this.state.lei}
           </h3>
         ) : null}
       </React.Fragment>
