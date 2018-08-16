@@ -35,7 +35,7 @@ const renderAction = institution => {
 }
 
 const SearchResults = props => {
-  const { institutions, lei, taxId, respondentName } = props.data
+  const { institutions, LEI, taxId, respondent } = props.data
   if (!institutions) return null
 
   if (institutions.length === 0) {
@@ -47,9 +47,9 @@ const SearchResults = props => {
             pathname: '/add',
             state: {
               institution: {
-                lei: lei,
+                LEI: LEI,
                 taxId: taxId,
-                respondentName: respondentName,
+                respondentName: respondent.name,
                 activityYear: '',
                 agencyCode: '',
                 institutionType: '',
@@ -81,11 +81,11 @@ const SearchResults = props => {
         return (
           <dl key={i}>
             <dt>Respondent Name</dt>
-            <dd>{institution.respondentName}</dd>
+            <dd>{institution.respondent.name}</dd>
             <dt>Tax Id</dt>
             <dd>{institution.taxId}</dd>
             <dt>LEI</dt>
-            <dd>{institution.lei}</dd>
+            <dd>{institution.LEI}</dd>
             <dt>Action</dt>
             <dd className="action">{renderAction(institution)}</dd>
           </dl>

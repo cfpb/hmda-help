@@ -30,7 +30,7 @@ const OtherFields = props => {
         type="text"
         name="RSSD"
         id="RSSD"
-        value={props.formData.RSSD}
+        value={props.formData.rssd}
         onChange={props.handleChange}
       />
       <label>Respondent State</label>
@@ -54,7 +54,7 @@ const OtherFields = props => {
         type="text"
         name="parentIdRSSD"
         id="parentIdRSSD"
-        value={props.formData.parentIdRSSD}
+        value={props.formData.parentIdRssd}
         onChange={props.handleChange}
       />
       <label>Parent Name</label>
@@ -86,7 +86,7 @@ const OtherFields = props => {
         type="text"
         name="topHolderIdRSSD"
         id="topHolderIdRSSD"
-        value={props.formData.topHolderIdRSSD}
+        value={props.formData.topHolderIdRssd}
         onChange={props.handleChange}
       />
       <label>Top Holder Name</label>

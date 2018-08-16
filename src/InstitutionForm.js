@@ -15,26 +15,28 @@ class InstitutionForm extends Component {
       institution = props.location.state.institution
     }
 
+    console.log(institution)
+
     this.state = {
       isSubmitted: false,
       showOtherFields: false,
       activityYear: institution.activityYear || '',
-      lei: institution.lei || '',
-      agencyCode: institution.agencyCode || '',
+      lei: institution.LEI || '',
+      agencyCode: institution.agency || '',
       institutionType: institution.institutionType || '',
       institutionId2017: institution.institutionId2017 || '',
       taxId: institution.taxId || '',
-      RSSD: institution.RSSD || '',
+      rssd: institution.rssd || '',
       emailDomains: institution.emailDomains || '',
-      respondentName: institution.respondentName || '',
-      respondentState: institution.respondentState || '',
-      respondentCity: institution.respondentCity || '',
-      parentIdRSSD: institution.parentIdRSSD || '',
-      parentName: institution.parentName || '',
+      respondentName: institution.respondent.name || '',
+      respondentState: institution.respondent.state || '',
+      respondentCity: institution.respondent.city || '',
+      parentIdRssd: institution.parent.idRssd || '',
+      parentName: institution.parent.name || '',
       assets: institution.assets || '',
       otherLenderCode: institution.otherLenderCode || '',
-      topHolderIdRSSD: institution.topHolderIdRSSD || '',
-      topHolderName: institution.topHolderName || ''
+      topHolderIdRssd: institution.topHolder.idRssd || '',
+      topHolderName: institution.topHolder.name || ''
     }
 
     this.handleChange = this.handleChange.bind(this)
