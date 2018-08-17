@@ -1,98 +1,184 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import './SearchResults.css'
 
-const renderAction = institution => {
-  let link = {
-    pathname: '/update',
-    text: 'Update',
-    type: 'update'
+class SearchResults extends Component {
+  constructor(props) {
+    super(props)
+
+    this.tables = new Map()
+    this.buttons = new Map()
+
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  if (institution.activityYear === 2017) {
-    link = {
-      pathname: '/add',
-      text: 'Add',
-      type: 'addition'
+  handleClick(element, i) {
+    const table = this.tables.get(i)
+    const button = this.buttons.get(i)
+
+    table.classList.toggle('hidden')
+    if (table.classList.contains('hidden')) {
+      button.innerHTML = 'View more data'
+    } else {
+      button.innerHTML = 'Hide more data'
     }
   }
 
-  return (
-    <React.Fragment>
-      <p>
-        Because this result is from the {institution.activityYear} dataset an{' '}
-        {link.type} is required.
-      </p>
-      <Link
-        to={{ pathname: link.pathname, state: { institution: institution } }}
-      >
-        {link.text} {institution.respondentName}{' '}
-        {link.type === 'addition' ? 'to the' : 'in the'} current year dataset.
-      </Link>
-    </React.Fragment>
-  )
-}
+  renderSearchHeading(numOfResults) {
+    let results = numOfResults === 1 ? 'result' : 'results'
 
-const SearchResults = props => {
-  const { institutions, LEI, taxId, respondent } = props.data
-  if (!institutions) return null
+    if (numOfResults === 0) return <h2>Sorry, no results were found.</h2>
 
-  if (institutions.length === 0) {
+    return (
+      <h2>
+        {numOfResults} {results} found
+      </h2>
+    )
+  }
+
+  renderActions(institution, i) {
+    let link = {
+      pathname: '/update',
+      text: 'Update',
+      type: 'update'
+    }
+
+    if (institution.activityYear === 2017) {
+      link = {
+        pathname: '/add',
+        text: 'Add',
+        type: 'addition'
+      }
+    }
+
     return (
       <React.Fragment>
-        <h2>No results found!</h2>
-        <Link
-          to={{
-            pathname: '/add',
-            state: {
-              institution: {
-                LEI: LEI,
-                taxId: taxId,
-                respondentName: respondent.name,
-                activityYear: '',
-                agencyCode: '',
-                institutionType: '',
-                institutionId2017: '',
-                RSSD: '',
-                emailDomains: [],
-                respondentState: '',
-                respondentCity: '',
-                parentIdRSSD: '',
-                parentName: '',
-                assets: '',
-                otherLenderCode: '',
-                topHolderIdRSSD: '',
-                topHolderName: ''
-              }
-            }
-          }}
+        <button
+          onClick={event => this.handleClick(event, i)}
+          ref={element => this.buttons.set(i, element)}
         >
-          Add
+          View more data
+        </button>
+        <Link
+          to={{ pathname: link.pathname, state: { institution: institution } }}
+        >
+          {link.text}
         </Link>
       </React.Fragment>
     )
   }
 
-  return (
-    <div className="SearchResults">
-      <h2>Search results</h2>
-      {institutions.map((institution, i) => {
-        return (
-          <dl key={i}>
-            <dt>Respondent Name</dt>
-            <dd>{institution.respondent.name}</dd>
-            <dt>Tax Id</dt>
-            <dd>{institution.taxId}</dd>
-            <dt>LEI</dt>
-            <dd>{institution.LEI}</dd>
-            <dt>Action</dt>
-            <dd className="action">{renderAction(institution)}</dd>
-          </dl>
-        )
-      })}
-    </div>
-  )
+  render() {
+    const { institutions, LEI, taxId, respondentName } = this.props.data
+    if (!institutions) return null
+
+    return (
+      <div className="SearchResults">
+        {this.renderSearchHeading(institutions.length)}
+        {institutions.length === 0 ? (
+          <p>
+            But you can{' '}
+            <Link
+              to={{
+                pathname: '/add',
+                state: {
+                  institution: {
+                    LEI: LEI,
+                    taxId: taxId,
+                    respondent: {
+                      name: respondentName
+                    }
+                  }
+                }
+              }}
+            >
+              add a new institution
+            </Link>{' '}
+            based on your search term(s).
+          </p>
+        ) : (
+          <table className="institutions">
+            <thead>
+              <tr>
+                <th>Name and LEI</th>
+                <th>Tax ID</th>
+                <th>Email Domain</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {institutions.map((institution, i) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>
+                        {institution.respondent.name}
+                        <br />
+                        <span>{institution.LEI}</span>
+                      </td>
+
+                      <td>{institution.taxId}</td>
+
+                      <td>{institution.emailDomains}</td>
+
+                      <td className="action">
+                        {this.renderActions(institution, i)}
+                      </td>
+                    </tr>
+                    <tr
+                      className="otherData hidden"
+                      ref={element => this.tables.set(i, element)}
+                    >
+                      <td colSpan={4}>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Type</th>
+                              <th>2017 ID</th>
+                              <th>RSSD</th>
+                              <th>Location</th>
+                              <th>Parent</th>
+                              <th>Assets</th>
+                              <th>Other Lender Code</th>
+                              <th>Top Holder</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{institution.institutionType}</td>
+                              <td>{institution.institutionId2017}</td>
+                              <td>{institution.rssd}</td>
+                              <td>
+                                {institution.respondent.city},{' '}
+                                {institution.respondent.state}
+                              </td>
+                              <td>
+                                {institution.parent.name}
+                                <br />
+                                <span>{institution.parent.idRssd}</span>
+                              </td>
+                              <td>{institution.assets}</td>
+                              <td>{institution.otherLenderCode}</td>
+                              <td>
+                                {institution.topHolder.name}
+                                <br />
+                                <span>{institution.topHolder.idRssd}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                )
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
+    )
+  }
 }
 
 export default SearchResults

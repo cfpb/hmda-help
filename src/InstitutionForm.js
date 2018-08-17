@@ -4,8 +4,6 @@ import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
 import InputSubmit from './InputSubmit'
 
-import './InstitutionForm.css'
-
 class InstitutionForm extends Component {
   constructor(props) {
     super(props)
@@ -14,8 +12,6 @@ class InstitutionForm extends Component {
     if (props.location.state.institution) {
       institution = props.location.state.institution
     }
-
-    console.log(institution)
 
     this.state = {
       isSubmitted: false,
@@ -31,12 +27,13 @@ class InstitutionForm extends Component {
       respondentName: institution.respondent.name || '',
       respondentState: institution.respondent.state || '',
       respondentCity: institution.respondent.city || '',
-      parentIdRssd: institution.parent.idRssd || '',
-      parentName: institution.parent.name || '',
+      parentIdRssd: (institution.parent && institution.parent.idRssd) || '',
+      parentName: (institution.parent && institution.parent.name) || '',
       assets: institution.assets || '',
       otherLenderCode: institution.otherLenderCode || '',
-      topHolderIdRssd: institution.topHolder.idRssd || '',
-      topHolderName: institution.topHolder.name || ''
+      topHolderIdRssd:
+        (institution.topHolder && institution.topHolder.idRssd) || '',
+      topHolderName: (institution.topHolder && institution.topHolder.name) || ''
     }
 
     this.handleChange = this.handleChange.bind(this)

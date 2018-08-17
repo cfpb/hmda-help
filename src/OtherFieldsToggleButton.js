@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './InstitutionForm.css'
+import './OtherFieldsToggleButton.css'
 
 const OtherFieldsToggleButton = props => {
   const buttonText = props.showOtherFields ? 'Hide' : 'Show'
