@@ -111,22 +111,22 @@
   background-color: #112e51;
 }
 
-.SearchResults .action button {
+.SearchResults button {
   border: 0;
   color: #0071bc;
   cursor: pointer;
   font-size: 1.2rem;
   line-height: 1;
-  margin-right: 2em;
+  margin-top: 1em;
   padding: 0;
 }
 
-.SearchResults .action button:hover,
-.SearchResults .action button:visited:hover {
+.SearchResults button:hover,
+.SearchResults button:visited:hover {
   color: #205493;
 }
-.SearchResults .action button:active,
-.SearchResults .action button:visited:active {
+.SearchResults button:active,
+.SearchResults button:visited:active {
   color: #112e51;
 }
 

@@ -37,7 +37,18 @@ class SearchResults extends Component {
     )
   }
 
-  renderActions(institution, i) {
+  renderViewMore(key) {
+    return (
+      <button
+        onClick={event => this.handleClick(event, key)}
+        ref={element => this.buttons.set(key, element)}
+      >
+        View more data
+      </button>
+    )
+  }
+
+  renderActions(institution) {
     let link = {
       pathname: '/update',
       text: 'Update',
@@ -54,12 +65,6 @@ class SearchResults extends Component {
 
     return (
       <React.Fragment>
-        <button
-          onClick={event => this.handleClick(event, i)}
-          ref={element => this.buttons.set(i, element)}
-        >
-          View more data
-        </button>
         <Link
           to={{ pathname: link.pathname, state: { institution: institution } }}
         >
@@ -116,6 +121,8 @@ class SearchResults extends Component {
                         {institution.respondent.name}
                         <br />
                         <span>{institution.LEI}</span>
+                        <br />
+                        {this.renderViewMore(i)}
                       </td>
 
                       <td>{institution.taxId}</td>
@@ -123,7 +130,7 @@ class SearchResults extends Component {
                       <td>{institution.emailDomains}</td>
 
                       <td className="action">
-                        {this.renderActions(institution, i)}
+                        {this.renderActions(institution)}
                       </td>
                     </tr>
                     <tr
