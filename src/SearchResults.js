@@ -26,13 +26,12 @@ class SearchResults extends Component {
   }
 
   renderSearchHeading(numOfResults) {
-    let results = numOfResults === 1 ? 'result' : 'results'
-
     if (numOfResults === 0) return <h2>Sorry, no results were found.</h2>
 
+    let resultsText = numOfResults === 1 ? 'result' : 'results'
     return (
       <h2>
-        {numOfResults} {results} found
+        {numOfResults} {resultsText} found
       </h2>
     )
   }
@@ -76,7 +75,6 @@ class SearchResults extends Component {
 
   render() {
     const { institutions, LEI, taxId, respondentName } = this.props.data
-    if (!institutions) return null
 
     return (
       <div className="SearchResults">
@@ -118,9 +116,11 @@ class SearchResults extends Component {
                   <React.Fragment key={i}>
                     <tr>
                       <td>
-                        {institution.respondent.name}
+                        <span className="name">
+                          {institution.respondent.name}
+                        </span>
                         <br />
-                        <span>{institution.LEI}</span>
+                        <span className="lei">{institution.LEI}</span>
                       </td>
 
                       <td>{institution.taxId}</td>

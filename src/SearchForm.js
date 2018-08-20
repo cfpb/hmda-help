@@ -13,7 +13,8 @@ class SearchForm extends Component {
       LEI: '',
       taxId: '',
       respondentName: '',
-      institutions: null
+      institutions: [],
+      isSubmitted: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -26,18 +27,43 @@ class SearchForm extends Component {
 
   handleSubmit(searchData) {
     // not found
+    //*
+
+    fetch(`http://192.168.99.100:8081/institutions/${this.state.LEI}`)
+      .then(response => {
+        if (response.status === 400) return null
+        if (response.status === 200) return response.json()
+      })
+      .then(json => {
+        if (json) {
+          this.setState({
+            institutions: [json],
+            isSubmitted: true
+          })
+        } else {
+          this.setState({
+            isSubmitted: true
+          })
+        }
+      })
+
+    //*/
+
+    // API call
     /*
-    fetch(process.env.PUBLIC_URL + 'none.json')
+    fetch(`http://192.168.99.100:8081/institutions/${this.state.LEI}`)
       .then(response => {
         return response.json()
       })
       .then(json => {
-        this.setState({ institutions: [] })
+        this.setState({
+          institutions: [...this.state.institutions, json]
+        })
       })
     //*/
 
     // 2018 found
-    //*
+    /*
     fetch(process.env.PUBLIC_URL + '2018.json')
       .then(response => {
         return response.json()
@@ -45,7 +71,6 @@ class SearchForm extends Component {
       .then(json => {
         this.setState({ institutions: json.institutions })
       })
-
     //*/
 
     // 2017 found (not found for 2018)
@@ -99,7 +124,7 @@ class SearchForm extends Component {
           />
           <InputSubmit actionType="search" />
         </form>
-        <SearchResults data={this.state} />
+        {this.state.isSubmitted ? <SearchResults data={this.state} /> : null}
       </React.Fragment>
     )
   }

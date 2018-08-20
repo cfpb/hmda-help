@@ -1,4 +1,5 @@
 .SearchResults h2 {
+  font-family: SourceSansProBold;
   margin-bottom: 1em;
   margin-top: 2em;
 }
@@ -45,13 +46,14 @@
   border-top: 0;
   color: #323a45;
   font-weight: 700;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   text-align: left;
   text-transform: uppercase;
 }
 
 .SearchResults thead th {
   background-color: #f1f1f1;
+  font-family: SourceSansProBold;
 }
 
 .SearchResults td {
@@ -62,7 +64,11 @@
   padding: 2rem 1.5rem;
 }
 
-.SearchResults td span {
+.SearchResults td span.name {
+  font-family: SourceSansProBold;
+}
+
+.SearchResults td span.lei {
   color: #5b616b;
 }
 
