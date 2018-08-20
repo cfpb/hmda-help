@@ -19,9 +19,9 @@ class SearchResults extends Component {
 
     table.classList.toggle('hidden')
     if (table.classList.contains('hidden')) {
-      button.innerHTML = 'View more data'
+      button.innerHTML = 'View all data'
     } else {
-      button.innerHTML = 'Hide more data'
+      button.innerHTML = 'Hide data'
     }
   }
 
@@ -43,7 +43,7 @@ class SearchResults extends Component {
         onClick={event => this.handleClick(event, key)}
         ref={element => this.buttons.set(key, element)}
       >
-        View more data
+        View all data
       </button>
     )
   }
@@ -121,8 +121,6 @@ class SearchResults extends Component {
                         {institution.respondent.name}
                         <br />
                         <span>{institution.LEI}</span>
-                        <br />
-                        {this.renderViewMore(i)}
                       </td>
 
                       <td>{institution.taxId}</td>
@@ -130,6 +128,7 @@ class SearchResults extends Component {
                       <td>{institution.emailDomains}</td>
 
                       <td className="action">
+                        {this.renderViewMore(i)}
                         {this.renderActions(institution)}
                       </td>
                     </tr>
