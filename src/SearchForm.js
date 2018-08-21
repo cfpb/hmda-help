@@ -14,7 +14,8 @@ class SearchForm extends Component {
       taxId: '',
       respondentName: '',
       institutions: [],
-      isSubmitted: false
+      isSubmitted: false,
+      error: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -22,7 +23,7 @@ class SearchForm extends Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value })
+    this.setState({ error: false, [event.target.name]: event.target.value })
   }
 
   handleSubmit(searchData) {
@@ -42,9 +43,13 @@ class SearchForm extends Component {
           })
         } else {
           this.setState({
+            institutions: [],
             isSubmitted: true
           })
         }
+      })
+      .catch(error => {
+        this.setState({ error: true })
       })
 
     //*/
@@ -125,6 +130,7 @@ class SearchForm extends Component {
           <InputSubmit actionType="search" />
         </form>
         {this.state.isSubmitted ? <SearchResults data={this.state} /> : null}
+        {this.state.error ? <h1>Oh no</h1> : null}
       </React.Fragment>
     )
   }

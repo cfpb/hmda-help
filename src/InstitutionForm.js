@@ -17,8 +17,8 @@ class InstitutionForm extends Component {
       isSubmitted: false,
       showOtherFields: false,
       activityYear: institution.activityYear || '',
-      lei: institution.LEI || '',
-      agencyCode: institution.agency || '',
+      LEI: institution.LEI || '',
+      agency: institution.agency || '',
       institutionType: institution.institutionType || '',
       institutionId2017: institution.institutionId2017 || '',
       taxId: institution.taxId || '',
@@ -51,6 +51,45 @@ class InstitutionForm extends Component {
   handleSubmit(event, pathname) {
     event.preventDefault()
 
+    const institution = {
+      activityYear: this.state.activityYear,
+      LEI: this.state.LEI,
+      agency: this.state.agency,
+      institutionType: this.state.institutionType,
+      institutionId2017: this.state.institutionId2017,
+      taxId: this.state.taxId,
+      rssd: this.state.rssd,
+      emailDomains: [this.state.emailDomains],
+      respondent: {
+        name: this.state.respondentName,
+        state: this.state.respondentState,
+        city: this.state.respondentCity
+      },
+      parent: {
+        idRssd: this.state.parentIdRssd,
+        name: this.state.parentName
+      },
+      assets: this.state.assets,
+      otherLenderCode: this.state.otherLenderCode,
+      topHolder: {
+        idRssd: this.state.topHolderIdRssd,
+        name: this.state.topHolderName
+      },
+      hmdaFiler: true
+    }
+
+    fetch('http://192.168.99.100:8081/institutions', {
+      method: 'POST',
+      body: JSON.stringify(institution),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        if (response.status === 400) return null
+        if (response.status === 200) return response.json()
+      })
+      .then(json => {
+        console.log(json)
+      })
     this.setState({ isSubmitted: true })
   }
 
@@ -76,9 +115,9 @@ class InstitutionForm extends Component {
           <label>LEI</label>
           <input
             type="text"
-            name="lei"
-            id="lei"
-            value={this.state.lei}
+            name="LEI"
+            id="LEI"
+            value={this.state.LEI}
             onChange={this.handleChange}
           />
           <label>Tax Id</label>
@@ -100,9 +139,9 @@ class InstitutionForm extends Component {
           <label>Agency Code</label>
           <input
             type="text"
-            name="agencyCode"
-            id="agencyCode"
-            value={this.state.agencyCode}
+            name="agency"
+            id="agency"
+            value={this.state.agency}
             onChange={this.handleChange}
           />
           <label>Email Domains</label>
@@ -131,7 +170,7 @@ class InstitutionForm extends Component {
 
         {this.state.isSubmitted ? (
           <h3>
-            {submittedAction} Submitted for {this.state.lei}
+            {submittedAction} Submitted for {this.state.LEI}
           </h3>
         ) : null}
       </React.Fragment>
