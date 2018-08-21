@@ -49,7 +49,14 @@ class SearchForm extends Component {
         }
       })
       .catch(error => {
-        this.setState({ error: true })
+        this.setState({
+          error: {
+            ...error,
+            title: 'Sorry, it looks like there was a communication problem.',
+            message:
+              "Something went wrong and we couldn't update the instituions. Please try again."
+          }
+        })
       })
 
     //*/
@@ -130,7 +137,12 @@ class SearchForm extends Component {
           <InputSubmit actionType="search" />
         </form>
         {this.state.isSubmitted ? <SearchResults data={this.state} /> : null}
-        {this.state.error ? <h1>Oh no</h1> : null}
+        {this.state.error ? (
+          <div className="alert">
+            <h3>{this.state.error.title}</h3>
+            <p>{this.state.error.message}</p>
+          </div>
+        ) : null}
       </React.Fragment>
     )
   }
