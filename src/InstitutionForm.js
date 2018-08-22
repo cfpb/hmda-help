@@ -90,12 +90,11 @@ class InstitutionForm extends Component {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
-        console.log(response)
-        if (response.status === 400) return null
-        if (response.status === 200) return response.json()
+        if (response.status > 400) return null
+        if (response.status < 300) return response.json()
       })
       .then(json => {
-        console.log(json)
+        this.props.history.push('/update', { institution: json, new: true })
       })
     this.setState({ isSubmitted: true })
   }
@@ -115,6 +114,14 @@ class InstitutionForm extends Component {
 
     return (
       <React.Fragment>
+        {/*
+        state.new passed in when an institution is added
+        we push history to /update
+        eg, this.props.history.push('/update', { institution: json, new: true })
+        */}
+        {state.new ? (
+          <h1>{this.state.LEI} has been added and can now be updated.</h1>
+        ) : null}
         <form
           className="InstitutionForm"
           onSubmit={event => this.handleSubmit(event, pathname)}
