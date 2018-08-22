@@ -96,6 +96,8 @@ class InstitutionForm extends Component {
       .then(json => {
         if (this.props.location.pathname === '/add') {
           this.props.history.push('/update', { institution: json, new: true })
+        } else {
+          this.props.history.push('/update', { institution: json })
         }
       })
     this.setState({ isSubmitted: true })
