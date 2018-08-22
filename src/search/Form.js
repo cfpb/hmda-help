@@ -1,21 +1,17 @@
 import React, { Component } from 'react'
 
 import InputSubmit from '../InputSubmit'
-import SearchResults from './Results'
 
 import './Form.css'
 
-class SearchForm extends Component {
+class Form extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       LEI: '',
       taxId: '',
-      respondentName: '',
-      institutions: null,
-      isSubmitted: false,
-      error: false
+      respondentName: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -26,129 +22,60 @@ class SearchForm extends Component {
     this.setState({ error: false, [event.target.name]: event.target.value })
   }
 
-  handleSubmit(searchData) {
-    // not found
-    //*
+  handleSubmit(event) {
+    event.preventDefault()
 
     fetch(`http://192.168.99.100:8081/institutions/${this.state.LEI}`)
       .then(response => {
-        if (response.status === 400) return null
-        if (response.status === 200) return response.json()
+        if (response.status > 400) return null
+        if (response.status < 300) return response.json()
       })
       .then(json => {
         if (json) {
-          this.setState({
-            institutions: [json],
-            isSubmitted: true
-          })
+          this.props.updateInstitutions(json)
         } else {
-          this.setState({
-            institutions: [],
-            isSubmitted: true
-          })
+          this.props.updateError({ message: 'No results found!' }, this.state)
         }
       })
       .catch(error => {
-        this.setState({
-          institutions: null,
-          error: {
-            ...error,
-            title: 'Sorry, it looks like there was a communication problem.',
-            message:
-              "Something went wrong and we couldn't update the instituions. Please try again."
-          }
-        })
+        this.props.updateError(error, this.state)
       })
-
-    //*/
-
-    // API call
-    /*
-    fetch(`http://192.168.99.100:8081/institutions/${this.state.LEI}`)
-      .then(response => {
-        return response.json()
-      })
-      .then(json => {
-        this.setState({
-          institutions: [...this.state.institutions, json]
-        })
-      })
-    //*/
-
-    // 2018 found
-    /*
-    fetch(process.env.PUBLIC_URL + '2018.json')
-      .then(response => {
-        return response.json()
-      })
-      .then(json => {
-        this.setState({ institutions: json.institutions })
-      })
-    //*/
-
-    // 2017 found (not found for 2018)
-    /*
-    fetch(process.env.PUBLIC_URL + '2017.json')
-      .then(response => {
-        return response.json()
-      })
-      .then(json => {
-        this.setState({ institutions: json.institutions })
-      })
-    //*/
   }
 
   render() {
     return (
-      <React.Fragment>
-        <form
-          className="SearchForm"
-          onSubmit={event => {
-            event.preventDefault()
-            this.handleSubmit(this.state)
-          }}
-        >
-          <label>LEI</label>
-          <input
-            id="LEI"
-            name="LEI"
-            onChange={this.handleChange}
-            placeholder="e.g., 987875HAG543RFDAHG54"
-            type="text"
-            value={this.state.LEI}
-          />
-          <label>Tax Id</label>
-          <input
-            id="taxId"
-            name="taxId"
-            onChange={this.handleChange}
-            placeholder="e.g., 88-00000000"
-            type="text"
-            value={this.state.taxId}
-          />
-          <label>Respondent Name</label>
-          <input
-            id="respondentName"
-            name="respondentName"
-            onChange={this.handleChange}
-            placeholder="e.g., Bank of HMDA"
-            type="text"
-            value={this.state.respondentName}
-          />
-          <InputSubmit actionType="search" />
-        </form>
-        {this.state.isSubmitted && this.state.institutions !== null ? (
-          <SearchResults data={this.state} />
-        ) : null}
-        {this.state.error ? (
-          <div className="alert">
-            <h3>{this.state.error.title}</h3>
-            <p>{this.state.error.message}</p>
-          </div>
-        ) : null}
-      </React.Fragment>
+      <form className="SearchForm" onSubmit={event => this.handleSubmit(event)}>
+        <label>LEI</label>
+        <input
+          id="LEI"
+          name="LEI"
+          onChange={this.handleChange}
+          placeholder="e.g., 987875HAG543RFDAHG54"
+          type="text"
+          value={this.state.LEI}
+        />
+        <label>Tax Id</label>
+        <input
+          id="taxId"
+          name="taxId"
+          onChange={this.handleChange}
+          placeholder="e.g., 88-00000000"
+          type="text"
+          value={this.state.taxId}
+        />
+        <label>Respondent Name</label>
+        <input
+          id="respondentName"
+          name="respondentName"
+          onChange={this.handleChange}
+          placeholder="e.g., Bank of HMDA"
+          type="text"
+          value={this.state.respondentName}
+        />
+        <InputSubmit actionType="search" />
+      </form>
     )
   }
 }
 
-export default SearchForm
+export default Form

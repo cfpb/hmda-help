@@ -48,6 +48,46 @@ class InstitutionForm extends Component {
   backToUpdate(event) {
     event.preventDefault()
 
+    // if at /add we need to link, not just update state
+    // we have to go to /update, but keep the state
+    // so we use history.push(pathname: pathname, state: {})
+    const institution = {
+      activityYear: 2018,
+      LEI: this.state.LEI,
+      agency: this.state.agency,
+      institutionType: this.state.institutionType,
+      institutionId2017: this.state.institutionId2017,
+      taxId: this.state.taxId,
+      rssd: this.state.rssd,
+      emailDomains: Array.isArray(this.state.emailDomains)
+        ? this.state.emailDomains
+        : [this.state.emailDomains],
+      respondent: {
+        name: this.state.respondentName,
+        state: this.state.respondentState,
+        city: this.state.respondentCity
+      },
+      parent: {
+        idRssd: this.state.parentIdRssd,
+        name: this.state.parentName
+      },
+      assets: this.state.assets,
+      otherLenderCode: this.state.otherLenderCode,
+      topHolder: {
+        idRssd: this.state.topHolderIdRssd,
+        name: this.state.topHolderName
+      },
+      hmdaFiler: true
+    }
+
+    if (this.props.location.pathname === '/add') {
+      this.props.history.push({
+        pathname: '/update',
+        state: { institution: institution }
+      })
+    }
+
+    // this works if we're at /update
     this.setState({
       isSubmitted: false
     })

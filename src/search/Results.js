@@ -25,6 +25,7 @@ class SearchResults extends Component {
     }
   }
 
+  // TODO: make this a component
   renderSearchHeading(numOfResults) {
     if (numOfResults === 0) return <h2>Sorry, no results were found.</h2>
 
@@ -36,6 +37,7 @@ class SearchResults extends Component {
     )
   }
 
+  // TODO: make this a component
   renderViewMore(key) {
     return (
       <button
@@ -47,6 +49,7 @@ class SearchResults extends Component {
     )
   }
 
+  // TODO: make this a component
   renderActions(institution) {
     let link = {
       pathname: '/update',
@@ -74,11 +77,17 @@ class SearchResults extends Component {
   }
 
   render() {
-    const { institutions, LEI, taxId, respondentName } = this.props.data
+    if (!this.props.institutions) return null
+
+    const { institutions, LEI, taxId, respondentName } = this.props
 
     return (
       <div className="SearchResults">
         {this.renderSearchHeading(institutions.length)}
+
+        {/*
+          TODO: make this a component
+        */}
         {institutions.length === 0 ? (
           <p>
             But you can{' '}
