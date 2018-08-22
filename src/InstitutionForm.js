@@ -79,7 +79,7 @@ class InstitutionForm extends Component {
     }
 
     fetch('http://192.168.99.100:8081/institutions', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify(institution),
       headers: { 'Content-Type': 'application/json' }
     })
