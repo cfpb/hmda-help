@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
-import InputSubmit from './InputSubmit'
-import SearchResults from './SearchResults'
+import InputSubmit from '../InputSubmit'
+import SearchResults from './Results'
 
-import './SearchForm.css'
+import './Form.css'
 
 class SearchForm extends Component {
   constructor(props) {

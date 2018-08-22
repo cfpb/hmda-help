@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Switch, Route } from 'react-router-dom'
 
-import SearchForm from './SearchForm'
-import InstitutionForm from './InstitutionForm'
+import SearchForm from './search/Form'
+import InstitutionForm from './institution/Form'
 import './App.css'
 
 class App extends Component {

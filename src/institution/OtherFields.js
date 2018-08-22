@@ -1,7 +1,5 @@
 import React from 'react'
 
-import './InstitutionForm.css'
-
 const OtherFields = props => {
   return (
     <React.Fragment>

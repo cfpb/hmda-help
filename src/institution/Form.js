@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
-import InputSubmit from './InputSubmit'
+import InputSubmit from '../InputSubmit'
+
+import './Form.css'
 
 class InstitutionForm extends Component {
   constructor(props) {
