@@ -1,0 +1,20 @@
+.backToUpdate {
+  border: 0;
+  color: #0071bc;
+  cursor: pointer;
+  font-size: 0.9em;
+  line-height: 1;
+  margin-right: 2em;
+  margin-top: 1em;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.backToUpdate:hover,
+.backToUpdate:visited:hover {
+  color: #205493;
+}
+.backToUpdate:active,
+.backToUpdate:visited:active {
+  color: #112e51;
+}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
@@ -8,22 +9,14 @@ class InstitutionForm extends Component {
   constructor(props) {
     super(props)
 
-    console.log(props)
-
     let institution
-    if (props.location.state.institution) {
+    if (props.location.state && props.location.state.institution) {
       institution = props.location.state.institution
     }
 
-    let newInstitution
-    if (props.location.state.newInstitution) {
-      newInstitution = props.location.state.newInstitution
-    }
-
     this.state = {
-      isSubmitted: false,
+      isSubmitted: props.location.state.isSubmitted || false,
       showOtherFields: false,
-      newInstitution: newInstitution || false,
       activityYear: institution.activityYear || '',
       LEI: institution.LEI || '',
       agency: institution.agency || '',
@@ -47,6 +40,15 @@ class InstitutionForm extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
+    this.backToUpdate = this.backToUpdate.bind(this)
+  }
+
+  backToUpdate(event) {
+    event.preventDefault()
+
+    this.setState({
+      isSubmitted: false
+    })
   }
 
   handleChange(event) {
@@ -100,13 +102,7 @@ class InstitutionForm extends Component {
         if (response.status < 300) return response.json()
       })
       .then(json => {
-        this.setState({ isSubmitted: true, newInstitution: false })
-        if (this.props.location.pathname === '/add') {
-          this.props.history.push('/update', {
-            institution: json,
-            newInstitution: true
-          })
-        }
+        this.setState({ isSubmitted: true })
       })
   }
 
@@ -118,87 +114,89 @@ class InstitutionForm extends Component {
 
   render() {
     const { pathname, state } = this.props.location
-    const submittedAction = pathname === '/add' ? 'Addition' : 'Update'
+    const submittedAction = pathname === '/add' ? 'added' : 'updated'
     const actionType = pathname === '/add' ? 'add' : 'update'
 
     if (pathname === '/update' && !state) return <h1>NOOOOO!</h1>
 
     return (
       <React.Fragment>
-        {/*
-        state.new passed in when an institution is added
-        we push history to /update
-        eg, this.props.history.push('/update', { institution: json, new: true })
-        */}
-        {this.state.newInstitution ? (
-          <h1>{this.state.LEI} has been added and can now be updated.</h1>
-        ) : null}
-        <form
-          className="InstitutionForm"
-          onSubmit={event => this.handleSubmit(event, pathname)}
-        >
-          <label>LEI</label>
-          <input
-            type="text"
-            name="LEI"
-            id="LEI"
-            value={this.state.LEI}
-            onChange={this.handleChange}
-            disabled={pathname === '/add' ? false : true}
-          />
-          <label>Tax Id</label>
-          <input
-            type="text"
-            name="taxId"
-            id="taxId"
-            value={this.state.taxId}
-            onChange={this.handleChange}
-          />
-          <label>Respondent Name</label>
-          <input
-            type="text"
-            name="respondentName"
-            id="respondentName"
-            value={this.state.respondentName}
-            onChange={this.handleChange}
-          />
-          <label>Agency Code</label>
-          <input
-            type="text"
-            name="agency"
-            id="agency"
-            value={this.state.agency}
-            onChange={this.handleChange}
-          />
-          <label>Email Domains</label>
-          <input
-            type="text"
-            name="emailDomains"
-            id="emailDomains"
-            value={this.state.emailDomains}
-            onChange={this.handleChange}
-          />
-
-          <OtherFieldsToggleButton
-            showOtherFields={this.state.showOtherFields}
-            toggleShowOtherFields={this.toggleShowOtherFields}
-          />
-
-          {this.state.showOtherFields ? (
-            <OtherFields
-              formData={this.state}
-              handleChange={this.handleChange}
-            />
-          ) : null}
-
-          <InputSubmit actionType={actionType} />
-        </form>
-
         {this.state.isSubmitted ? (
-          <h3>
-            {submittedAction} Submitted for {this.state.LEI}
-          </h3>
-        ) : null}
+          <React.Fragment>
+            <h3>
+              {this.state.LEI} {submittedAction}
+            </h3>
+            <p>
+              <button className="backToUpdate" onClick={this.backToUpdate}>
+                Update this institution
+              </button>
+            </p>
+            <p>
+              <Link to="/">Search for a new institution</Link>
+            </p>
+          </React.Fragment>
+        ) : (
+          <form
+            className="InstitutionForm"
+            onSubmit={event => this.handleSubmit(event, pathname)}
+          >
+            <label>LEI</label>
+            <input
+              type="text"
+              name="LEI"
+              id="LEI"
+              value={this.state.LEI}
+              onChange={this.handleChange}
+              disabled={pathname === '/add' ? false : true}
+            />
+            <label>Tax Id</label>
+            <input
+              type="text"
+              name="taxId"
+              id="taxId"
+              value={this.state.taxId}
+              onChange={this.handleChange}
+            />
+            <label>Respondent Name</label>
+            <input
+              type="text"
+              name="respondentName"
+              id="respondentName"
+              value={this.state.respondentName}
+              onChange={this.handleChange}
+            />
+            <label>Agency Code</label>
+            <input
+              type="text"
+              name="agency"
+              id="agency"
+              value={this.state.agency}
+              onChange={this.handleChange}
+            />
+            <label>Email Domains</label>
+            <input
+              type="text"
+              name="emailDomains"
+              id="emailDomains"
+              value={this.state.emailDomains}
+              onChange={this.handleChange}
+            />
+
+            <OtherFieldsToggleButton
+              showOtherFields={this.state.showOtherFields}
+              toggleShowOtherFields={this.toggleShowOtherFields}
+            />
+
+            {this.state.showOtherFields ? (
+              <OtherFields
+                formData={this.state}
+                handleChange={this.handleChange}
+              />
+            ) : null}
+
+            <InputSubmit actionType={actionType} />
+          </form>
+        )}
       </React.Fragment>
     )
   }
