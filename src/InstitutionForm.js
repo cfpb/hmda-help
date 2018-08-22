@@ -15,9 +15,15 @@ class InstitutionForm extends Component {
       institution = props.location.state.institution
     }
 
+    let newInstitution
+    if (props.location.state.newInstitution) {
+      newInstitution = props.location.state.newInstitution
+    }
+
     this.state = {
       isSubmitted: false,
       showOtherFields: false,
+      newInstitution: newInstitution || false,
       activityYear: institution.activityYear || '',
       LEI: institution.LEI || '',
       agency: institution.agency || '',
@@ -94,13 +100,14 @@ class InstitutionForm extends Component {
         if (response.status < 300) return response.json()
       })
       .then(json => {
+        this.setState({ isSubmitted: true, newInstitution: false })
         if (this.props.location.pathname === '/add') {
-          this.props.history.push('/update', { institution: json, new: true })
-        } else {
-          this.props.history.push('/update', { institution: json })
+          this.props.history.push('/update', {
+            institution: json,
+            newInstitution: true
+          })
         }
       })
-    this.setState({ isSubmitted: true })
   }
 
   toggleShowOtherFields() {
@@ -123,7 +130,7 @@ class InstitutionForm extends Component {
         we push history to /update
         eg, this.props.history.push('/update', { institution: json, new: true })
         */}
-        {state.new ? (
+        {this.state.newInstitution ? (
           <h1>{this.state.LEI} has been added and can now be updated.</h1>
         ) : null}
         <form
