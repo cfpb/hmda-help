@@ -8,6 +8,8 @@ class InstitutionForm extends Component {
   constructor(props) {
     super(props)
 
+    console.log(props)
+
     let institution
     if (props.location.state.institution) {
       institution = props.location.state.institution
@@ -52,14 +54,16 @@ class InstitutionForm extends Component {
     event.preventDefault()
 
     const institution = {
-      activityYear: this.state.activityYear,
+      activityYear: 2018,
       LEI: this.state.LEI,
       agency: this.state.agency,
       institutionType: this.state.institutionType,
       institutionId2017: this.state.institutionId2017,
       taxId: this.state.taxId,
       rssd: this.state.rssd,
-      emailDomains: [this.state.emailDomains],
+      emailDomains: Array.isArray(this.state.emailDomains)
+        ? this.state.emailDomains
+        : [this.state.emailDomains],
       respondent: {
         name: this.state.respondentName,
         state: this.state.respondentState,
@@ -78,12 +82,15 @@ class InstitutionForm extends Component {
       hmdaFiler: true
     }
 
+    const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
+
     fetch('http://192.168.99.100:8081/institutions', {
-      method: 'PUT',
+      method: method,
       body: JSON.stringify(institution),
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
+        console.log(response)
         if (response.status === 400) return null
         if (response.status === 200) return response.json()
       })
@@ -119,6 +126,7 @@ class InstitutionForm extends Component {
             id="LEI"
             value={this.state.LEI}
             onChange={this.handleChange}
+            disabled={pathname === '/add' ? false : true}
           />
           <label>Tax Id</label>
           <input

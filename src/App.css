@@ -22,6 +22,11 @@ input[type='text'] {
   padding: 1rem 0.7em;
   width: 100%;
 }
+input[type='text']:disabled {
+  border: 0.1rem solid #aeb0b5;
+  color: #aeb0b5;
+  cursor: not-allowed;
+}
 input.input-error {
   border-left: 4px solid #cd2026;
 }

@@ -13,7 +13,7 @@ class SearchForm extends Component {
       LEI: '',
       taxId: '',
       respondentName: '',
-      institutions: [],
+      institutions: null,
       isSubmitted: false,
       error: false
     }
@@ -50,6 +50,7 @@ class SearchForm extends Component {
       })
       .catch(error => {
         this.setState({
+          institutions: null,
           error: {
             ...error,
             title: 'Sorry, it looks like there was a communication problem.',
@@ -136,7 +137,9 @@ class SearchForm extends Component {
           />
           <InputSubmit actionType="search" />
         </form>
-        {this.state.isSubmitted ? <SearchResults data={this.state} /> : null}
+        {this.state.isSubmitted && this.state.institutions !== null ? (
+          <SearchResults data={this.state} />
+        ) : null}
         {this.state.error ? (
           <div className="alert">
             <h3>{this.state.error.title}</h3>
