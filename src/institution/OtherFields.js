@@ -26,8 +26,8 @@ const OtherFields = props => {
       <label>RSSD</label>
       <input
         type="text"
-        name="RSSD"
-        id="RSSD"
+        name="rssd"
+        id="rssd"
         value={props.formData.rssd}
         onChange={props.handleChange}
       />
@@ -50,8 +50,8 @@ const OtherFields = props => {
       <label>Parent ID RSSD</label>
       <input
         type="text"
-        name="parentIdRSSD"
-        id="parentIdRSSD"
+        name="parentIdRssd"
+        id="parentIdRssd"
         value={props.formData.parentIdRssd}
         onChange={props.handleChange}
       />
@@ -82,8 +82,8 @@ const OtherFields = props => {
       <label>Top Holder ID RSSD</label>
       <input
         type="text"
-        name="topHolderIdRSSD"
-        id="topHolderIdRSSD"
+        name="topHolderIdRssd"
+        id="topHolderIdRssd"
         value={props.formData.topHolderIdRssd}
         onChange={props.handleChange}
       />

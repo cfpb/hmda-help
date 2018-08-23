@@ -163,6 +163,9 @@ class InstitutionForm extends Component {
 
     return (
       <React.Fragment>
+        {/*
+          TODO: make this a component
+        */}
         {this.state.isSubmitted ? (
           <React.Fragment>
             <h3>
