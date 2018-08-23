@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import { nestStateForApi } from '../utils/convert'
+
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
 import InputSubmit from '../InputSubmit'
@@ -10,8 +12,6 @@ import './Form.css'
 class Institution extends Component {
   constructor(props) {
     super(props)
-
-    console.log('institution', props)
 
     let institution
     if (props.location.state && props.location.state.institution) {
@@ -52,39 +52,10 @@ class Institution extends Component {
     // if at /add we need to link, not just update state
     // we have to go to /update, but keep the state
     // so we use history.push(pathname: pathname, state: {})
-    const institution = {
-      activityYear: 2018,
-      LEI: this.state.LEI,
-      agency: this.state.agency,
-      institutionType: this.state.institutionType,
-      institutionId2017: this.state.institutionId2017,
-      taxId: this.state.taxId,
-      rssd: this.state.rssd,
-      emailDomains: Array.isArray(this.state.emailDomains)
-        ? this.state.emailDomains
-        : [this.state.emailDomains],
-      respondent: {
-        name: this.state.respondentName,
-        state: this.state.respondentState,
-        city: this.state.respondentCity
-      },
-      parent: {
-        idRssd: this.state.parentIdRssd,
-        name: this.state.parentName
-      },
-      assets: this.state.assets,
-      otherLenderCode: this.state.otherLenderCode,
-      topHolder: {
-        idRssd: this.state.topHolderIdRssd,
-        name: this.state.topHolderName
-      },
-      hmdaFiler: true
-    }
-
     if (this.props.location.pathname === '/add') {
       this.props.history.push({
         pathname: '/update',
-        state: { institution: institution }
+        state: { institution: this.state }
       })
     }
 
@@ -104,34 +75,7 @@ class Institution extends Component {
   handleSubmit(event, pathname) {
     event.preventDefault()
 
-    const institution = {
-      activityYear: 2018,
-      LEI: this.state.LEI,
-      agency: this.state.agency,
-      institutionType: this.state.institutionType,
-      institutionId2017: this.state.institutionId2017,
-      taxId: this.state.taxId,
-      rssd: this.state.rssd,
-      emailDomains: Array.isArray(this.state.emailDomains)
-        ? this.state.emailDomains
-        : [this.state.emailDomains],
-      respondent: {
-        name: this.state.respondentName,
-        state: this.state.respondentState,
-        city: this.state.respondentCity
-      },
-      parent: {
-        idRssd: this.state.parentIdRssd,
-        name: this.state.parentName
-      },
-      assets: this.state.assets,
-      otherLenderCode: this.state.otherLenderCode,
-      topHolder: {
-        idRssd: this.state.topHolderIdRssd,
-        name: this.state.topHolderName
-      },
-      hmdaFiler: true
-    }
+    const institution = nestStateForApi(this.state)
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
