@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import Form from './Form'
 import Results from './Results'
+import Alert from './Alert'
 
 import './Form.css'
 
@@ -50,29 +51,15 @@ class Search extends Component {
           taxId={this.state.taxId}
           respondentName={this.state.respondentName}
         />
-
-        {/*
-          TODO: make this a component
-        */}
+        
         {this.state.error ? (
-          <div className="alert">
-            <h3>Oh no!</h3>
-            <p>{this.state.error.message}</p>
-            <Link
-              to={{
-                pathname: '/add',
-                state: {
-                  institution: {
-                    LEI: this.state.LEI,
-                    taxId: this.state.taxId,
-                    respondent: { name: this.state.respondentName }
-                  }
-                }
-              }}
-            >
-              Add a new one
-            </Link>
-          </div>
+          <Alert
+            LEI={this.state.LEI}
+            taxId={this.state.taxId}
+            respondentName={this.state.respondentName}
+            heading="Oh no!"
+            message={this.state.error.message}
+          />
         ) : null}
       </React.Fragment>
     )
