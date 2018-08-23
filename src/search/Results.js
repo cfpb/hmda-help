@@ -98,9 +98,7 @@ class SearchResults extends Component {
                   institution: {
                     LEI: LEI,
                     taxId: taxId,
-                    respondent: {
-                      name: respondentName
-                    }
+                    respondentName: respondentName
                   }
                 }
               }}
@@ -126,7 +124,7 @@ class SearchResults extends Component {
                     <tr>
                       <td>
                         <span className="name">
-                          {institution.respondent.name}
+                          {institution.respondentName}
                         </span>
                         <br />
                         <span className="lei">{institution.LEI}</span>
@@ -165,20 +163,20 @@ class SearchResults extends Component {
                               <td>{institution.institutionId2017}</td>
                               <td>{institution.rssd}</td>
                               <td>
-                                {institution.respondent.city},{' '}
-                                {institution.respondent.state}
+                                {institution.respondentCity},{' '}
+                                {institution.respondentState}
                               </td>
                               <td>
-                                {institution.parent.name}
+                                {institution.parentName}
                                 <br />
-                                <span>{institution.parent.idRssd}</span>
+                                <span>{institution.parentIdRssd}</span>
                               </td>
                               <td>{institution.assets}</td>
                               <td>{institution.otherLenderCode}</td>
                               <td>
-                                {institution.topHolder.name}
+                                {institution.topHolderName}
                                 <br />
-                                <span>{institution.topHolder.idRssd}</span>
+                                <span>{institution.topHolderIdRssd}</span>
                               </td>
                             </tr>
                           </tbody>

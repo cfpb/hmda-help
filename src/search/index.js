@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+
+import { flattenApiForState } from '../utils/convert'
 
 import Form from './Form'
 import Results from './Results'
@@ -24,17 +25,27 @@ class Search extends Component {
   }
 
   updateInstitutions(response) {
-    this.setState({ institutions: [response], error: null })
+    this.setState({ institutions: [flattenApiForState(response)], error: null })
   }
 
   updateError(error, formData) {
-    this.setState({
-      error: error,
-      LEI: formData.LEI,
-      taxId: formData.taxId,
-      respondentName: formData.respondentName,
-      institutions: null
-    })
+    if (formData) {
+      this.setState({
+        error: error,
+        LEI: formData.LEI,
+        taxId: formData.taxId,
+        respondentName: formData.respondentName,
+        institutions: null
+      })
+    } else {
+      this.setState({
+        error: error,
+        LEI: '',
+        taxId: '',
+        respondentName: '',
+        institutions: null
+      })
+    }
   }
 
   render() {
@@ -51,7 +62,7 @@ class Search extends Component {
           taxId={this.state.taxId}
           respondentName={this.state.respondentName}
         />
-        
+
         {this.state.error ? (
           <Alert
             LEI={this.state.LEI}

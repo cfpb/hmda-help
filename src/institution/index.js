@@ -11,6 +11,8 @@ class Institution extends Component {
   constructor(props) {
     super(props)
 
+    console.log('institution', props)
+
     let institution
     if (props.location.state && props.location.state.institution) {
       institution = props.location.state.institution
@@ -27,16 +29,15 @@ class Institution extends Component {
       taxId: institution.taxId || '',
       rssd: institution.rssd || '',
       emailDomains: institution.emailDomains || '',
-      respondentName: institution.respondent.name || '',
-      respondentState: institution.respondent.state || '',
-      respondentCity: institution.respondent.city || '',
-      parentIdRssd: (institution.parent && institution.parent.idRssd) || '',
-      parentName: (institution.parent && institution.parent.name) || '',
+      respondentName: institution.respondentName || '',
+      respondentState: institution.respondentState || '',
+      respondentCity: institution.respondentCity || '',
+      parentIdRssd: institution.parentIdRssd || '',
+      parentName: institution.parentName || '',
       assets: institution.assets || '',
       otherLenderCode: institution.otherLenderCode || '',
-      topHolderIdRssd:
-        (institution.topHolder && institution.topHolder.idRssd) || '',
-      topHolderName: (institution.topHolder && institution.topHolder.name) || ''
+      topHolderIdRssd: institution.topHolderIdRssd || '',
+      topHolderName: institution.topHolderName || ''
     }
 
     this.handleChange = this.handleChange.bind(this)

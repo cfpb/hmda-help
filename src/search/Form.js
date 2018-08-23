@@ -11,7 +11,8 @@ class Form extends Component {
     this.state = {
       LEI: '',
       taxId: '',
-      respondentName: ''
+      respondentName: '',
+      error: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -38,7 +39,7 @@ class Form extends Component {
         }
       })
       .catch(error => {
-        this.props.updateError(error, this.state)
+        this.props.updateError(error, null)
       })
   }
 
