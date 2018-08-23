@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Switch, Route } from 'react-router-dom'
 
 import Search from './search/'
-import InstitutionForm from './institution/Form'
+import Institution from './institution/'
 import './App.css'
 
 class App extends Component {
@@ -13,8 +13,8 @@ class App extends Component {
           <h1 className="App-title">HMDA Help</h1>
 
           <Route exact path="/" component={Search} />
-          <Route exact path="/add" component={InstitutionForm} />
-          <Route exact path="/update" component={InstitutionForm} />
+          <Route exact path="/add" component={Institution} />
+          <Route exact path="/update" component={Institution} />
         </div>
       </Switch>
     )
