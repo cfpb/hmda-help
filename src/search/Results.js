@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import { nestStateForApi } from '../utils/convert'
+
 import './Results.css'
 
 class SearchResults extends Component {
@@ -10,10 +12,27 @@ class SearchResults extends Component {
     this.tables = new Map()
     this.buttons = new Map()
 
-    this.handleClick = this.handleClick.bind(this)
+    this.handleViewMoreClick = this.handleViewMoreClick.bind(this)
+    this.handleDeleteClick = this.handleDeleteClick.bind(this)
   }
 
-  handleClick(element, i) {
+  handleDeleteClick(institution, key) {
+    fetch('http://192.168.99.100:8081/institutions', {
+      method: 'DELETE',
+      body: JSON.stringify(nestStateForApi(institution)),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        if (response.status > 400) return null
+        if (response.status < 300) return response.json()
+      })
+      .then(json => {
+        // need to remove the institution from the state
+        this.props.deleteAnInstitution(key)
+      })
+  }
+
+  handleViewMoreClick(i) {
     const table = this.tables.get(i)
     const button = this.buttons.get(i)
 
@@ -41,10 +60,21 @@ class SearchResults extends Component {
   renderViewMore(key) {
     return (
       <button
-        onClick={event => this.handleClick(event, key)}
+        onClick={event => this.handleViewMoreClick(key)}
         ref={element => this.buttons.set(key, element)}
       >
         Show other fields
+      </button>
+    )
+  }
+
+  renderDeleteButton(lei, key) {
+    return (
+      <button
+        className="delete"
+        onClick={event => this.handleDeleteClick(lei, key)}
+      >
+        Delete
       </button>
     )
   }
@@ -137,6 +167,7 @@ class SearchResults extends Component {
                       <td className="action">
                         {this.renderViewMore(i)}
                         {this.renderActions(institution)}
+                        {this.renderDeleteButton(institution, i)}
                       </td>
                     </tr>
                     <tr

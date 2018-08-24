@@ -20,8 +20,17 @@ class Search extends Component {
       respondentName: ''
     }
 
+    this.deleteAnInstitution = this.deleteAnInstitution.bind(this)
     this.updateInstitutions = this.updateInstitutions.bind(this)
     this.updateError = this.updateError.bind(this)
+  }
+
+  deleteAnInstitution(key) {
+    let newInstitutions = this.state.institutions.filter(
+      (institution, i) => i !== key
+    )
+    if (newInstitutions.length === 0) newInstitutions = null
+    this.setState({ institutions: newInstitutions })
   }
 
   updateInstitutions(response) {
@@ -61,6 +70,7 @@ class Search extends Component {
           LEI={this.state.LEI}
           taxId={this.state.taxId}
           respondentName={this.state.respondentName}
+          deleteAnInstitution={this.deleteAnInstitution}
         />
 
         {this.state.error ? (
