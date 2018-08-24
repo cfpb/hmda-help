@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { nestStateForApi } from '../utils/convert'
+import { nestStateForApi, flattenApiForState } from '../utils/convert'
 
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
@@ -89,7 +89,10 @@ class Institution extends Component {
         if (response.status < 300) return response.json()
       })
       .then(json => {
-        this.setState({ isSubmitted: true })
+        // set the rest of the state here to be the json response
+        // just in case something goes wrong
+        // we then have the what the back-end has
+        this.setState({ isSubmitted: true, ...flattenApiForState(json) })
       })
   }
 

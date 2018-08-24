@@ -19,9 +19,9 @@ class SearchResults extends Component {
 
     table.classList.toggle('hidden')
     if (table.classList.contains('hidden')) {
-      button.innerHTML = 'View all data'
+      button.innerHTML = 'Show other fields'
     } else {
-      button.innerHTML = 'Hide data'
+      button.innerHTML = 'Hide other fields'
     }
   }
 
@@ -44,7 +44,7 @@ class SearchResults extends Component {
         onClick={event => this.handleClick(event, key)}
         ref={element => this.buttons.set(key, element)}
       >
-        View all data
+        Show other fields
       </button>
     )
   }
