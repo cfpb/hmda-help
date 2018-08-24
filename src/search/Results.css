@@ -36,7 +36,7 @@
   padding: 1rem 1.5rem;
 }
 
-.SearchResults tr.otherData.hidden {
+.hidden {
   display: none;
 }
 
@@ -154,4 +154,11 @@
 
 .SearchResults button.delete:hover {
   background-color: #cd2026;
+}
+
+.SearchResults .areYouSure span {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-family: SourceSansProBold;
+  margin-right: 2em;
 }

@@ -14,6 +14,12 @@ class SearchResults extends Component {
 
     this.handleViewMoreClick = this.handleViewMoreClick.bind(this)
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
+    this.toggleAreYouSure = this.toggleAreYouSure.bind(this)
+  }
+
+  toggleAreYouSure(key) {
+    document.getElementById(`initialActions${key}`).classList.toggle('hidden')
+    document.getElementById(`areYouSure${key}`).classList.toggle('hidden')
   }
 
   handleDeleteClick(institution, key) {
@@ -113,10 +119,10 @@ class SearchResults extends Component {
           <table className="institutions">
             <thead>
               <tr>
-                <th>Name and LEI</th>
-                <th>Tax ID</th>
-                <th>Email Domain</th>
-                <th />
+                <th width="25%">Name and LEI</th>
+                <th width="20%">Tax ID</th>
+                <th width="20%">Email Domain</th>
+                <th width="35%" />
               </tr>
             </thead>
             <tbody>
@@ -137,20 +143,39 @@ class SearchResults extends Component {
                       <td>{institution.emailDomains}</td>
 
                       <td className="action">
-                        <button
-                          onClick={event => this.handleViewMoreClick(i)}
-                          ref={element => this.buttons.set(i, element)}
+                        <div
+                          className="initialActions"
+                          id={`initialActions${i}`}
                         >
-                          Show other fields
-                        </button>
-                        {this.renderAction(institution)}
-                        <button
-                          className="delete"
-                          onClick={event =>
-                            this.handleDeleteClick(institution, i)}
+                          <button
+                            onClick={event => this.handleViewMoreClick(i)}
+                            ref={element => this.buttons.set(i, element)}
+                          >
+                            Show other fields
+                          </button>
+                          {this.renderAction(institution)}
+                          <button
+                            className="delete"
+                            onClick={event => this.toggleAreYouSure(i)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                        <div
+                          className="areYouSure hidden"
+                          id={`areYouSure${i}`}
                         >
-                          Delete
-                        </button>
+                          <span>Are you sure?</span>{' '}
+                          <button
+                            onClick={event =>
+                              this.handleDeleteClick(institution, i)}
+                          >
+                            Yes
+                          </button>{' '}
+                          <button onClick={event => this.toggleAreYouSure(i)}>
+                            No
+                          </button>
+                        </div>
                       </td>
                     </tr>
                     <tr

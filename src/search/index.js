@@ -58,7 +58,6 @@ class Search extends Component {
   }
 
   render() {
-    console.log('error', this.state.error)
     return (
       <React.Fragment>
         <Form
