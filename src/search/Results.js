@@ -56,31 +56,7 @@ class SearchResults extends Component {
     )
   }
 
-  // TODO: make this a component
-  renderViewMore(key) {
-    return (
-      <button
-        onClick={event => this.handleViewMoreClick(key)}
-        ref={element => this.buttons.set(key, element)}
-      >
-        Show other fields
-      </button>
-    )
-  }
-
-  renderDeleteButton(lei, key) {
-    return (
-      <button
-        className="delete"
-        onClick={event => this.handleDeleteClick(lei, key)}
-      >
-        Delete
-      </button>
-    )
-  }
-
-  // TODO: make this a component
-  renderActions(institution) {
+  renderAction(institution) {
     let link = {
       pathname: '/update',
       text: 'Update',
@@ -114,10 +90,6 @@ class SearchResults extends Component {
     return (
       <div className="SearchResults">
         {this.renderSearchHeading(institutions.length)}
-
-        {/*
-          TODO: make this a component
-        */}
         {institutions.length === 0 ? (
           <p>
             But you can{' '}
@@ -165,9 +137,20 @@ class SearchResults extends Component {
                       <td>{institution.emailDomains}</td>
 
                       <td className="action">
-                        {this.renderViewMore(i)}
-                        {this.renderActions(institution)}
-                        {this.renderDeleteButton(institution, i)}
+                        <button
+                          onClick={event => this.handleViewMoreClick(i)}
+                          ref={element => this.buttons.set(i, element)}
+                        >
+                          Show other fields
+                        </button>
+                        {this.renderAction(institution)}
+                        <button
+                          className="delete"
+                          onClick={event =>
+                            this.handleDeleteClick(institution, i)}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                     <tr

@@ -39,7 +39,10 @@ class Form extends Component {
         }
       })
       .catch(error => {
-        this.props.updateError(error, null)
+        this.props.updateError(
+          { message: 'The requested resource could not be found.' },
+          null
+        )
       })
   }
 
