@@ -19,7 +19,8 @@ class Institution extends Component {
     }
 
     this.state = {
-      isSubmitted: props.location.state.isSubmitted || false,
+      isSubmitted:
+        (props.location.state && props.location.state.isSubmitted) || false,
       showOtherFields: false,
       activityYear: institution.activityYear || '',
       LEI: institution.LEI || '',

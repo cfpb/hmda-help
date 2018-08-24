@@ -7,6 +7,10 @@
   font-family: SourceSansProBold;
 }
 
+nav a {
+  margin-right: 2em;
+}
+
 input[type='text'] {
   border: 0.1rem solid #5b616b;
   border-radius: 0;

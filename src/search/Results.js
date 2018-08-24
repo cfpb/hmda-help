@@ -150,6 +150,7 @@ class SearchResults extends Component {
                           <button
                             onClick={event => this.handleViewMoreClick(i)}
                             ref={element => this.buttons.set(i, element)}
+                            className="showOtherFields"
                           >
                             Show other fields
                           </button>
@@ -167,11 +168,12 @@ class SearchResults extends Component {
                         >
                           <span>Are you sure?</span>{' '}
                           <button
+                            className="delete"
                             onClick={event =>
                               this.handleDeleteClick(institution, i)}
                           >
                             Yes
-                          </button>{' '}
+                          </button>
                           <button onClick={event => this.toggleAreYouSure(i)}>
                             No
                           </button>
