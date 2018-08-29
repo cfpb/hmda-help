@@ -91,145 +91,117 @@ class SearchResults extends Component {
   render() {
     if (!this.props.institutions) return null
 
-    const { institutions, LEI, taxId, respondentName } = this.props
+    const { institutions } = this.props
 
     return (
       <div className="SearchResults">
         {this.renderSearchHeading(institutions.length)}
-        {institutions.length === 0 ? (
-          <p>
-            But you can{' '}
-            <Link
-              to={{
-                pathname: '/add',
-                state: {
-                  institution: {
-                    LEI: LEI,
-                    taxId: taxId,
-                    respondentName: respondentName
-                  }
-                }
-              }}
-            >
-              add a new institution
-            </Link>{' '}
-            based on your search term(s).
-          </p>
-        ) : (
-          <table className="institutions">
-            <thead>
-              <tr>
-                <th width="25%">Name and LEI</th>
-                <th width="20%">Tax ID</th>
-                <th width="20%">Email Domain</th>
-                <th width="35%" />
-              </tr>
-            </thead>
-            <tbody>
-              {institutions.map((institution, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <tr>
-                      <td>
-                        <span className="name">
-                          {institution.respondentName}
-                        </span>
-                        <br />
-                        <span className="lei">{institution.LEI}</span>
-                      </td>
 
-                      <td>{institution.taxId}</td>
+        <table className="institutions">
+          <thead>
+            <tr>
+              <th width="25%">Name and LEI</th>
+              <th width="20%">Tax ID</th>
+              <th width="20%">Email Domain</th>
+              <th width="35%" />
+            </tr>
+          </thead>
+          <tbody>
+            {institutions.map((institution, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr>
+                    <td>
+                      <span className="name">{institution.respondentName}</span>
+                      <br />
+                      <span className="lei">{institution.LEI}</span>
+                    </td>
 
-                      <td>{institution.emailDomains}</td>
+                    <td>{institution.taxId}</td>
 
-                      <td className="action">
-                        <div
-                          className="initialActions"
-                          id={`initialActions${i}`}
+                    <td>{institution.emailDomains}</td>
+
+                    <td className="action">
+                      <div className="initialActions" id={`initialActions${i}`}>
+                        <button
+                          onClick={event => this.handleViewMoreClick(i)}
+                          ref={element => this.buttons.set(i, element)}
+                          className="showOtherFields"
                         >
-                          <button
-                            onClick={event => this.handleViewMoreClick(i)}
-                            ref={element => this.buttons.set(i, element)}
-                            className="showOtherFields"
-                          >
-                            Show other fields
-                          </button>
-                          {this.renderAction(institution)}
-                          <button
-                            className="delete"
-                            onClick={event => this.toggleAreYouSure(i)}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                        <div
-                          className="areYouSure hidden"
-                          id={`areYouSure${i}`}
+                          Show other fields
+                        </button>
+                        {this.renderAction(institution)}
+                        <button
+                          className="delete"
+                          onClick={event => this.toggleAreYouSure(i)}
                         >
-                          <span>Are you sure?</span>{' '}
-                          <button
-                            className="delete"
-                            onClick={event =>
-                              this.handleDeleteClick(institution, i)}
-                          >
-                            Yes
-                          </button>
-                          <button onClick={event => this.toggleAreYouSure(i)}>
-                            No
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr
-                      className="otherData hidden"
-                      ref={element => this.tables.set(i, element)}
-                    >
-                      <td colSpan={4}>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Type</th>
-                              <th>2017 ID</th>
-                              <th>RSSD</th>
-                              <th>Location</th>
-                              <th>Parent</th>
-                              <th>Assets</th>
-                              <th>Other Lender Code</th>
-                              <th>Top Holder</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>{institution.institutionType}</td>
-                              <td>{institution.institutionId2017}</td>
-                              <td>{institution.rssd}</td>
-                              <td>
-                                {institution.respondentCity},{' '}
-                                {institution.respondentState}
-                              </td>
-                              <td>
-                                {institution.parentName}
-                                <br />
-                                <span>{institution.parentIdRssd}</span>
-                              </td>
-                              <td>{institution.assets}</td>
-                              <td>{institution.otherLenderCode}</td>
-                              <td>
-                                {institution.topHolderName}
-                                <br />
-                                <span>{institution.topHolderIdRssd}</span>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                )
-              })}
-            </tbody>
-          </table>
-        )}
+                          Delete
+                        </button>
+                      </div>
+                      <div className="areYouSure hidden" id={`areYouSure${i}`}>
+                        <span>Are you sure?</span>{' '}
+                        <button
+                          className="delete"
+                          onClick={event =>
+                            this.handleDeleteClick(institution, i)}
+                        >
+                          Yes
+                        </button>
+                        <button onClick={event => this.toggleAreYouSure(i)}>
+                          No
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    className="otherData hidden"
+                    ref={element => this.tables.set(i, element)}
+                  >
+                    <td colSpan={4}>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Type</th>
+                            <th>2017 ID</th>
+                            <th>RSSD</th>
+                            <th>Location</th>
+                            <th>Parent</th>
+                            <th>Assets</th>
+                            <th>Other Lender Code</th>
+                            <th>Top Holder</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{institution.institutionType}</td>
+                            <td>{institution.institutionId2017}</td>
+                            <td>{institution.rssd}</td>
+                            <td>
+                              {institution.respondentCity},{' '}
+                              {institution.respondentState}
+                            </td>
+                            <td>
+                              {institution.parentName}
+                              <br />
+                              <span>{institution.parentIdRssd}</span>
+                            </td>
+                            <td>{institution.assets}</td>
+                            <td>{institution.otherLenderCode}</td>
+                            <td>
+                              {institution.topHolderName}
+                              <br />
+                              <span>{institution.topHolderIdRssd}</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </React.Fragment>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
     )
   }

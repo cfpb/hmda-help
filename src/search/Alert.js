@@ -18,7 +18,7 @@ const Alert = props => {
           }
         }}
       >
-        Add a new institution anyway?
+        Add a new institution?
       </Link>
     </div>
   )

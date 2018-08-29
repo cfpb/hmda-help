@@ -67,9 +67,6 @@ class Search extends Component {
 
         <Results
           institutions={this.state.institutions}
-          LEI={this.state.LEI}
-          taxId={this.state.taxId}
-          respondentName={this.state.respondentName}
           deleteAnInstitution={this.deleteAnInstitution}
         />
 
