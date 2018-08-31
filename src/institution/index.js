@@ -130,66 +130,73 @@ class Institution extends Component {
             </p>
           </React.Fragment>
         ) : (
-          <form
-            className="InstitutionForm"
-            onSubmit={event => this.handleSubmit(event, pathname)}
-          >
-            <label>LEI</label>
-            <input
-              type="text"
-              name="LEI"
-              id="LEI"
-              value={this.state.LEI}
-              onChange={this.handleChange}
-              disabled={pathname === '/add' ? false : true}
-            />
-            <label>Tax Id</label>
-            <input
-              type="text"
-              name="taxId"
-              id="taxId"
-              value={this.state.taxId}
-              onChange={this.handleChange}
-            />
-            <label>Respondent Name</label>
-            <input
-              type="text"
-              name="respondentName"
-              id="respondentName"
-              value={this.state.respondentName}
-              onChange={this.handleChange}
-            />
-            <label>Agency Code</label>
-            <input
-              type="text"
-              name="agency"
-              id="agency"
-              value={this.state.agency}
-              onChange={this.handleChange}
-            />
-            <label>Email Domains</label>
-            <input
-              type="text"
-              name="emailDomains"
-              id="emailDomains"
-              value={this.state.emailDomains}
-              onChange={this.handleChange}
-            />
-
-            <OtherFieldsToggleButton
-              showOtherFields={this.state.showOtherFields}
-              toggleShowOtherFields={this.toggleShowOtherFields}
-            />
-
-            {this.state.showOtherFields ? (
-              <OtherFields
-                formData={this.state}
-                handleChange={this.handleChange}
+          <React.Fragment>
+            <h2>
+              If any data fields other than Respondent Name or Email Domain need
+              to be updated, please escalate the case to Tier 2 for further
+              support.
+            </h2>
+            <form
+              className="InstitutionForm"
+              onSubmit={event => this.handleSubmit(event, pathname)}
+            >
+              <label>LEI</label>
+              <input
+                type="text"
+                name="LEI"
+                id="LEI"
+                value={this.state.LEI}
+                onChange={this.handleChange}
+                disabled={pathname === '/add' ? false : true}
               />
-            ) : null}
+              <label>Tax Id</label>
+              <input
+                type="text"
+                name="taxId"
+                id="taxId"
+                value={this.state.taxId}
+                onChange={this.handleChange}
+              />
+              <label>Respondent Name</label>
+              <input
+                type="text"
+                name="respondentName"
+                id="respondentName"
+                value={this.state.respondentName}
+                onChange={this.handleChange}
+              />
+              <label>Agency Code</label>
+              <input
+                type="text"
+                name="agency"
+                id="agency"
+                value={this.state.agency}
+                onChange={this.handleChange}
+              />
+              <label>Email Domains</label>
+              <input
+                type="text"
+                name="emailDomains"
+                id="emailDomains"
+                value={this.state.emailDomains}
+                onChange={this.handleChange}
+              />
 
-            <InputSubmit actionType={actionType} />
-          </form>
+              <OtherFieldsToggleButton
+                showOtherFields={this.state.showOtherFields}
+                toggleShowOtherFields={this.toggleShowOtherFields}
+              />
+
+              {this.state.showOtherFields ? (
+                <OtherFields
+                  formData={this.state}
+                  handleChange={this.handleChange}
+                />
+              ) : null}
+
+              <InputSubmit actionType={actionType} />
+            </form>
+          </React.Fragment>
         )}
       </React.Fragment>
     )
