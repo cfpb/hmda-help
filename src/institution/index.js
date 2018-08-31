@@ -6,6 +6,7 @@ import { nestStateForApi, flattenApiForState } from '../utils/convert'
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
 import InputSubmit from '../InputSubmit'
+import Alert from '../Alert'
 
 import './Form.css'
 
@@ -105,8 +106,18 @@ class Institution extends Component {
 
   render() {
     const { pathname, state } = this.props.location
-    const submittedAction = pathname === '/add' ? 'added' : 'updated'
-    const actionType = pathname === '/add' ? 'add' : 'update'
+    const action = {
+      submitted: pathname === '/add' ? 'added' : 'updated',
+      type: pathname === '/add' ? 'add' : 'update',
+      heading:
+        pathname === '/add'
+          ? 'Add an institution record'
+          : 'Update an institution record',
+      warning:
+        pathname === '/add'
+          ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
+          : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
+    }
 
     if (pathname === '/update' && !state) return <h1>NOOOOO!</h1>
 
@@ -118,7 +129,7 @@ class Institution extends Component {
         {this.state.isSubmitted ? (
           <React.Fragment>
             <h3>
-              {this.state.LEI} {submittedAction}
+              {this.state.LEI} {action.submitted}
             </h3>
             <p>
               <button className="backToUpdate" onClick={this.backToUpdate}>
@@ -131,11 +142,13 @@ class Institution extends Component {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <h2>
-              If any data fields other than Respondent Name or Email Domain need
-              to be updated, please escalate the case to Tier 2 for further
-              support.
-            </h2>
+            <h3>{action.heading}</h3>
+            <Alert
+              type="error"
+              heading="Are you Tier 2 support?"
+              text={action.warning}
+              smallWidth={true}
+            />
             <form
               className="InstitutionForm"
               onSubmit={event => this.handleSubmit(event, pathname)}
@@ -194,7 +207,7 @@ class Institution extends Component {
                 />
               ) : null}
 
-              <InputSubmit actionType={actionType} />
+              <InputSubmit actionType={action.type} />
             </form>
           </React.Fragment>
         )}

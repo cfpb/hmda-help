@@ -60,6 +60,7 @@ class Search extends Component {
   render() {
     return (
       <React.Fragment>
+        <h3>Search for institution records</h3>
         <Form
           updateInstitutions={this.updateInstitutions}
           updateError={this.updateError}
