@@ -162,14 +162,6 @@ class Institution extends Component {
                 onChange={this.handleChange}
                 disabled={pathname === '/add' ? false : true}
               />
-              <label>Tax Id</label>
-              <input
-                type="text"
-                name="taxId"
-                id="taxId"
-                value={this.state.taxId}
-                onChange={this.handleChange}
-              />
               <label>Respondent Name</label>
               <input
                 type="text"
@@ -178,20 +170,28 @@ class Institution extends Component {
                 value={this.state.respondentName}
                 onChange={this.handleChange}
               />
-              <label>Agency Code</label>
-              <input
-                type="text"
-                name="agency"
-                id="agency"
-                value={this.state.agency}
-                onChange={this.handleChange}
-              />
               <label>Email Domains</label>
               <input
                 type="text"
                 name="emailDomains"
                 id="emailDomains"
                 value={this.state.emailDomains}
+                onChange={this.handleChange}
+              />
+              <label>Tax Id</label>
+              <input
+                type="text"
+                name="taxId"
+                id="taxId"
+                value={this.state.taxId}
+                onChange={this.handleChange}
+              />
+              <label>Agency Code</label>
+              <input
+                type="text"
+                name="agency"
+                id="agency"
+                value={this.state.agency}
                 onChange={this.handleChange}
               />
 

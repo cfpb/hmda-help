@@ -12,6 +12,7 @@ class Form extends Component {
       LEI: '',
       taxId: '',
       respondentName: '',
+      emailDomains: '',
       error: false
     }
 
@@ -58,15 +59,6 @@ class Form extends Component {
           type="text"
           value={this.state.LEI}
         />
-        <label>Tax Id</label>
-        <input
-          id="taxId"
-          name="taxId"
-          onChange={this.handleChange}
-          placeholder="e.g., 88-00000000"
-          type="text"
-          value={this.state.taxId}
-        />
         <label>Respondent Name</label>
         <input
           id="respondentName"
@@ -75,6 +67,24 @@ class Form extends Component {
           placeholder="e.g., Bank of HMDA"
           type="text"
           value={this.state.respondentName}
+        />
+        <label>Email Domains</label>
+        <input
+          id="emailDomains"
+          name="emailDomains"
+          onChange={this.handleChange}
+          placeholder="e.g., institution.com"
+          type="text"
+          value={this.state.emailDomains}
+        />
+        <label>Tax Id</label>
+        <input
+          id="taxId"
+          name="taxId"
+          onChange={this.handleChange}
+          placeholder="e.g., 88-00000000"
+          type="text"
+          value={this.state.taxId}
         />
         <InputSubmit actionType="search" />
       </form>

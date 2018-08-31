@@ -13,7 +13,8 @@ const Alert = props => {
             institution: {
               LEI: props.LEI,
               taxId: props.taxId,
-              respondentName: props.respondentName
+              respondentName: props.respondentName,
+              emailDomains: props.emailDomains
             }
           }
         }}
