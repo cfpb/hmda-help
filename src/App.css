@@ -7,6 +7,16 @@
   font-family: SourceSansProBold;
 }
 
+header {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+nav {
+  margin-top: 1.5em;
+  text-align: right;
+}
+
 nav a {
   margin-right: 2em;
 }
