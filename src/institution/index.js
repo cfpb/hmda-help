@@ -5,6 +5,7 @@ import { nestStateForApi, flattenApiForState } from '../utils/convert'
 
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
+import Success from './Success'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
 
@@ -123,16 +124,14 @@ class Institution extends Component {
 
     return (
       <React.Fragment>
-        {/*
-          TODO: make this a component
-        */}
         {this.state.isSubmitted ? (
           <React.Fragment>
-            <h3>
-              {this.state.LEI} {action.submitted}
-            </h3>
+            <Success institution={this.state} action={action.submitted} />
             <p>
-              <button className="backToUpdate" onClick={this.backToUpdate}>
+              <button
+                className="backToUpdate"
+                onClick={event => this.backToUpdate(event)}
+              >
                 Update this institution
               </button>
             </p>
