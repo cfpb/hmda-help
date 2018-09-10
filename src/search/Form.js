@@ -27,7 +27,7 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    fetch(`${process.env.REACT_APP_V2_API}/institutions/${this.state.LEI}`)
+    fetch(`/v2/public/institutions/${this.state.LEI}`)
       .then(response => {
         if (response.status > 400) return null
         if (response.status < 300) return response.json()
