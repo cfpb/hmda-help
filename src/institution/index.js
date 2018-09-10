@@ -6,6 +6,7 @@ import { nestStateForApi, flattenApiForState } from '../utils/convert'
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
 import InputSubmit from '../InputSubmit'
+import Alert from '../Alert'
 
 import './Form.css'
 
@@ -105,8 +106,18 @@ class Institution extends Component {
 
   render() {
     const { pathname, state } = this.props.location
-    const submittedAction = pathname === '/add' ? 'added' : 'updated'
-    const actionType = pathname === '/add' ? 'add' : 'update'
+    const action = {
+      submitted: pathname === '/add' ? 'added' : 'updated',
+      type: pathname === '/add' ? 'add' : 'update',
+      heading:
+        pathname === '/add'
+          ? 'Add an institution record'
+          : 'Update an institution record',
+      warning:
+        pathname === '/add'
+          ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
+          : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
+    }
 
     if (pathname === '/update' && !state) return <h1>NOOOOO!</h1>
 
@@ -118,7 +129,7 @@ class Institution extends Component {
         {this.state.isSubmitted ? (
           <React.Fragment>
             <h3>
-              {this.state.LEI} {submittedAction}
+              {this.state.LEI} {action.submitted}
             </h3>
             <p>
               <button className="backToUpdate" onClick={this.backToUpdate}>
@@ -130,66 +141,75 @@ class Institution extends Component {
             </p>
           </React.Fragment>
         ) : (
-          <form
-            className="InstitutionForm"
-            onSubmit={event => this.handleSubmit(event, pathname)}
-          >
-            <label>LEI</label>
-            <input
-              type="text"
-              name="LEI"
-              id="LEI"
-              value={this.state.LEI}
-              onChange={this.handleChange}
-              disabled={pathname === '/add' ? false : true}
+          <React.Fragment>
+            <h3>{action.heading}</h3>
+            <Alert
+              type="error"
+              heading="Are you Tier 2 support?"
+              text={action.warning}
+              smallWidth={true}
             />
-            <label>Tax Id</label>
-            <input
-              type="text"
-              name="taxId"
-              id="taxId"
-              value={this.state.taxId}
-              onChange={this.handleChange}
-            />
-            <label>Respondent Name</label>
-            <input
-              type="text"
-              name="respondentName"
-              id="respondentName"
-              value={this.state.respondentName}
-              onChange={this.handleChange}
-            />
-            <label>Agency Code</label>
-            <input
-              type="text"
-              name="agency"
-              id="agency"
-              value={this.state.agency}
-              onChange={this.handleChange}
-            />
-            <label>Email Domains</label>
-            <input
-              type="text"
-              name="emailDomains"
-              id="emailDomains"
-              value={this.state.emailDomains}
-              onChange={this.handleChange}
-            />
-
-            <OtherFieldsToggleButton
-              showOtherFields={this.state.showOtherFields}
-              toggleShowOtherFields={this.toggleShowOtherFields}
-            />
-
-            {this.state.showOtherFields ? (
-              <OtherFields
-                formData={this.state}
-                handleChange={this.handleChange}
+            <form
+              className="InstitutionForm"
+              onSubmit={event => this.handleSubmit(event, pathname)}
+            >
+              <label>LEI</label>
+              <input
+                type="text"
+                name="LEI"
+                id="LEI"
+                value={this.state.LEI}
+                onChange={this.handleChange}
+                disabled={pathname === '/add' ? false : true}
               />
-            ) : null}
+              <label>Tax Id</label>
+              <input
+                type="text"
+                name="taxId"
+                id="taxId"
+                value={this.state.taxId}
+                onChange={this.handleChange}
+              />
+              <label>Respondent Name</label>
+              <input
+                type="text"
+                name="respondentName"
+                id="respondentName"
+                value={this.state.respondentName}
+                onChange={this.handleChange}
+              />
+              <label>Agency Code</label>
+              <input
+                type="text"
+                name="agency"
+                id="agency"
+                value={this.state.agency}
+                onChange={this.handleChange}
+              />
+              <label>Email Domains</label>
+              <input
+                type="text"
+                name="emailDomains"
+                id="emailDomains"
+                value={this.state.emailDomains}
+                onChange={this.handleChange}
+              />
 
-            <InputSubmit actionType={actionType} />
-          </form>
+              <OtherFieldsToggleButton
+                showOtherFields={this.state.showOtherFields}
+                toggleShowOtherFields={this.toggleShowOtherFields}
+              />
+
+              {this.state.showOtherFields ? (
+                <OtherFields
+                  formData={this.state}
+                  handleChange={this.handleChange}
+                />
+              ) : null}
+
+              <InputSubmit actionType={action.type} />
+            </form>
+          </React.Fragment>
         )}
       </React.Fragment>
     )

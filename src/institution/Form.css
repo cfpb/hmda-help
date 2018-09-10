@@ -18,3 +18,7 @@
 .backToUpdate:visited:active {
   color: #112e51;
 }
+
+h3 {
+  font-family: SourceSansProBold;
+}

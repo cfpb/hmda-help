@@ -10,24 +10,26 @@ class App extends Component {
     return (
       <Switch>
         <div className="App">
-          <h1 className="App-title">HMDA Help</h1>
-          <nav>
-            <Link to="/">Search</Link>
-            <Link
-              to={{
-                pathname: '/add',
-                state: {
-                  institution: {
-                    LEI: '',
-                    taxId: '',
-                    respondentName: ''
+          <header>
+            <h1 className="App-title">HMDA Help</h1>
+            <nav>
+              <Link to="/">Search</Link>
+              <Link
+                to={{
+                  pathname: '/add',
+                  state: {
+                    institution: {
+                      LEI: '',
+                      taxId: '',
+                      respondentName: ''
+                    }
                   }
-                }
-              }}
-            >
-              Add a new institution
-            </Link>
-          </nav>
+                }}
+              >
+                Add a new institution
+              </Link>
+            </nav>
+          </header>
           <Route exact path="/" component={Search} />
           <Route exact path="/add" component={Institution} />
           <Route exact path="/update" component={Institution} />
