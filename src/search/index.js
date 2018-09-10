@@ -17,7 +17,8 @@ class Search extends Component {
       error: null,
       LEI: '',
       taxId: '',
-      respondentName: ''
+      respondentName: '',
+      emailDomains: ''
     }
 
     this.deleteAnInstitution = this.deleteAnInstitution.bind(this)
@@ -44,6 +45,7 @@ class Search extends Component {
         LEI: formData.LEI,
         taxId: formData.taxId,
         respondentName: formData.respondentName,
+        emailDomains: formData.emailDomains,
         institutions: null
       })
     } else {
@@ -52,6 +54,7 @@ class Search extends Component {
         LEI: '',
         taxId: '',
         respondentName: '',
+        emailDomains: '',
         institutions: null
       })
     }
@@ -76,6 +79,7 @@ class Search extends Component {
             LEI={this.state.LEI}
             taxId={this.state.taxId}
             respondentName={this.state.respondentName}
+            emailDomains={this.state.emailDomains}
             heading="Oh no!"
             message={this.state.error.message}
           />

@@ -1,0 +1,8 @@
+.success dt {
+  font-family: SourceSansProBold;
+}
+
+.success dd {
+  margin-bottom: 1em;
+  margin-left: 0;
+}

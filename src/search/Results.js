@@ -100,10 +100,11 @@ class SearchResults extends Component {
         <table className="institutions">
           <thead>
             <tr>
-              <th width="25%">Name and LEI</th>
-              <th width="20%">Tax ID</th>
-              <th width="20%">Email Domain</th>
-              <th width="35%" />
+              <th width="15%">LEI</th>
+              <th width="15%">Name</th>
+              <th width="15%">Email Domain</th>
+              <th width="15%">Tax ID</th>
+              <th width="40%" />
             </tr>
           </thead>
           <tbody>
@@ -111,15 +112,10 @@ class SearchResults extends Component {
               return (
                 <React.Fragment key={i}>
                   <tr>
-                    <td>
-                      <span className="name">{institution.respondentName}</span>
-                      <br />
-                      <span className="lei">{institution.LEI}</span>
-                    </td>
-
-                    <td>{institution.taxId}</td>
-
+                    <td>{institution.LEI}</td>
+                    <td>{institution.respondentName}</td>
                     <td>{institution.emailDomains}</td>
+                    <td>{institution.taxId}</td>
 
                     <td className="action">
                       <div className="initialActions" id={`initialActions${i}`}>
@@ -157,7 +153,7 @@ class SearchResults extends Component {
                     className="otherData hidden"
                     ref={element => this.tables.set(i, element)}
                   >
-                    <td colSpan={4}>
+                    <td colSpan={5}>
                       <table>
                         <thead>
                           <tr>
