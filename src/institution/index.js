@@ -82,7 +82,7 @@ class Institution extends Component {
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
-    fetch('http://192.168.99.100:8081/institutions', {
+    fetch(`${process.env.REACT_APP_V2_API}/institutions`, {
       method: method,
       body: JSON.stringify(institution),
       headers: { 'Content-Type': 'application/json' }
