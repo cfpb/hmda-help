@@ -1,7 +1,5 @@
 import React from 'react'
 
-import './InstitutionForm.css'
-
 const OtherFields = props => {
   return (
     <React.Fragment>
@@ -28,9 +26,9 @@ const OtherFields = props => {
       <label>RSSD</label>
       <input
         type="text"
-        name="RSSD"
-        id="RSSD"
-        value={props.formData.RSSD}
+        name="rssd"
+        id="rssd"
+        value={props.formData.rssd}
         onChange={props.handleChange}
       />
       <label>Respondent State</label>
@@ -52,9 +50,9 @@ const OtherFields = props => {
       <label>Parent ID RSSD</label>
       <input
         type="text"
-        name="parentIdRSSD"
-        id="parentIdRSSD"
-        value={props.formData.parentIdRSSD}
+        name="parentIdRssd"
+        id="parentIdRssd"
+        value={props.formData.parentIdRssd}
         onChange={props.handleChange}
       />
       <label>Parent Name</label>
@@ -84,9 +82,9 @@ const OtherFields = props => {
       <label>Top Holder ID RSSD</label>
       <input
         type="text"
-        name="topHolderIdRSSD"
-        id="topHolderIdRSSD"
-        value={props.formData.topHolderIdRSSD}
+        name="topHolderIdRssd"
+        id="topHolderIdRssd"
+        value={props.formData.topHolderIdRssd}
         onChange={props.handleChange}
       />
       <label>Top Holder Name</label>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Switch, Route, Link } from 'react-router-dom'
 
-import SearchForm from './SearchForm'
-import InstitutionForm from './InstitutionForm'
+import Search from './search/'
+import Institution from './institution/'
 import './App.css'
 
 class App extends Component {
@@ -11,10 +11,26 @@ class App extends Component {
       <Switch>
         <div className="App">
           <h1 className="App-title">HMDA Help</h1>
-
-          <Route exact path="/" component={SearchForm} />
-          <Route exact path="/add" component={InstitutionForm} />
-          <Route exact path="/update" component={InstitutionForm} />
+          <nav>
+            <Link to="/">Search</Link>
+            <Link
+              to={{
+                pathname: '/add',
+                state: {
+                  institution: {
+                    LEI: '',
+                    taxId: '',
+                    respondentName: ''
+                  }
+                }
+              }}
+            >
+              Add a new institution
+            </Link>
+          </nav>
+          <Route exact path="/" component={Search} />
+          <Route exact path="/add" component={Institution} />
+          <Route exact path="/update" component={Institution} />
         </div>
       </Switch>
     )

@@ -1,0 +1,44 @@
+.inputSubmit,
+.inputSubmit:visited {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-color: #0071bc;
+  border: 0;
+  border-radius: 2px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: SourceSansProBold;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 3rem 0;
+  padding: 1rem 2rem;
+}
+@media screen and (min-width: 481px) {
+  .inputSubmit,
+  .inputSubmit:visited {
+    width: auto;
+  }
+}
+.inputSubmit:hover,
+.inputSubmit:visited:hover {
+  background-color: #205493;
+}
+.inputSubmit:active,
+.inputSubmit:visited:active {
+  background-color: #112e51;
+}
+.inputSubmit:disabled,
+.inputSubmit:visited:disabled {
+  background-color: #d6d7d9;
+  pointer-events: none;
+}
+.inputSubmit:disabled:hover,
+.inputSubmit:disabled:active,
+.inputSubmit:disabled:focus,
+.inputSubmit:visited:disabled:hover,
+.inputSubmit:visited:disabled:focus,
+.inputSubmit:visited:disabled:active {
+  background-color: #d6d7d9;
+}

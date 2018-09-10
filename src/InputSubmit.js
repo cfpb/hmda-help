@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import './InputSubmit.css'
+
 const values = {
   search: 'Search institutions',
   add: 'Add the institution',
@@ -9,7 +11,13 @@ const values = {
 
 class InputSubmit extends Component {
   render() {
-    return <input type="submit" value={values[this.props.actionType]} />
+    return (
+      <input
+        className="inputSubmit"
+        type="submit"
+        value={values[this.props.actionType]}
+      />
+    )
   }
 }
 
