@@ -82,7 +82,7 @@ class Institution extends Component {
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
-    fetch(`/v2/public/institutions`, {
+    fetch(`/v2/admin/institutions`, {
       method: method,
       body: JSON.stringify(institution),
       headers: { 'Content-Type': 'application/json' }
