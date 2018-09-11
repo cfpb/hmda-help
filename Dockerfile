@@ -9,9 +9,7 @@ RUN yarn
 COPY src ./src
 COPY public ./public
 
-# set default to production API
-ARG V2_API=https://ffiec-api.cfpb.gov/v2/public
-RUN REACT_APP_V2_API=${V2_API} yarn build
+RUN yarn build
 
 FROM nginx:1.15.1-alpine
 COPY --from=build-stage /usr/src/app/build /usr/share/nginx/html
