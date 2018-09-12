@@ -8,7 +8,7 @@ import './App.css'
 class App extends Component {
   render() {
     return (
-      <Switch>
+      <Switch basename="/hmda-help">
         <div className="App">
           <header>
             <h1 className="App-title">HMDA Help</h1>
