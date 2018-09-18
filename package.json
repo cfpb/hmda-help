@@ -1,7 +1,10 @@
 {
   "name": "hmda-help",
   "version": "0.1.0",
-  "private": true,
+  "main": "index.js",
+  "keywords": ["HMDA", "help"],
+  "author": "Consumer Financial Protection Bureau",
+  "license": "CC0-1.0",
   "dependencies": {
     "react": "16.4.2",
     "react-dom": "16.4.2",
