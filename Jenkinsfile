@@ -25,7 +25,7 @@ volumes: [
 
     stage('Deploy') {
       container('helm') {
-        sh "helm upgrade --install --force --namespace=default --values=hmda-help/kubernetes/values.yaml --set image.tag=${gitBranch} hmda-help-${gitBranch} kubernetes/hmda-help"
+        sh "helm upgrade --install --force --namespace=default --values=kubernetes/values.yaml --set image.tag=${gitBranch} hmda-help-${gitBranch} kubernetes/hmda-help"
       }
     }
 
