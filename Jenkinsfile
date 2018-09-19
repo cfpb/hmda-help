@@ -1,11 +1,11 @@
-podTemplate(label: 'buildPod', containers: [
+podTemplate(label: 'buildHmdaHelp', containers: [
   containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
   containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm', ttyEnabled: true, command: 'cat')
 ],
 volumes: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
 ]) {
-   node('buildPod') {
+   node('buildHmdaHelp') {
      def repo = checkout scm
      def gitCommit = repo.GIT_COMMIT
      def gitBranch = repo.GIT_BRANCH
