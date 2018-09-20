@@ -30,8 +30,8 @@ metadata:
       apiVersion: ambassador/v0
       kind: Mapping
       name: hmda_help_mapping
-      prefix: /hmda-help/
-      rewrite: /hmda-help/
+      prefix: /hmda-help-{{ .Values.image.tag }}/
+      rewrite: /hmda-help-{{ .Values.image.tag }}/
       service: {{ include "hmda-help.fullname" . }}:{{ .Values.service.port }}
 spec:
   type: {{ .Values.ambassador.service.type }}
