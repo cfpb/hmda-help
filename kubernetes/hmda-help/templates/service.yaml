@@ -29,8 +29,8 @@ metadata:
     getambassador.io/config: |
       apiVersion: ambassador/v0
       kind: Mapping
-      name: hmda_help_{{ .Values.image.tag }}_mapping
-      prefix: /hmda-help-{{ .Values.image.tag }}/
+      name: hmda_help_mapping
+      prefix: /hmda-help/
       rewrite: /hmda-help/
       service: {{ include "hmda-help.fullname" . }}:{{ .Values.service.port }}
 spec:
