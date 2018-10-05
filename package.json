@@ -1,21 +1,26 @@
 {
   "name": "hmda-help",
   "version": "0.1.0",
-  "main": "index.js",
+  "description": "HMDA Help admin UI",
   "keywords": ["HMDA", "help"],
   "author": "Consumer Financial Protection Bureau",
   "license": "CC0-1.0",
-  "dependencies": {
-    "react": "16.4.2",
-    "react-dom": "16.4.2",
-    "react-router-dom": "4.3.1",
-    "react-scripts": "1.1.4"
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.x"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "keycloak-js": "4.5.0",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
+    "react-router-dom": "4.3.1",
+    "react-scripts": "1.1.4"
   },
   "homepage": "/hmda-help"
 }
