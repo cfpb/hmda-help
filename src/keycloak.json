@@ -1,0 +1,9 @@
+{
+  "realm": "hmda2",
+  "auth-server-url": "https://hmda4.demo.cfpb.gov/auth",
+  "ssl-required": "all",
+  "resource": "hmda2-api",
+  "public-client": true,
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}
