@@ -27,7 +27,12 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    fetch(`/v2/public/institutions/${this.state.LEI}`)
+    fetch(`/v2/public/institutions/${this.state.LEI}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => {
         if (response.status > 400) return null
         if (response.status < 300) return response.json()
