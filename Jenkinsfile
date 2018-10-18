@@ -31,11 +31,11 @@ volumes: [
             --values=kubernetes/hmda-help/values.yaml \
             --set image.tag=${gitBranch} \
             hmda-help \
-            kubernetes/hmda-help"\
+            kubernetes/hmda-help"
         }
       }
     }
 
-   }
+  }
 
 }
