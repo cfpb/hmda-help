@@ -1,11 +1,11 @@
-podTemplate(label: 'buildHmdaHelp', containers: [
+podTemplate(label: 'buildDockerContainer', containers: [
   containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
   containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm', ttyEnabled: true, command: 'cat')
 ],
 volumes: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
 ]) {
-   node('buildHmdaHelp') {
+   node('buildDockerContainer') {
      def repo = checkout scm
      def gitCommit = repo.GIT_COMMIT
      def gitBranch = repo.GIT_BRANCH
@@ -24,11 +24,15 @@ volumes: [
       }
 
     stage('Deploy') {
-      when {
-        expression { return gitBranch == 'master' }
-      }
-      container('helm') {
-        sh "helm upgrade --install --force --namespace=default --values=kubernetes/hmda-help/values.yaml --set image.tag=${gitBranch} hmda-help kubernetes/hmda-help"
+      if (env.BRANCH_NAME == 'master') {
+        container('helm') {
+          sh "helm upgrade --install --force \
+            --namespace=default \
+            --values=kubernetes/hmda-help/values.yaml \
+            --set image.tag=${gitBranch} \
+            hmda-help \
+            kubernetes/hmda-help"\
+        }
       }
     }
 
