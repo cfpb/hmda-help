@@ -23,10 +23,14 @@ class SearchResults extends Component {
   }
 
   handleDeleteClick(institution, key) {
-    fetch('http://192.168.99.100:8081/institutions', {
+    console.log(nestStateForApi(institution))
+    fetch('/v2/admin/institutions/', {
       method: 'DELETE',
       body: JSON.stringify(nestStateForApi(institution)),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
     })
       .then(response => {
         if (response.status > 400) return null

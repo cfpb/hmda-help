@@ -27,7 +27,7 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    fetch(`/v2/public/institutions/${this.state.LEI}`, {
+    fetch(`/v2/admin/institutions/${this.state.LEI}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'

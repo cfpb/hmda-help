@@ -21,6 +21,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('keycloak', this.state.keycloak)
     return (
       <Switch basename="/hmda-help">
         <div className="App">
