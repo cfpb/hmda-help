@@ -6,7 +6,7 @@ import Search from './search/'
 import Institution from './institution/'
 import './App.css'
 
-const keycloak = Keycloak('/keycloak.json')
+const keycloak = Keycloak(process.env.PUBLIC_URL + '/keycloak.json')
 
 class App extends Component {
   constructor(props) {
