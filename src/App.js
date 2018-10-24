@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
+    keycloak.init({ onLoad: 'login-required', flow: 'implicit' }).then(authenticated => {
       this.setState({ keycloak: keycloak, authenticated: authenticated })
     })
   }
