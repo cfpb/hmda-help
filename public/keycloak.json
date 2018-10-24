@@ -1,6 +1,6 @@
 {
   "realm": "hmda2",
-  "auth-server-url": "",
+  "auth-server-url": "/auth",
   "ssl-required": "all",
   "resource": "hmda2-api",
   "public-client": true,
