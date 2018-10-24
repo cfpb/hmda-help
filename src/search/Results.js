@@ -23,8 +23,7 @@ class SearchResults extends Component {
   }
 
   handleDeleteClick(institution, key) {
-    console.log(nestStateForApi(institution))
-    fetch('/v2/admin/institutions/', {
+    fetch('/v2/admin/institutions', {
       method: 'DELETE',
       body: JSON.stringify(nestStateForApi(institution)),
       headers: {
