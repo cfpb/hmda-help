@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom'
 
 import { nestStateForApi } from '../utils/convert'
 
+import Alert from '../Alert'
+
 import './Results.css'
 
 class SearchResults extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      httpError: null
+    }
 
     this.tables = new Map()
     this.buttons = new Map()
@@ -18,6 +24,7 @@ class SearchResults extends Component {
   }
 
   toggleAreYouSure(key) {
+    this.setState({ httpError: null })
     document.getElementById(`initialActions${key}`).classList.toggle('hidden')
     document.getElementById(`areYouSure${key}`).classList.toggle('hidden')
   }
@@ -32,12 +39,18 @@ class SearchResults extends Component {
       }
     })
       .then(response => {
-        if (response.status > 400) return null
-        if (response.status < 300) return response.json()
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error(response.status)
+        }
       })
       .then(json => {
         // need to remove the institution from the state
         this.props.deleteAnInstitution(key)
+      })
+      .catch(error => {
+        this.setState({ httpError: error.message })
       })
   }
 
@@ -150,6 +163,15 @@ class SearchResults extends Component {
                           No
                         </button>
                       </div>
+                      {this.state.httpError ? (
+                        <Alert
+                          type="error"
+                          heading="Access Denied"
+                          text="Sorry, it doesn't look like you have the correct permissions to
+                perform this action."
+                          smallWidth={true}
+                        />
+                      ) : null}
                     </td>
                   </tr>
                   <tr
