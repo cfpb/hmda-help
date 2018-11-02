@@ -95,7 +95,6 @@ class Institution extends Component {
         if (response.ok) {
           return response.json()
         } else {
-          console.log(response)
           throw new Error(response.status)
         }
       })
@@ -106,7 +105,6 @@ class Institution extends Component {
         this.setState({ isSubmitted: true, ...flattenApiForState(json) })
       })
       .catch(error => {
-        console.log('error = ', error.name, error.message)
         this.setState({ httpError: error.message })
       })
   }
