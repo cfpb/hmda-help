@@ -21,38 +21,62 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <Switch basename="/hmda-help">
-        <div className="App">
-          <header>
-            <h1 className="App-title">HMDA Help</h1>
-            <nav>
-              <Link to="/">Search</Link>
-              <Link
-                to={{
-                  pathname: '/add',
-                  state: {
-                    institution: {
-                      LEI: '',
-                      taxId: '',
-                      respondentName: ''
-                    }
-                  }
-                }}
-              >
-                Add a new institution
-              </Link>
-              <button onClick={() => this.state.keycloak.logout()}>
-                Logout
-              </button>
-            </nav>
-          </header>
-          <Route exact path="/" component={Search} />
-          <Route exact path="/add" component={Institution} />
-          <Route exact path="/update" component={Institution} />
-        </div>
-      </Switch>
-    )
+    const ProtectedRoute = ({ component: Component, ...rest }) => {
+      return (
+        <Route
+          {...rest}
+          render={props => <Component {...props} token={rest.token} />}
+        />
+      )
+    }
+
+    if (this.state.authenticated) {
+      return (
+        <Switch basename="/hmda-help">
+          <div className="App">
+            <header>
+              <h1 className="App-title">HMDA Help</h1>
+              <nav>
+                <Link to="/">Search</Link>
+                <Link
+                  to={{
+                    pathname: '/add',
+                    state: {
+                      institution: {
+                        LEI: '',
+                        taxId: '',
+                        respondentName: ''
+                      }
+                    },
+                    token: this.state.keycloak.token
+                  }}
+                >
+                  Add a new institution
+                </Link>
+                <button onClick={() => this.state.keycloak.logout()}>
+                  Logout
+                </button>
+              </nav>
+            </header>
+            <Route exact path="/" component={Search} />
+            <ProtectedRoute
+              exact
+              path="/add"
+              component={Institution}
+              token={this.state.keycloak ? this.state.keycloak.token : null}
+            />
+            <ProtectedRoute
+              exact
+              path="/update"
+              component={Institution}
+              token={this.state.keycloak ? this.state.keycloak.token : null}
+            />
+          </div>
+        </Switch>
+      )
+    } else {
+      return <h1>Please authenticate!</h1>
+    }
   }
 }
 
