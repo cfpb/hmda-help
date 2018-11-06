@@ -15,7 +15,7 @@ class Institution extends Component {
   constructor(props) {
     super(props)
 
-    let institution
+    let institution = null
     if (props.location.state && props.location.state.institution) {
       institution = props.location.state.institution
     }
@@ -23,24 +23,25 @@ class Institution extends Component {
     this.state = {
       isSubmitted:
         (props.location.state && props.location.state.isSubmitted) || false,
+      httpError: null,
       showOtherFields: false,
-      activityYear: institution.activityYear || '',
-      LEI: institution.LEI || '',
-      agency: institution.agency || '',
-      institutionType: institution.institutionType || '',
-      institutionId2017: institution.institutionId2017 || '',
-      taxId: institution.taxId || '',
-      rssd: institution.rssd || '',
-      emailDomains: institution.emailDomains || '',
-      respondentName: institution.respondentName || '',
-      respondentState: institution.respondentState || '',
-      respondentCity: institution.respondentCity || '',
-      parentIdRssd: institution.parentIdRssd || '',
-      parentName: institution.parentName || '',
-      assets: institution.assets || '',
-      otherLenderCode: institution.otherLenderCode || '',
-      topHolderIdRssd: institution.topHolderIdRssd || '',
-      topHolderName: institution.topHolderName || ''
+      activityYear: institution ? institution.activityYear : '',
+      LEI: institution ? institution.LEI : '',
+      agency: institution ? institution.agency : '',
+      institutionType: institution ? institution.institutionType : '',
+      institutionId2017: institution ? institution.institutionId2017 : '',
+      taxId: institution ? institution.taxId : '',
+      rssd: institution ? institution.rssd : '',
+      emailDomains: institution ? institution.emailDomains : '',
+      respondentName: institution ? institution.respondentName : '',
+      respondentState: institution ? institution.respondentState : '',
+      respondentCity: institution ? institution.respondentCity : '',
+      parentIdRssd: institution ? institution.parentIdRssd : '',
+      parentName: institution ? institution.parentName : '',
+      assets: institution ? institution.assets : '',
+      otherLenderCode: institution ? institution.otherLenderCode : '',
+      topHolderIdRssd: institution ? institution.topHolderIdRssd : '',
+      topHolderName: institution ? institution.topHolderName : ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -75,7 +76,7 @@ class Institution extends Component {
     })
   }
 
-  handleSubmit(event, pathname) {
+  handleSubmit(event, pathname, token) {
     event.preventDefault()
 
     const institution = nestStateForApi(this.state)
@@ -85,17 +86,26 @@ class Institution extends Component {
     fetch(`/v2/admin/institutions`, {
       method: method,
       body: JSON.stringify(institution),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
     })
       .then(response => {
-        if (response.status > 400) return null
-        if (response.status < 300) return response.json()
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error(response.status)
+        }
       })
       .then(json => {
         // set the rest of the state here to be the json response
         // just in case something goes wrong
         // we then have the what the back-end has
         this.setState({ isSubmitted: true, ...flattenApiForState(json) })
+      })
+      .catch(error => {
+        this.setState({ httpError: error.message })
       })
   }
 
@@ -120,96 +130,103 @@ class Institution extends Component {
           : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
     }
 
-    if (pathname === '/update' && !state) return <h1>NOOOOO!</h1>
+    if (pathname === '/update' && !state) this.props.history.push('/')
 
-    return (
+    return this.state.isSubmitted ? (
       <React.Fragment>
-        {this.state.isSubmitted ? (
-          <React.Fragment>
-            <Success institution={this.state} action={action.submitted} />
-            <p>
-              <button
-                className="backToUpdate"
-                onClick={event => this.backToUpdate(event)}
-              >
-                Update this institution
-              </button>
-            </p>
-            <p>
-              <Link to="/">Search for a new institution</Link>
-            </p>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <h3>{action.heading}</h3>
+        <Success institution={this.state} action={action.submitted} />
+        <p>
+          <button
+            className="backToUpdate"
+            onClick={event => this.backToUpdate(event)}
+          >
+            Update this institution
+          </button>
+        </p>
+        <p>
+          <Link to="/">Search for a new institution</Link>
+        </p>
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        <h3>{action.heading}</h3>
+        <Alert
+          type="error"
+          heading="Are you Tier 2 support?"
+          text={action.warning}
+          smallWidth={true}
+        />
+        <form
+          className="InstitutionForm"
+          onSubmit={event =>
+            this.handleSubmit(event, pathname, this.props.token)}
+        >
+          <label>LEI</label>
+          <input
+            type="text"
+            name="LEI"
+            id="LEI"
+            value={this.state.LEI}
+            onChange={this.handleChange}
+            disabled={pathname === '/add' ? false : true}
+          />
+          <label>Respondent Name</label>
+          <input
+            type="text"
+            name="respondentName"
+            id="respondentName"
+            value={this.state.respondentName}
+            onChange={this.handleChange}
+          />
+          <label>Email Domains</label>
+          <input
+            type="text"
+            name="emailDomains"
+            id="emailDomains"
+            value={this.state.emailDomains}
+            onChange={this.handleChange}
+          />
+          <label>Tax Id</label>
+          <input
+            type="text"
+            name="taxId"
+            id="taxId"
+            value={this.state.taxId}
+            onChange={this.handleChange}
+          />
+          <label>Agency Code</label>
+          <input
+            type="text"
+            name="agency"
+            id="agency"
+            value={this.state.agency}
+            onChange={this.handleChange}
+          />
+
+          <OtherFieldsToggleButton
+            showOtherFields={this.state.showOtherFields}
+            toggleShowOtherFields={this.toggleShowOtherFields}
+          />
+
+          {this.state.showOtherFields ? (
+            <OtherFields
+              formData={this.state}
+              handleChange={this.handleChange}
+            />
+          ) : null}
+
+          <InputSubmit actionType={action.type} />
+          {/* TODO: better error message, using an <Alert/>*/}
+          {this.state.httpError ? (
             <Alert
               type="error"
-              heading="Are you Tier 2 support?"
-              text={action.warning}
+              heading="Access Denied"
+              text="Sorry, it doesn't look like you have the correct permissions to
+                perform this action."
               smallWidth={true}
             />
-            <form
-              className="InstitutionForm"
-              onSubmit={event => this.handleSubmit(event, pathname)}
-            >
-              <label>LEI</label>
-              <input
-                type="text"
-                name="LEI"
-                id="LEI"
-                value={this.state.LEI}
-                onChange={this.handleChange}
-                disabled={pathname === '/add' ? false : true}
-              />
-              <label>Respondent Name</label>
-              <input
-                type="text"
-                name="respondentName"
-                id="respondentName"
-                value={this.state.respondentName}
-                onChange={this.handleChange}
-              />
-              <label>Email Domains</label>
-              <input
-                type="text"
-                name="emailDomains"
-                id="emailDomains"
-                value={this.state.emailDomains}
-                onChange={this.handleChange}
-              />
-              <label>Tax Id</label>
-              <input
-                type="text"
-                name="taxId"
-                id="taxId"
-                value={this.state.taxId}
-                onChange={this.handleChange}
-              />
-              <label>Agency Code</label>
-              <input
-                type="text"
-                name="agency"
-                id="agency"
-                value={this.state.agency}
-                onChange={this.handleChange}
-              />
-
-              <OtherFieldsToggleButton
-                showOtherFields={this.state.showOtherFields}
-                toggleShowOtherFields={this.toggleShowOtherFields}
-              />
-
-              {this.state.showOtherFields ? (
-                <OtherFields
-                  formData={this.state}
-                  handleChange={this.handleChange}
-                />
-              ) : null}
-
-              <InputSubmit actionType={action.type} />
-            </form>
-          </React.Fragment>
-        )}
+          ) : null}
+        </form>
       </React.Fragment>
     )
   }

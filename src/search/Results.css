@@ -87,10 +87,6 @@
   text-align: left;
 }
 
-.SearchResults .action {
-  text-align: right;
-}
-
 .SearchResults .action a,
 .SearchResults .action a:visited {
   -moz-osx-font-smoothing: grayscale;

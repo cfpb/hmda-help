@@ -99,5 +99,5 @@
 }
 
 .alert-paragraph {
-  width: 66ch;
+  max-width: 66ch;
 }
