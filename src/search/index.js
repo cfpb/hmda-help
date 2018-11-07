@@ -72,6 +72,7 @@ class Search extends Component {
         <Results
           institutions={this.state.institutions}
           deleteAnInstitution={this.deleteAnInstitution}
+          token={this.props.token}
         />
 
         {this.state.error ? (
