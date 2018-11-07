@@ -29,13 +29,14 @@ class SearchResults extends Component {
     document.getElementById(`areYouSure${key}`).classList.toggle('hidden')
   }
 
-  handleDeleteClick(institution, key) {
+  handleDeleteClick(institution, key, token) {
     fetch('/v2/admin/institutions', {
       method: 'DELETE',
       body: JSON.stringify(nestStateForApi(institution)),
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
       }
     })
       .then(response => {
@@ -155,7 +156,11 @@ class SearchResults extends Component {
                         <button
                           className="delete"
                           onClick={event =>
-                            this.handleDeleteClick(institution, i)}
+                            this.handleDeleteClick(
+                              institution,
+                              i,
+                              this.props.token
+                            )}
                         >
                           Yes
                         </button>

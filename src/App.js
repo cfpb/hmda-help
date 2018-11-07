@@ -58,7 +58,12 @@ class App extends Component {
                 </button>
               </nav>
             </header>
-            <Route exact path="/" component={Search} />
+            <ProtectedRoute
+              exact
+              path="/"
+              component={Search}
+              token={this.state.keycloak ? this.state.keycloak.token : null}
+            />
             <ProtectedRoute
               exact
               path="/add"
