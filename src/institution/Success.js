@@ -8,7 +8,7 @@ const Success = props => {
       <h3>Institution {props.action}</h3>
       <dl>
         <dt>LEI</dt>
-        <dd>{props.institution.LEI}</dd>
+        <dd>{props.institution.lei}</dd>
         <dt>Name</dt>
         <dd>{props.institution.respondentName || 'NA'}</dd>
         <dt>Email Domain(s)</dt>

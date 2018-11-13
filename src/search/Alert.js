@@ -11,7 +11,7 @@ const Alert = props => {
           pathname: '/add',
           state: {
             institution: {
-              LEI: props.LEI,
+              lei: props.lei,
               taxId: props.taxId,
               respondentName: props.respondentName,
               emailDomains: props.emailDomains

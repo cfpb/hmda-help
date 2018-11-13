@@ -1,7 +1,7 @@
 const flattenApiForState = json => {
   const state = {
     activityYear: json.activityYear || 2018,
-    LEI: json.LEI || '',
+    lei: json.lei || '',
     agency: json.agency || -1,
     institutionType: json.institutionType || -1,
     institutionId2017: json.institutionId2017 || '',
@@ -24,7 +24,7 @@ const flattenApiForState = json => {
 const nestStateForApi = state => {
   const api = {
     activityYear: 2018,
-    LEI: state.LEI || '',
+    lei: state.lei || '',
     agency: parseInt(state.agency, 10) || -1,
     institutionType: parseInt(state.institutionType, 10) || -1,
     institutionId2017: state.institutionId2017 || '',

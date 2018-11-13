@@ -129,7 +129,7 @@ class SearchResults extends Component {
               return (
                 <React.Fragment key={i}>
                   <tr>
-                    <td>{institution.LEI}</td>
+                    <td>{institution.lei}</td>
                     <td>{institution.respondentName}</td>
                     <td>{institution.emailDomains}</td>
                     <td>{institution.taxId}</td>
