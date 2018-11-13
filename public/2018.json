@@ -2,7 +2,7 @@
   "institutions": [
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",
@@ -28,7 +28,7 @@
     },
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",
@@ -54,7 +54,7 @@
     },
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",
@@ -80,7 +80,7 @@
     },
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",
@@ -106,7 +106,7 @@
     },
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",
@@ -132,7 +132,7 @@
     },
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",
@@ -158,7 +158,7 @@
     },
     {
       "activityYear": 2018,
-      "LEI": "54930084UKLVMY22DS16",
+      "lei": "54930084UKLVMY22DS16",
       "agency": "1",
       "institutionType": "17",
       "institutionId2017": "12345",

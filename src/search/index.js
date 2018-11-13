@@ -15,7 +15,7 @@ class Search extends Component {
     this.state = {
       institutions: null,
       error: null,
-      LEI: '',
+      lei: '',
       taxId: '',
       respondentName: '',
       emailDomains: ''
@@ -42,7 +42,7 @@ class Search extends Component {
     if (formData) {
       this.setState({
         error: error,
-        LEI: formData.LEI,
+        lei: formData.lei,
         taxId: formData.taxId,
         respondentName: formData.respondentName,
         emailDomains: formData.emailDomains,
@@ -51,7 +51,7 @@ class Search extends Component {
     } else {
       this.setState({
         error: error,
-        LEI: '',
+        lei: '',
         taxId: '',
         respondentName: '',
         emailDomains: '',
@@ -77,7 +77,7 @@ class Search extends Component {
 
         {this.state.error ? (
           <Alert
-            LEI={this.state.LEI}
+            lei={this.state.lei}
             taxId={this.state.taxId}
             respondentName={this.state.respondentName}
             emailDomains={this.state.emailDomains}

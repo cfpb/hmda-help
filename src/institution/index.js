@@ -26,7 +26,7 @@ class Institution extends Component {
       httpError: null,
       showOtherFields: false,
       activityYear: institution ? institution.activityYear : '',
-      LEI: institution ? institution.LEI : '',
+      lei: institution ? institution.lei : '',
       agency: institution ? institution.agency : '',
       institutionType: institution ? institution.institutionType : '',
       institutionId2017: institution ? institution.institutionId2017 : '',
@@ -164,9 +164,9 @@ class Institution extends Component {
           <label>LEI</label>
           <input
             type="text"
-            name="LEI"
-            id="LEI"
-            value={this.state.LEI}
+            name="lei"
+            id="lei"
+            value={this.state.lei}
             onChange={this.handleChange}
             disabled={pathname === '/add' ? false : true}
           />

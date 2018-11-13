@@ -43,7 +43,7 @@ class App extends Component {
                     pathname: '/add',
                     state: {
                       institution: {
-                        LEI: '',
+                        lei: '',
                         taxId: '',
                         respondentName: ''
                       }

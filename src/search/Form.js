@@ -9,7 +9,7 @@ class Form extends Component {
     super(props)
 
     this.state = {
-      LEI: '',
+      lei: '',
       taxId: '',
       respondentName: '',
       emailDomains: '',
@@ -27,7 +27,7 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    fetch(`/v2/admin/institutions/${this.state.LEI}`, {
+    fetch(`/v2/admin/institutions/${this.state.lei}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -57,12 +57,12 @@ class Form extends Component {
       <form className="SearchForm" onSubmit={event => this.handleSubmit(event)}>
         <label>LEI</label>
         <input
-          id="LEI"
-          name="LEI"
+          id="lei"
+          name="lei"
           onChange={this.handleChange}
           placeholder="e.g., 987875HAG543RFDAHG54"
           type="text"
-          value={this.state.LEI}
+          value={this.state.lei}
         />
         <label>Respondent Name</label>
         <input
