@@ -8,15 +8,29 @@ import './App.css'
 
 const keycloak = Keycloak(process.env.PUBLIC_URL + '/keycloak.json')
 
+const refresh = self => {
+  const updateKeycloak = () => {
+    setTimeout(() => {
+      keycloak.updateToken().then(success => {
+        if(!success) return keycloak.login()
+        self.setState({token: keycloak.token})
+        updateKeycloak()
+      })
+    }, +(keycloak.tokenParsed.exp + '000') - Date.now() - 10000)
+  }
+  updateKeycloak()
+}
+
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { keycloak: null, authenticated: false }
+    this.state = { token: null, authenticated: false }
   }
 
   componentDidMount() {
     keycloak.init({ onLoad: 'login-required' }).then(authenticated => {
-      this.setState({ keycloak: keycloak, authenticated: authenticated })
+      refresh(this)
+      this.setState({ token: keycloak.token, authenticated: authenticated })
     })
   }
 
@@ -48,12 +62,12 @@ class App extends Component {
                         respondentName: ''
                       }
                     },
-                    token: this.state.keycloak.token
+                    token: this.state.token
                   }}
                 >
                   Add a new institution
                 </Link>
-                <button onClick={() => this.state.keycloak.logout()}>
+                <button onClick={() => keycloak.logout()}>
                   Logout
                 </button>
               </nav>
@@ -62,25 +76,25 @@ class App extends Component {
               exact
               path="/"
               component={Search}
-              token={this.state.keycloak ? this.state.keycloak.token : null}
+              token={ this.state.token }
             />
             <ProtectedRoute
               exact
               path="/add"
               component={Institution}
-              token={this.state.keycloak ? this.state.keycloak.token : null}
+              token={ this.state.token }
             />
             <ProtectedRoute
               exact
               path="/update"
               component={Institution}
-              token={this.state.keycloak ? this.state.keycloak.token : null}
+              token={ this.state.token }
             />
           </div>
         </Switch>
       )
     } else {
-      return <h1>Please authenticate!</h1>
+      return <span></span>
     }
   }
 }
