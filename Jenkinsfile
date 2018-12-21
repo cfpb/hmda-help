@@ -15,11 +15,29 @@ volumes: [
       container('docker') {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
             usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-              sh "docker build --rm -t=${env.DOCKER_HUB_USER}/hmda-help ."
-              sh "docker tag ${env.DOCKER_HUB_USER}/hmda-help ${env.DOCKER_HUB_USER}/hmda-help:${gitBranch}"
-              sh "docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASSWORD} "
-              sh "docker push ${env.DOCKER_HUB_USER}/hmda-help:${gitBranch}"
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hmda-platform-jenkins-service',
+              usernameVariable: 'DTR_USER', passwordVariable: 'DTR_PASSWORD']]) {
+              withCredentials([string(credentialsId: 'internal-docker-registry', variable: 'DOCKER_REGISTRY_URL')]){
+                sh "docker build --rm -t=${env.DOCKER_HUB_USER}/hmda-help ."
+                if (env.TAG_NAME != null || gitBranch == "master") {
+                  if (gitBranch == "master") {
+                    env.DOCKER_TAG = "latest"
+                  } else {
+                    env.DOCKER_TAG = env.TAG_NAME
+                  }
+                  sh """
+                    docker tag ${env.DOCKER_HUB_USER}/hmda-help ${env.DOCKER_HUB_USER}/hmda-help:${env.DOCKER_TAG}
+                    docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASSWORD} 
+                    docker push ${env.DOCKER_HUB_USER}/hmda-help:${env.DOCKER_TAG}
+                    docker tag ${env.DOCKER_HUB_USER}/hmda-help:${env.DOCKER_TAG} ${DOCKER_REGISTRY_URL}/${env.DOCKER_HUB_USER}/hmda-help:${env.DOCKER_TAG}
+                    docker login ${DOCKER_REGISTRY_URL} -u ${env.DTR_USER} -p ${env.DTR_PASSWORD} 
+                    docker push ${DOCKER_REGISTRY_URL}/${env.DOCKER_HUB_USER}/hmda-help:${env.DOCKER_TAG}
+                    docker image prune -f
+                  """
+                }
+              }
             }
+          }
         }
       }
 
