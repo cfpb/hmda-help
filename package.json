@@ -1,8 +1,11 @@
 {
   "name": "hmda-help",
-  "version": "0.1.0",
+  "version": "2.1.0",
   "description": "HMDA Help admin UI",
-  "keywords": ["HMDA", "help"],
+  "keywords": [
+    "HMDA",
+    "help"
+  ],
   "author": "Consumer Financial Protection Bureau",
   "license": "CC0-1.0",
   "main": "index.js",
