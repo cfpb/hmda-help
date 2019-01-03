@@ -32,7 +32,9 @@ const nestStateForApi = state => {
     rssd: parseInt(state.rssd, 10) || -1,
     emailDomains: Array.isArray(state.emailDomains)
       ? state.emailDomains
-      : state.emailDomains ? [state.emailDomains] : [],
+      : state.emailDomains
+      ? [state.emailDomains]
+      : [],
     respondent: {
       name: state.respondentName || '',
       state: state.respondentState || '',
@@ -48,7 +50,7 @@ const nestStateForApi = state => {
       idRssd: parseInt(state.topHolderIdRssd, 10) || -1,
       name: state.topHolderName || ''
     },
-    hmdaFiler: true
+    hmdaFiler: false
   }
   return api
 }
