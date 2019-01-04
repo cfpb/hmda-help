@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import InputSubmit from '../InputSubmit'
-import TextInput from './TextInput'
+import InputText from '../InputText'
 import './Form.css'
 
 // available inputs to search on
@@ -53,8 +53,6 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    //console.log(this.lei.value)
-
     fetch(`/v2/admin/institutions/${this.lei.value}`, {
       headers: {
         Accept: 'application/json',
@@ -85,7 +83,7 @@ class Form extends Component {
       <form className="SearchForm" onSubmit={event => this.handleSubmit(event)}>
         {textInputs.map(textInput => {
           return (
-            <TextInput
+            <InputText
               key={textInput.id}
               ref={input => {
                 this[textInput.id] = input
