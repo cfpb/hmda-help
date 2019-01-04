@@ -47,6 +47,8 @@ class Institution extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
+    this.getHttpErrorHeading = this.getHttpErrorHeading.bind(this)
+    this.getHttpErrorText = this.getHttpErrorText.bind(this)
     this.backToUpdate = this.backToUpdate.bind(this)
   }
 
@@ -115,6 +117,32 @@ class Institution extends Component {
     }))
   }
 
+  getHttpErrorHeading() {
+    let httpErrorHeading = null
+    if (this.state.httpError === '400') {
+      httpErrorHeading = 'Not Found'
+    }
+    if (this.state.httpError === '403') {
+      httpErrorHeading = 'Access Denied'
+    }
+
+    return httpErrorHeading
+  }
+
+  getHttpErrorText() {
+    let httpErrorText = null
+    if (this.state.httpError === '400') {
+      httpErrorText =
+        "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
+    }
+    if (this.state.httpError === '403') {
+      httpErrorText =
+        "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
+    }
+
+    return httpErrorText
+  }
+
   render() {
     const { pathname, state } = this.props.location
     const action = {
@@ -159,7 +187,8 @@ class Institution extends Component {
         <form
           className="InstitutionForm"
           onSubmit={event =>
-            this.handleSubmit(event, pathname, this.props.token)}
+            this.handleSubmit(event, pathname, this.props.token)
+          }
         >
           <label>LEI</label>
           <input
@@ -216,13 +245,12 @@ class Institution extends Component {
           ) : null}
 
           <InputSubmit actionType={action.type} />
-          {/* TODO: better error message, using an <Alert/>*/}
+
           {this.state.httpError ? (
             <Alert
               type="error"
-              heading="Access Denied"
-              text="Sorry, it doesn't look like you have the correct permissions to
-                perform this action."
+              heading={this.getHttpErrorHeading()}
+              text={this.getHttpErrorText()}
               smallWidth={true}
             />
           ) : null}
