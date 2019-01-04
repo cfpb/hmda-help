@@ -20,3 +20,7 @@ body {
   font-family: SourceSansPro;
   font-size: 1.6rem;
 }
+#root {
+  max-width: 1040px;
+  margin: 0 auto;
+}
