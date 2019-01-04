@@ -1,33 +1,61 @@
 import React, { Component } from 'react'
 
 import InputSubmit from '../InputSubmit'
-
+import TextInput from './TextInput'
 import './Form.css'
+
+// available inputs to search on
+// for now, only LEI is working
+const textInputs = [
+  {
+    label: 'LEI',
+    id: 'lei',
+    name: 'lei',
+    value: 'test',
+    placeholder: '987875HAG543RFDAHG54'
+  }
+  /*{
+    label: 'Respondent Name',
+    id: 'respondentName',
+    name: 'respondentName',
+    value: '',
+    placeholder: 'Bank of HMDA'
+  },
+  {
+    label: 'Email Domains',
+    id: 'emailDomains',
+    name: 'emailDomains',
+    value: '',
+    placeholder: 'hmda.com'
+  },
+  {
+    label: 'Tax Id',
+    id: 'taxId',
+    name: 'taxId',
+    value: '',
+    placeholder: '88-00000000'
+  }*/
+]
+
+const defaultState = {
+  error: false
+}
 
 class Form extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      lei: '',
-      taxId: '',
-      respondentName: '',
-      emailDomains: '',
-      error: false
-    }
+    this.state = defaultState
 
-    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleChange(event) {
-    this.setState({ error: false, [event.target.name]: event.target.value })
   }
 
   handleSubmit(event) {
     event.preventDefault()
 
-    fetch(`/v2/admin/institutions/${this.state.lei}`, {
+    //console.log(this.lei.value)
+
+    fetch(`/v2/admin/institutions/${this.lei.value}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -55,42 +83,20 @@ class Form extends Component {
   render() {
     return (
       <form className="SearchForm" onSubmit={event => this.handleSubmit(event)}>
-        <label>LEI</label>
-        <input
-          id="lei"
-          name="lei"
-          onChange={this.handleChange}
-          placeholder="e.g., 987875HAG543RFDAHG54"
-          type="text"
-          value={this.state.lei}
-        />
-        <label>Respondent Name</label>
-        <input
-          id="respondentName"
-          name="respondentName"
-          onChange={this.handleChange}
-          placeholder="e.g., Bank of HMDA"
-          type="text"
-          value={this.state.respondentName}
-        />
-        <label>Email Domains</label>
-        <input
-          id="emailDomains"
-          name="emailDomains"
-          onChange={this.handleChange}
-          placeholder="e.g., institution.com"
-          type="text"
-          value={this.state.emailDomains}
-        />
-        <label>Tax Id</label>
-        <input
-          id="taxId"
-          name="taxId"
-          onChange={this.handleChange}
-          placeholder="e.g., 88-00000000"
-          type="text"
-          value={this.state.taxId}
-        />
+        {textInputs.map(textInput => {
+          return (
+            <TextInput
+              key={textInput.id}
+              ref={input => {
+                this[textInput.id] = input
+              }}
+              label={textInput.label}
+              inputId={textInput.id}
+              placeholder={textInput.placeholder}
+              value={textInput.value}
+            />
+          )
+        })}
         <InputSubmit actionType="search" />
       </form>
     )
