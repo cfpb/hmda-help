@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { nestStateForApi, flattenApiForState } from '../utils/convert'
 
+import InputText from '../InputText'
 import OtherFieldsToggleButton from './OtherFieldsToggleButton'
 import OtherFields from './OtherFields'
 import Success from './Success'
@@ -11,44 +12,58 @@ import Alert from '../Alert'
 
 import './Form.css'
 
+const textInputs = [
+  {
+    label: 'LEI',
+    id: 'lei',
+    name: 'lei',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Respondent Name',
+    id: 'respondentName',
+    name: 'respondentName',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Email Domains',
+    id: 'emailDomains',
+    name: 'emailDomains',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Tax Id',
+    id: 'taxId',
+    name: 'taxId',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Agency Code',
+    id: 'agency',
+    name: 'agency',
+    defaultValue: '',
+    placeholder: ''
+  }
+]
+
 class Institution extends Component {
   constructor(props) {
     super(props)
 
-    let institution = null
-    if (props.location.state && props.location.state.institution) {
-      institution = props.location.state.institution
-    }
-
     this.state = {
-      isSubmitted:
-        (props.location.state && props.location.state.isSubmitted) || false,
-      httpError: null,
-      showOtherFields: false,
-      activityYear: institution ? institution.activityYear : '',
-      lei: institution ? institution.lei : '',
-      agency: institution ? institution.agency : '',
-      institutionType: institution ? institution.institutionType : '',
-      institutionId2017: institution ? institution.institutionId2017 : '',
-      taxId: institution ? institution.taxId : '',
-      rssd: institution ? institution.rssd : '',
-      emailDomains: institution ? institution.emailDomains : '',
-      respondentName: institution ? institution.respondentName : '',
-      respondentState: institution ? institution.respondentState : '',
-      respondentCity: institution ? institution.respondentCity : '',
-      parentIdRssd: institution ? institution.parentIdRssd : '',
-      parentName: institution ? institution.parentName : '',
-      assets: institution ? institution.assets : '',
-      otherLenderCode: institution ? institution.otherLenderCode : '',
-      topHolderIdRssd: institution ? institution.topHolderIdRssd : '',
-      topHolderName: institution ? institution.topHolderName : ''
+      isSubmitted: false,
+      error: null,
+      showOtherFields: false
     }
 
-    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
-    this.getHttpErrorHeading = this.getHttpErrorHeading.bind(this)
-    this.getHttpErrorText = this.getHttpErrorText.bind(this)
+    this.getErrorHeading = this.getErrorHeading.bind(this)
+    this.getErrorText = this.getErrorText.bind(this)
     this.backToUpdate = this.backToUpdate.bind(this)
   }
 
@@ -67,13 +82,6 @@ class Institution extends Component {
 
     // this works if we're at /update
     this.setState({
-      isSubmitted: false
-    })
-  }
-
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
       isSubmitted: false
     })
   }
@@ -107,7 +115,7 @@ class Institution extends Component {
         this.setState({ isSubmitted: true, ...flattenApiForState(json) })
       })
       .catch(error => {
-        this.setState({ httpError: error.message })
+        this.setState({ error: error.message })
       })
   }
 
@@ -117,30 +125,30 @@ class Institution extends Component {
     }))
   }
 
-  getHttpErrorHeading() {
-    let httpErrorHeading = null
-    if (this.state.httpError === '400') {
-      httpErrorHeading = 'Not Found'
+  getErrorHeading() {
+    let errorHeading = null
+    if (this.state.error === '400') {
+      errorHeading = 'Not Found'
     }
-    if (this.state.httpError === '403') {
-      httpErrorHeading = 'Access Denied'
+    if (this.state.error === '403') {
+      errorHeading = 'Access Denied'
     }
 
-    return httpErrorHeading
+    return errorHeading
   }
 
-  getHttpErrorText() {
-    let httpErrorText = null
-    if (this.state.httpError === '400') {
-      httpErrorText =
+  getErrorText() {
+    let errorText = null
+    if (this.state.error === '400') {
+      errorText =
         "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
     }
-    if (this.state.httpError === '403') {
-      httpErrorText =
+    if (this.state.error === '403') {
+      errorText =
         "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
     }
 
-    return httpErrorText
+    return errorText
   }
 
   render() {
@@ -182,7 +190,6 @@ class Institution extends Component {
           type="error"
           heading="Are you Tier 2 support?"
           text={action.warning}
-          smallWidth={true}
         />
         <form
           className="InstitutionForm"
@@ -190,68 +197,50 @@ class Institution extends Component {
             this.handleSubmit(event, pathname, this.props.token)
           }
         >
-          <label>LEI</label>
-          <input
-            type="text"
-            name="lei"
-            id="lei"
-            value={this.state.lei}
-            onChange={this.handleChange}
-            disabled={pathname === '/add' ? false : true}
-          />
-          <label>Respondent Name</label>
-          <input
-            type="text"
-            name="respondentName"
-            id="respondentName"
-            value={this.state.respondentName}
-            onChange={this.handleChange}
-          />
-          <label>Email Domains</label>
-          <input
-            type="text"
-            name="emailDomains"
-            id="emailDomains"
-            value={this.state.emailDomains}
-            onChange={this.handleChange}
-          />
-          <label>Tax Id</label>
-          <input
-            type="text"
-            name="taxId"
-            id="taxId"
-            value={this.state.taxId}
-            onChange={this.handleChange}
-          />
-          <label>Agency Code</label>
-          <input
-            type="text"
-            name="agency"
-            id="agency"
-            value={this.state.agency}
-            onChange={this.handleChange}
-          />
+          {textInputs.map(textInput => {
+            return (
+              <InputText
+                key={textInput.id}
+                ref={input => {
+                  this[textInput.id] = input
+                }}
+                label={textInput.label}
+                inputId={textInput.id}
+                placeholder={textInput.placeholder}
+                value={
+                  state && state.institution
+                    ? state.institution[textInput.id]
+                    : textInput.defaultValue
+                }
+                disabled={
+                  pathname === '/update' && textInput.id === 'lei'
+                    ? true
+                    : false
+                }
+              />
+            )
+          })}
 
-          <OtherFieldsToggleButton
+          {/*<OtherFieldsToggleButton
             showOtherFields={this.state.showOtherFields}
             toggleShowOtherFields={this.toggleShowOtherFields}
           />
 
-          {this.state.showOtherFields ? (
-            <OtherFields
+          {this.state.showOtherFields
+            ? null
+            : <OtherFields
               formData={this.state}
               handleChange={this.handleChange}
             />
-          ) : null}
-
+            }
+          */}
           <InputSubmit actionType={action.type} />
 
-          {this.state.httpError ? (
+          {this.state.error ? (
             <Alert
               type="error"
-              heading={this.getHttpErrorHeading()}
-              text={this.getHttpErrorText()}
-              smallWidth={true}
+              heading={this.getErrorHeading()}
+              text={this.getErrorText()}
             />
           ) : null}
         </form>

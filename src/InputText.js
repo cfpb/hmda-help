@@ -29,6 +29,7 @@ class TextInput extends Component {
           placeholder={this.props.placeholder}
           value={this.state.value}
           onChange={this.handleChange}
+          disabled={this.props.disabled || false}
         />
       </React.Fragment>
     )

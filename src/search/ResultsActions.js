@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import Alert from '../Alert'
 
@@ -37,18 +38,23 @@ class ResultsActions extends Component {
     return (
       <td className="action">
         <div className="initialActions" id={`initialActions${i}`}>
+          <Link
+            to={{ pathname: '/update', state: { institution: institution } }}
+          >
+            Update
+          </Link>
+          <button
+            className="delete"
+            onClick={event => this.toggleAreYouSure(i)}
+          >
+            Delete
+          </button>
           <button
             onClick={event => this.handleViewMoreClick(i)}
             ref={element => this.buttons.set(i, element)}
             className="showOtherFields"
           >
             Show other fields
-          </button>
-          <button
-            className="delete"
-            onClick={event => this.toggleAreYouSure(i)}
-          >
-            Delete
           </button>
         </div>
         <div className="areYouSure hidden" id={`areYouSure${i}`}>

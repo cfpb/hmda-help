@@ -24,21 +24,21 @@ const textInputs = [
     label: 'Respondent Name',
     id: 'respondentName',
     name: 'respondentName',
-    value: '',
+    defaultValue: '',
     placeholder: 'Bank of HMDA'
   },
   {
     label: 'Email Domains',
     id: 'emailDomains',
     name: 'emailDomains',
-    value: '',
+    defaultValue: '',
     placeholder: 'hmda.com'
   },
   {
     label: 'Tax Id',
     id: 'taxId',
     name: 'taxId',
-    value: '',
+    defaultValue: '',
     placeholder: '88-00000000'
   }*/
 ]
