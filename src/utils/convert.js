@@ -21,35 +21,37 @@ const flattenApiForState = json => {
   return state
 }
 
-const nestStateForApi = state => {
+const nestStateForApi = institution => {
   const api = {
     activityYear: 2018,
-    lei: state.lei || '',
-    agency: parseInt(state.agency, 10) || -1,
-    institutionType: parseInt(state.institutionType, 10) || -1,
-    institutionId2017: state.institutionId2017 || '',
-    taxId: state.taxId || '',
-    rssd: parseInt(state.rssd, 10) || -1,
-    emailDomains: Array.isArray(state.emailDomains)
-      ? state.emailDomains
-      : state.emailDomains
-      ? [state.emailDomains]
+    lei: institution.lei.value || '',
+    agency: parseInt(institution.agency.value, 10) || -1,
+    taxId: institution.taxId.value || '',
+    emailDomains: Array.isArray(institution.emailDomains.value)
+      ? institution.emailDomains.value
+      : institution.emailDomains.value
+      ? [institution.emailDomains.value]
       : [],
     respondent: {
-      name: state.respondentName || '',
-      state: state.respondentState || '',
-      city: state.respondentCity || ''
+      name: institution.respondentName.value || ''
+      /*state: institution.respondentState.value || '',
+      city: institution.respondentCity.value || ''*/
     },
+    /*institutionType: parseInt(institution.institutionType.value, 10) || -1,
+    institutionId2017: institution.institutionId2017.value || '',
+    
+    rssd: parseInt(institution.rssd.value, 10) || -1,
+    
     parent: {
-      idRssd: parseInt(state.parentIdRssd, 10) || -1,
-      name: state.parentName || ''
+      idRssd: parseInt(institution.parentIdRssd.value, 10) || -1,
+      name: institution.parentName.value || ''
     },
-    assets: parseInt(state.assets, 10) || -1,
-    otherLenderCode: parseInt(state.otherLenderCode, 10) || -1,
+    assets: parseInt(institution.assets.value, 10) || -1,
+    otherLenderCode: parseInt(institution.otherLenderCode.value, 10) || -1,
     topHolder: {
-      idRssd: parseInt(state.topHolderIdRssd, 10) || -1,
-      name: state.topHolderName || ''
-    },
+      idRssd: parseInt(institution.topHolderIdRssd.value, 10) || -1,
+      name: institution.topHolderName.value || ''
+    },*/
     hmdaFiler: false
   }
   return api

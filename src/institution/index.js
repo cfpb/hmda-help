@@ -60,6 +60,8 @@ class Institution extends Component {
       showOtherFields: false
     }
 
+    this.institution = {}
+
     this.handleSubmit = this.handleSubmit.bind(this)
     this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
     this.getErrorHeading = this.getErrorHeading.bind(this)
@@ -88,8 +90,11 @@ class Institution extends Component {
 
   handleSubmit(event, pathname, token) {
     event.preventDefault()
+    console.log(this.institution)
 
-    const institution = nestStateForApi(this.state)
+    const institution = nestStateForApi(this.institution)
+
+    console.log(institution)
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
@@ -202,7 +207,7 @@ class Institution extends Component {
               <InputText
                 key={textInput.id}
                 ref={input => {
-                  this[textInput.id] = input
+                  this.institution[textInput.id] = input
                 }}
                 label={textInput.label}
                 inputId={textInput.id}
