@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+
+import ResultsHeading from './ResultsHeading'
 import ResultsActions from './ResultsActions'
 
 import './Results.css'
@@ -7,34 +9,17 @@ class SearchResults extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      error: null
-    }
-
     this.tables = new Map()
-  }
-
-  // TODO: make this a component
-  renderSearchHeading(numOfResults) {
-    if (numOfResults === 0) return <h2>Sorry, no results were found.</h2>
-
-    let resultsText = numOfResults === 1 ? 'result' : 'results'
-    return (
-      <h2>
-        {numOfResults} {resultsText} found
-      </h2>
-    )
   }
 
   render() {
     if (!this.props.institutions) return null
 
-    const { institutions, handleDeleteClick } = this.props
+    const { institutions, handleDeleteClick, error } = this.props
 
     return (
       <div className="SearchResults">
-        {this.renderSearchHeading(institutions.length)}
-
+        <ResultsHeading numOfResults={institutions.length} />
         <table className="institutions">
           <thead>
             <tr>
@@ -57,7 +42,7 @@ class SearchResults extends Component {
                     <ResultsActions
                       institution={institution}
                       i={i}
-                      error={this.state.error}
+                      error={error}
                       handleDeleteClick={handleDeleteClick}
                       tables={this.tables}
                     />

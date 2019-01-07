@@ -45,6 +45,7 @@ const textInputs = [
 
 const defaultState = {
   error: null,
+  errorDelete: null,
   institutions: null
 }
 
@@ -91,8 +92,7 @@ class Form extends Component {
         this.removeAnInstitutionFromState(key)
       })
       .catch(error => {
-        console.log('error', error)
-        this.setState({ error: error.message })
+        this.setState({ errorDelete: error.message })
       })
   }
 
@@ -129,7 +129,6 @@ class Form extends Component {
         }
       })
       .catch(error => {
-        console.log('error', error)
         this.setState({
           error: { message: 'The requested resource could not be found.' },
           institutions: null
@@ -165,7 +164,7 @@ class Form extends Component {
           <Results
             institutions={this.state.institutions}
             handleDeleteClick={this.handleDeleteClick}
-            token={this.props.token}
+            error={this.state.errorDelete}
           />
         ) : null}
 
