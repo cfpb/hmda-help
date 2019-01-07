@@ -32,7 +32,7 @@ class ResultsActions extends Component {
   }
 
   render() {
-    const { institution, i, error } = this.props
+    const { institution, i, error, handleDeleteClick } = this.props
 
     return (
       <td className="action">
@@ -56,7 +56,7 @@ class ResultsActions extends Component {
           <button
             className="delete"
             onClick={event =>
-              this.props.handleDeleteClick(institution, i, this.props.token)
+              handleDeleteClick(institution, i, this.props.token)
             }
           >
             Yes
