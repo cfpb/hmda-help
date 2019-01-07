@@ -35,7 +35,6 @@ class ResultsActions extends Component {
   }
 
   render() {
-    console.log('actions', this.props)
     const { institution, i, error } = this.props
 
     return (
@@ -48,14 +47,6 @@ class ResultsActions extends Component {
           >
             Show other fields
           </button>
-          <Link
-            to={{
-              pathname: '/add',
-              state: { institution: institution }
-            }}
-          >
-            Add
-          </Link>
           <button
             className="delete"
             onClick={event => this.toggleAreYouSure(i)}

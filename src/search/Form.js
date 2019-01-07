@@ -56,6 +56,17 @@ class Form extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
+    this.removeAnInstitutionFromState = this.removeAnInstitutionFromState.bind(
+      this
+    )
+  }
+
+  removeAnInstitutionFromState(key) {
+    let newInstitutions = this.state.institutions.filter(
+      (institution, i) => i !== key
+    )
+    if (newInstitutions.length === 0) newInstitutions = null
+    this.setState({ institutions: newInstitutions })
   }
 
   handleDeleteClick(institution, key) {
@@ -153,7 +164,7 @@ class Form extends Component {
         {this.state.institutions ? (
           <Results
             institutions={this.state.institutions}
-            deleteAnInstitution={this.deleteAnInstitution}
+            handleDeleteClick={this.handleDeleteClick}
             token={this.props.token}
           />
         ) : null}

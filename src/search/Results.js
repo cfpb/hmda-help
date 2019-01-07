@@ -12,18 +12,6 @@ class SearchResults extends Component {
     }
 
     this.tables = new Map()
-
-    this.removeAnInstitutionFromState = this.removeAnInstitutionFromState.bind(
-      this
-    )
-  }
-
-  removeAnInstitutionFromState(key) {
-    let newInstitutions = this.state.institutions.filter(
-      (institution, i) => i !== key
-    )
-    if (newInstitutions.length === 0) newInstitutions = null
-    this.setState({ institutions: newInstitutions })
   }
 
   // TODO: make this a component
@@ -41,7 +29,7 @@ class SearchResults extends Component {
   render() {
     if (!this.props.institutions) return null
 
-    const { institutions } = this.props
+    const { institutions, handleDeleteClick } = this.props
 
     return (
       <div className="SearchResults">
@@ -70,7 +58,7 @@ class SearchResults extends Component {
                       institution={institution}
                       i={i}
                       error={this.state.error}
-                      handleDeleteClick={this.props.handleDeleteClick}
+                      handleDeleteClick={handleDeleteClick}
                       tables={this.tables}
                     />
                   </tr>

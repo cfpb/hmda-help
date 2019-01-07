@@ -16,16 +16,6 @@ class Search extends Component {
       emailDomains: ''
       */
     }
-
-    //this.deleteAnInstitution = this.deleteAnInstitution.bind(this)
-  }
-
-  deleteAnInstitution(key) {
-    let newInstitutions = this.state.institutions.filter(
-      (institution, i) => i !== key
-    )
-    if (newInstitutions.length === 0) newInstitutions = null
-    this.setState({ institutions: newInstitutions })
   }
 
   render() {
