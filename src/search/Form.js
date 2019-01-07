@@ -82,6 +82,7 @@ class Form extends Component {
     })
       .then(response => {
         if (response.ok) {
+          this.setState({ errorDelete: defaultState.errorDelete })
           return response.json()
         } else {
           throw new Error(response.status)
@@ -113,7 +114,7 @@ class Form extends Component {
         if (typeof json === 'object') {
           this.setState({
             institutions: [flattenApiForState(json)],
-            error: null
+            error: defaultState.error
           })
         } else {
           if (json === 404) {
@@ -123,7 +124,7 @@ class Form extends Component {
                 message:
                   "That institution doesn't exist. Would you like to add it?"
               },
-              institutions: null
+              institutions: defaultState.institutions
             })
           }
         }
@@ -131,7 +132,7 @@ class Form extends Component {
       .catch(error => {
         this.setState({
           error: { message: 'The requested resource could not be found.' },
-          institutions: null
+          institutions: defaultState.institutions
         })
       })
   }
