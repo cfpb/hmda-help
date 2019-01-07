@@ -3,13 +3,15 @@ import React from 'react'
 import './Alert.css'
 
 const Alert = props => {
-  let alertClass = `alert alert-${props.type}`
-  if (props.smallWidth) alertClass = alertClass.concat(' alert-paragraph')
+  const type = props.type || 'info'
+  let alertClass = `alert alert-${type}`
+
   return (
     <div className={alertClass}>
       <div className="alert-body">
         <h3 className="alert-heading">{props.heading}</h3>
-        <p className="alert-text">{props.text}</p>
+        <p className="alert-text">{props.message}</p>
+        {props.children}
       </div>
     </div>
   )

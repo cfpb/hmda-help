@@ -9,6 +9,7 @@
   padding-right: 2rem;
   padding-top: 2rem;
   position: relative;
+  max-width: 66ch;
 }
 .alert::before {
   background-color: #8b8b8b;
@@ -58,9 +59,11 @@
   margin-bottom: 0;
 }
 
+p {
+  margin-bottom: 0;
+}
+
 .alert-text {
-  font-family: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Roboto',
-    'Arial', sans-serif;
   margin-bottom: 0;
   margin-top: 0;
 }
@@ -96,8 +99,4 @@
 }
 .alert-info::before {
   background-color: #02bfe7;
-}
-
-.alert-paragraph {
-  max-width: 66ch;
 }

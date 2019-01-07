@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
+import './Form.css'
+
+import { flattenApiForState, nestStateForApi } from '../utils/convert'
+
+import Results from './Results'
 import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
-import './Form.css'
+import Alert from '../Alert'
 
 // available inputs to search on
 // for now, only LEI is working
@@ -11,7 +17,7 @@ const textInputs = [
     label: 'LEI',
     id: 'lei',
     name: 'lei',
-    value: 'test',
+    defaultValue: '',
     placeholder: '987875HAG543RFDAHG54'
   }
   /*{
@@ -38,7 +44,8 @@ const textInputs = [
 ]
 
 const defaultState = {
-  error: false
+  error: null,
+  institutions: null
 }
 
 class Form extends Component {
@@ -48,6 +55,34 @@ class Form extends Component {
     this.state = defaultState
 
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleDeleteClick = this.handleDeleteClick.bind(this)
+  }
+
+  handleDeleteClick(institution, key) {
+    fetch('/v2/admin/institutions', {
+      method: 'DELETE',
+      body: JSON.stringify(nestStateForApi(institution)),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.props.token
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error(response.status)
+        }
+      })
+      .then(json => {
+        // need to remove the institution from the state
+        this.removeAnInstitutionFromState(key)
+      })
+      .catch(error => {
+        console.log('error', error)
+        this.setState({ error: error.message })
+      })
   }
 
   handleSubmit(event) {
@@ -60,43 +95,92 @@ class Form extends Component {
       }
     })
       .then(response => {
-        if (response.status > 400) return null
+        if (response.status > 400) return response.status
         if (response.status < 300) return response.json()
       })
       .then(json => {
-        if (json) {
-          this.props.updateInstitutions(json)
+        if (typeof json === 'object') {
+          this.setState({
+            institutions: [flattenApiForState(json)],
+            error: null
+          })
         } else {
-          this.props.updateError({ message: 'No results found!' }, this.state)
+          if (json === 404) {
+            this.setState({
+              error: {
+                heading: 'Institution not found',
+                message:
+                  "That institution doesn't exist. Would you like to add it?"
+              },
+              institutions: null
+            })
+          }
         }
       })
       .catch(error => {
-        this.props.updateError(
-          { message: 'The requested resource could not be found.' },
-          null
-        )
+        console.log('error', error)
+        this.setState({
+          error: { message: 'The requested resource could not be found.' },
+          institutions: null
+        })
       })
   }
 
   render() {
     return (
-      <form className="SearchForm" onSubmit={event => this.handleSubmit(event)}>
-        {textInputs.map(textInput => {
-          return (
-            <InputText
-              key={textInput.id}
-              ref={input => {
-                this[textInput.id] = input
-              }}
-              label={textInput.label}
-              inputId={textInput.id}
-              placeholder={textInput.placeholder}
-              value={textInput.value}
-            />
-          )
-        })}
-        <InputSubmit actionType="search" />
-      </form>
+      <React.Fragment>
+        <form
+          className="SearchForm"
+          onSubmit={event => this.handleSubmit(event)}
+        >
+          {textInputs.map(textInput => {
+            return (
+              <InputText
+                key={textInput.id}
+                ref={input => {
+                  this[textInput.id] = input
+                }}
+                label={textInput.label}
+                inputId={textInput.id}
+                placeholder={textInput.placeholder}
+                value={textInput.defaultValue}
+              />
+            )
+          })}
+          <InputSubmit actionType="search" />
+        </form>
+
+        {this.state.institutions ? (
+          <Results
+            institutions={this.state.institutions}
+            deleteAnInstitution={this.deleteAnInstitution}
+            token={this.props.token}
+          />
+        ) : null}
+
+        {this.state.error ? (
+          <Alert
+            heading={this.state.error.heading}
+            message={this.state.error.message}
+            type="error"
+          >
+            <p>
+              <Link
+                to={{
+                  pathname: '/add',
+                  state: {
+                    institution: {
+                      lei: this.lei.value
+                    }
+                  }
+                }}
+              >
+                Add {this.lei.value}
+              </Link>
+            </p>
+          </Alert>
+        ) : null}
+      </React.Fragment>
     )
   }
 }

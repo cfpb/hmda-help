@@ -11,12 +11,12 @@
   src: url(./fonts/sourcesanspro-italic-webfont.woff);
 }
 html {
-  font-family: SourceSansPro;
   font-size: 10px;
 }
 body {
   margin: 0;
   padding: 0;
-  font-family: SourceSansPro;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Roboto',
+    'Arial', sans-serif;
   font-size: 1.6rem;
 }
