@@ -66,8 +66,11 @@ class Form extends Component {
     let newInstitutions = this.state.institutions.filter(
       (institution, i) => i !== key
     )
-    if (newInstitutions.length === 0)
+    if (newInstitutions.length === 0) {
       this.setState({ institutions: defaultState.institutions })
+    } else {
+      this.setState({ institutions: newInstitutions })
+    }
   }
 
   handleDeleteClick(institution, key) {
