@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { nestStateForApi, flattenApiForState } from '../utils/convert'
+import {
+  nestInstitutionforAPI,
+  flattenApiForInstitution
+} from '../utils/convert'
 
 import InputText from '../InputText'
 import Success from './Success'
@@ -161,10 +164,10 @@ class Institution extends Component {
     })
   }
 
-  handleSubmit(event, pathname, token) {
+  handleSubmit(event, token) {
     event.preventDefault()
 
-    const institution = nestStateForApi(this.institution)
+    const institution = nestInstitutionforAPI(this.institution)
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
     fetch(`/v2/admin/institutions`, {
@@ -186,7 +189,7 @@ class Institution extends Component {
         // set the rest of the state here to be the json response
         // just in case something goes wrong
         // we then have the what the back-end has
-        this.setState({ isSubmitted: true, ...flattenApiForState(json) })
+        this.setState({ isSubmitted: true, ...flattenApiForInstitution(json) })
       })
       .catch(error => {
         this.setState({ error: error.message })
@@ -259,9 +262,7 @@ class Institution extends Component {
         />
         <form
           className="InstitutionForm"
-          onSubmit={event =>
-            this.handleSubmit(event, pathname, this.props.token)
-          }
+          onSubmit={event => this.handleSubmit(event, this.props.token)}
         >
           {textInputs.map(textInput => {
             return (

@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 
 import './Form.css'
 
-import { flattenApiForState, nestStateForApi } from '../utils/convert'
+import {
+  flattenApiForInstitution,
+  nestInstitutionforAPI
+} from '../utils/convert'
 
 import Results from './Results'
 import InputSubmit from '../InputSubmit'
@@ -76,7 +79,7 @@ class Form extends Component {
   handleDeleteClick(institution, key) {
     fetch('/v2/admin/institutions', {
       method: 'DELETE',
-      body: JSON.stringify(nestStateForApi(institution)),
+      body: JSON.stringify(nestInstitutionforAPI(institution)),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -116,7 +119,7 @@ class Form extends Component {
       .then(json => {
         if (typeof json === 'object') {
           this.setState({
-            institutions: [flattenApiForState(json)],
+            institutions: [flattenApiForInstitution(json)],
             error: defaultState.error
           })
         } else {
