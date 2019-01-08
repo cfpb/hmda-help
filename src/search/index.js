@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './Form.css'
 
+import { searchInputs } from '../constants/inputs.js'
 import {
   flattenApiForInstitutionState,
   nestInstitutionStateForAPI
@@ -12,39 +13,6 @@ import Results from './Results'
 import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
 import Alert from '../Alert'
-
-// available inputs to search on
-// for now, only LEI is working
-const textInputs = [
-  {
-    label: 'LEI',
-    id: 'lei',
-    name: 'lei',
-    defaultValue: '',
-    placeholder: '987875HAG543RFDAHG54'
-  }
-  /*{
-    label: 'Respondent Name',
-    id: 'respondentName',
-    name: 'respondentName',
-    defaultValue: '',
-    placeholder: 'Bank of HMDA'
-  },
-  {
-    label: 'Email Domains',
-    id: 'emailDomains',
-    name: 'emailDomains',
-    defaultValue: '',
-    placeholder: 'hmda.com'
-  },
-  {
-    label: 'Tax Id',
-    id: 'taxId',
-    name: 'taxId',
-    defaultValue: '',
-    placeholder: '88-00000000'
-  }*/
-]
 
 const defaultState = {
   error: null,
@@ -151,7 +119,7 @@ class Form extends Component {
           className="SearchForm"
           onSubmit={event => this.handleSubmit(event)}
         >
-          {textInputs.map(textInput => {
+          {searchInputs.map(textInput => {
             return (
               <InputText
                 key={textInput.id}

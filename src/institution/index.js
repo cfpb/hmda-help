@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import { searchInputs, requiredInputs, otherInputs } from '../constants/inputs'
 import {
   nestInstitutionStateForAPI,
   flattenApiForInstitutionState
@@ -12,125 +13,13 @@ import Alert from '../Alert'
 
 import './Form.css'
 
-const textInputs = [
-  {
-    label: 'LEI',
-    id: 'lei',
-    name: 'lei',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Respondent Name',
-    id: 'respondentName',
-    name: 'respondentName',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Email Domains',
-    id: 'emailDomains',
-    name: 'emailDomains',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Tax Id',
-    id: 'taxId',
-    name: 'taxId',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Agency Code',
-    id: 'agency',
-    name: 'agency',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Institution Type',
-    id: 'institutionType',
-    name: 'institutionType',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Institution ID 2017',
-    id: 'institutionId2017',
-    name: 'institutionId2017',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'RSSD',
-    id: 'rssd',
-    name: 'rssd',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Respondent State',
-    id: 'respondentState',
-    name: 'respondentState',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Respondent City',
-    id: 'respondentCity',
-    name: 'respondentCity',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Parent ID RSSD',
-    id: 'parentIdRssd',
-    name: 'parentIdRssd',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Parent Name',
-    id: 'parentName',
-    name: 'parentName',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Assets',
-    id: 'assets',
-    name: 'assets',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Other Lender Code',
-    id: 'otherLenderCode',
-    name: 'otherLenderCode',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Top Holder ID RSSD',
-    id: 'topHolderIdRssd',
-    name: 'topHolderIdRssd',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Top Holder Name',
-    id: 'topHolderName',
-    name: 'topHolderName',
-    defaultValue: '',
-    placeholder: ''
-  }
-]
-
 let defaultInstitutionState = {}
-textInputs.forEach(
-  textInput => (defaultInstitutionState[textInput.id] = textInput.defaultValue)
-)
+searchInputs
+  .concat(requiredInputs, otherInputs)
+  .forEach(
+    textInput =>
+      (defaultInstitutionState[textInput.id] = textInput.defaultValue)
+  )
 
 class Institution extends Component {
   constructor(props) {
@@ -240,8 +129,8 @@ class Institution extends Component {
           : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.',
       successMessage:
         pathname === '/add'
-          ? 'The institution has been added!'
-          : 'The institution has been updated.'
+          ? `The institution, ${this.state.lei}, has been added!`
+          : `The institution, ${this.state.lei}, has been updated.`
     }
 
     return (
@@ -269,7 +158,7 @@ class Institution extends Component {
           className="InstitutionForm"
           onSubmit={event => this.handleSubmit(event, this.props.token)}
         >
-          {textInputs.map(textInput => {
+          {searchInputs.concat(requiredInputs, otherInputs).map(textInput => {
             return (
               <InputText
                 key={textInput.id}
