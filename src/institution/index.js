@@ -128,6 +128,23 @@ class Institution extends Component {
 
   render() {
     const { pathname, state } = this.props.location
+    const successAlert = this.state.isSubmitted ? (
+      <Alert
+        type="success"
+        heading="Success!"
+        message={
+          this.state.wasAddition
+            ? `The institution, ${this.state.lei}, has been added!`
+            : `The institution, ${this.state.lei}, has been updated.`
+        }
+      >
+        <p>
+          You can update this institution by using the form below,{' '}
+          <Link to="/">search for an institution</Link>, or{' '}
+          <Link to="/add">add a new institution.</Link>
+        </p>
+      </Alert>
+    ) : null
 
     return (
       <React.Fragment>
@@ -145,23 +162,7 @@ class Institution extends Component {
               : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
           }
         />
-        {this.state.isSubmitted ? (
-          <Alert
-            type="success"
-            heading="Success!"
-            message={
-              this.state.wasAddition
-                ? `The institution, ${this.state.lei}, has been added!`
-                : `The institution, ${this.state.lei}, has been updated.`
-            }
-          >
-            <p>
-              You can update this institution by using the form below,{' '}
-              <Link to="/">search for an institution</Link>, or{' '}
-              <Link to="/add">add a new institution.</Link>
-            </p>
-          </Alert>
-        ) : null}
+        {successAlert}
         <form
           className="InstitutionForm"
           onSubmit={event => this.handleSubmit(event, this.props.token)}
@@ -198,23 +199,7 @@ class Institution extends Component {
             />
           ) : null}
         </form>
-        {this.state.isSubmitted ? (
-          <Alert
-            type="success"
-            heading="Success!"
-            message={
-              this.state.wasAddition
-                ? `The institution, ${this.state.lei}, has been added!`
-                : `The institution, ${this.state.lei}, has been updated.`
-            }
-          >
-            <p>
-              You can update this institution by using the form above,{' '}
-              <Link to="/">search for an institution</Link>, or{' '}
-              <Link to="/add">add a new institution.</Link>
-            </p>
-          </Alert>
-        ) : null}
+        {successAlert}
       </React.Fragment>
     )
   }
