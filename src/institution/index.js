@@ -28,6 +28,7 @@ class Institution extends Component {
     this.state = {
       isSubmitted: false,
       error: null,
+      wasAddition: false,
       ...defaultInstitutionState
     }
 
@@ -38,8 +39,16 @@ class Institution extends Component {
   }
 
   componentDidMount() {
-    if (this.props.location.state && this.props.location.state.institution) {
-      this.setState({ ...this.props.location.state.institution })
+    const { state, pathname } = this.props.location
+
+    if (pathname === '/update' && !state) this.props.history.push('/add')
+
+    if (state && state.institution) {
+      this.setState({ ...state.institution })
+    }
+
+    if (state && state.wasAddition) {
+      this.setState({ wasAddition: state.wasAddition })
     }
   }
 
@@ -74,13 +83,17 @@ class Institution extends Component {
         // we then have the what the back-end has
         this.setState({
           isSubmitted: true,
-          institution: flattenApiForInstitutionState(json)
+          institution: flattenApiForInstitutionState(json),
+          wasAddition: false
         })
       })
       .then(() => {
         this.props.history.push({
           pathname: '/update',
-          state: { institution: this.state }
+          state: {
+            institution: this.state,
+            wasAddition: this.props.location.pathname === '/add'
+          }
         })
       })
       .catch(error => {
@@ -116,39 +129,35 @@ class Institution extends Component {
 
   render() {
     const { pathname, state } = this.props.location
-    const action = {
-      submitted: pathname === '/add' ? 'added' : 'updated',
-      type: pathname === '/add' ? 'add' : 'update',
-      heading:
-        pathname === '/add'
-          ? 'Add an institution record'
-          : 'Update an institution record',
-      warning:
-        pathname === '/add'
-          ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
-          : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.',
-      successMessage:
-        pathname === '/add'
-          ? `The institution, ${this.state.lei}, has been added!`
-          : `The institution, ${this.state.lei}, has been updated.`
-    }
 
     return (
       <React.Fragment>
-        <h3>{action.heading}</h3>
+        <h3>
+          {pathname === '/add'
+            ? 'Add an institution record'
+            : 'Update an institution record'}
+        </h3>
         <Alert
           type="error"
           heading="Are you Tier 2 support?"
-          message={action.warning}
+          message={
+            pathname === '/add'
+              ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
+              : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
+          }
         />
         {this.state.isSubmitted ? (
           <Alert
             type="success"
             heading="Success!"
-            message={action.successMessage}
+            message={
+              this.state.wasAddition
+                ? `The institution, ${this.state.lei}, has been added!`
+                : `The institution, ${this.state.lei}, has been updated.`
+            }
           >
             <p>
-              You can update this institution by using the form above,{' '}
+              You can update this institution by using the form below,{' '}
               <Link to="/">search for an institution</Link>, or{' '}
               <Link to="/add">add a new institution.</Link>
             </p>
@@ -180,7 +189,7 @@ class Institution extends Component {
             )
           })}
 
-          <InputSubmit actionType={action.type} />
+          <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
 
           {this.state.error ? (
             <Alert
@@ -194,7 +203,11 @@ class Institution extends Component {
           <Alert
             type="success"
             heading="Success!"
-            message={action.successMessage}
+            message={
+              this.state.wasAddition
+                ? `The institution, ${this.state.lei}, has been added!`
+                : `The institution, ${this.state.lei}, has been updated.`
+            }
           >
             <p>
               You can update this institution by using the form above,{' '}
