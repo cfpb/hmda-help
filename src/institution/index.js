@@ -7,7 +7,6 @@ import {
 } from '../utils/convert'
 
 import InputText from '../InputText'
-import Success from './Success'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
 
@@ -145,25 +144,6 @@ class Institution extends Component {
     this.backToUpdate = this.backToUpdate.bind(this)
   }
 
-  backToUpdate(event) {
-    event.preventDefault()
-
-    // if at /add we need to link, not just update state
-    // we have to go to /update, but keep the state
-    // so we use history.push(pathname: pathname, state: {})
-    if (this.props.location.pathname === '/add') {
-      this.props.history.push({
-        pathname: '/update',
-        state: { institution: this.state }
-      })
-    }
-
-    // this works if we're at /update
-    this.setState({
-      isSubmitted: false
-    })
-  }
-
   handleSubmit(event, token) {
     event.preventDefault()
 
@@ -234,26 +214,28 @@ class Institution extends Component {
       warning:
         pathname === '/add'
           ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
-          : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
+          : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.',
+      successMessage:
+        pathname === '/add'
+          ? 'The institution has been added!'
+          : 'The institution has been updated.'
     }
 
-    return this.state.isSubmitted ? (
+    return (
       <React.Fragment>
-        <Success institution={this.state} action={action.submitted} />
-        <p>
-          <button
-            className="backToUpdate"
-            onClick={event => this.backToUpdate(event)}
+        {this.state.isSubmitted ? (
+          <Alert
+            type="success"
+            heading="Success!"
+            message={action.successMessage}
           >
-            Update this institution
-          </button>
-        </p>
-        <p>
-          <Link to="/">Search for a new institution</Link>
-        </p>
-      </React.Fragment>
-    ) : (
-      <React.Fragment>
+            <p>
+              You can update this institution by using the form above,{' '}
+              <Link to="/">search for an institution</Link>, or{' '}
+              <Link to="/add">add a new institution.</Link>
+            </p>
+          </Alert>
+        ) : null}
         <h3>{action.heading}</h3>
         <Alert
           type="error"
