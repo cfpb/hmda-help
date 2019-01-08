@@ -59,7 +59,6 @@ class Institution extends Component {
   handleSubmit(event, token) {
     event.preventDefault()
 
-    //const institution = nestInstitutionStateForAPI(this.state)
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
     fetch(`/v2/admin/institutions`, {
