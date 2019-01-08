@@ -33,15 +33,15 @@ const nestStateForApi = institution => {
       ? [institution.emailDomains.value]
       : [],
     respondent: {
-      name: institution.respondentName.value || ''
-      /*state: institution.respondentState.value || '',
-      city: institution.respondentCity.value || ''*/
+      name: institution.respondentName.value || '',
+      state: institution.respondentState.value || '',
+      city: institution.respondentCity.value || ''
     },
-    /*institutionType: parseInt(institution.institutionType.value, 10) || -1,
+    institutionType: parseInt(institution.institutionType.value, 10) || -1,
     institutionId2017: institution.institutionId2017.value || '',
-    
+
     rssd: parseInt(institution.rssd.value, 10) || -1,
-    
+
     parent: {
       idRssd: parseInt(institution.parentIdRssd.value, 10) || -1,
       name: institution.parentName.value || ''
@@ -51,7 +51,7 @@ const nestStateForApi = institution => {
     topHolder: {
       idRssd: parseInt(institution.topHolderIdRssd.value, 10) || -1,
       name: institution.topHolderName.value || ''
-    },*/
+    },
     hmdaFiler: false
   }
   return api
