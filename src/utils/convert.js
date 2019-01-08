@@ -1,4 +1,4 @@
-const flattenApiForInstitution = json => {
+const flattenApiForInstitutionState = json => {
   const state = {
     activityYear: json.activityYear || 2018,
     lei: json.lei || '',
@@ -21,40 +21,38 @@ const flattenApiForInstitution = json => {
   return state
 }
 
-const nestInstitutionforAPI = institution => {
+const nestInstitutionStateForAPI = state => {
   const api = {
     activityYear: 2018,
-    lei: institution.lei.value || '',
-    agency: parseInt(institution.agency.value, 10) || -1,
-    taxId: institution.taxId.value || '',
-    emailDomains: Array.isArray(institution.emailDomains.value)
-      ? institution.emailDomains.value
-      : institution.emailDomains.value
-      ? [institution.emailDomains.value]
+    lei: state.lei || '',
+    agency: parseInt(state.agency, 10) || -1,
+    institutionType: parseInt(state.institutionType, 10) || -1,
+    institutionId2017: state.institutionId2017 || '',
+    taxId: state.taxId || '',
+    rssd: parseInt(state.rssd, 10) || -1,
+    emailDomains: Array.isArray(state.emailDomains)
+      ? state.emailDomains
+      : state.emailDomains
+      ? [state.emailDomains]
       : [],
     respondent: {
-      name: institution.respondentName.value || '',
-      state: institution.respondentState.value || '',
-      city: institution.respondentCity.value || ''
+      name: state.respondentName || '',
+      state: state.respondentState || '',
+      city: state.respondentCity || ''
     },
-    institutionType: parseInt(institution.institutionType.value, 10) || -1,
-    institutionId2017: institution.institutionId2017.value || '',
-
-    rssd: parseInt(institution.rssd.value, 10) || -1,
-
     parent: {
-      idRssd: parseInt(institution.parentIdRssd.value, 10) || -1,
-      name: institution.parentName.value || ''
+      idRssd: parseInt(state.parentIdRssd, 10) || -1,
+      name: state.parentName || ''
     },
-    assets: parseInt(institution.assets.value, 10) || -1,
-    otherLenderCode: parseInt(institution.otherLenderCode.value, 10) || -1,
+    assets: parseInt(state.assets, 10) || -1,
+    otherLenderCode: parseInt(state.otherLenderCode, 10) || -1,
     topHolder: {
-      idRssd: parseInt(institution.topHolderIdRssd.value, 10) || -1,
-      name: institution.topHolderName.value || ''
+      idRssd: parseInt(state.topHolderIdRssd, 10) || -1,
+      name: state.topHolderName || ''
     },
     hmdaFiler: false
   }
   return api
 }
 
-export { nestInstitutionforAPI, flattenApiForInstitution }
+export { nestInstitutionStateForAPI, flattenApiForInstitutionState }

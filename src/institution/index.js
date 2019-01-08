@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
-  nestInstitutionforAPI,
-  flattenApiForInstitution
+  nestInstitutionStateForAPI,
+  flattenApiForInstitutionState
 } from '../utils/convert'
 
 import InputText from '../InputText'
@@ -127,32 +127,46 @@ const textInputs = [
   }
 ]
 
+let defaultInstitutionState = {}
+textInputs.forEach(
+  textInput => (defaultInstitutionState[textInput.id] = textInput.defaultValue)
+)
+
 class Institution extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       isSubmitted: false,
-      error: null
+      error: null,
+      ...defaultInstitutionState
     }
-
-    this.institution = {}
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.getErrorHeading = this.getErrorHeading.bind(this)
     this.getErrorText = this.getErrorText.bind(this)
-    this.backToUpdate = this.backToUpdate.bind(this)
+    this.onInputChange = this.onInputChange.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.location.state && this.props.location.state.institution) {
+      this.setState({ ...this.props.location.state.institution })
+    }
+  }
+
+  onInputChange(event) {
+    this.setState({ [event.target.id]: event.target.value })
   }
 
   handleSubmit(event, token) {
     event.preventDefault()
 
-    const institution = nestInstitutionforAPI(this.institution)
+    //const institution = nestInstitutionStateForAPI(this.state)
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
     fetch(`/v2/admin/institutions`, {
       method: method,
-      body: JSON.stringify(institution),
+      body: JSON.stringify(nestInstitutionStateForAPI(this.state)),
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token
@@ -169,7 +183,16 @@ class Institution extends Component {
         // set the rest of the state here to be the json response
         // just in case something goes wrong
         // we then have the what the back-end has
-        this.setState({ isSubmitted: true, ...flattenApiForInstitution(json) })
+        this.setState({
+          isSubmitted: true,
+          institution: flattenApiForInstitutionState(json)
+        })
+      })
+      .then(() => {
+        this.props.history.push({
+          pathname: '/update',
+          state: { institution: this.state }
+        })
       })
       .catch(error => {
         this.setState({ error: error.message })
@@ -223,6 +246,12 @@ class Institution extends Component {
 
     return (
       <React.Fragment>
+        <h3>{action.heading}</h3>
+        <Alert
+          type="error"
+          heading="Are you Tier 2 support?"
+          message={action.warning}
+        />
         {this.state.isSubmitted ? (
           <Alert
             type="success"
@@ -236,12 +265,6 @@ class Institution extends Component {
             </p>
           </Alert>
         ) : null}
-        <h3>{action.heading}</h3>
-        <Alert
-          type="error"
-          heading="Are you Tier 2 support?"
-          message={action.warning}
-        />
         <form
           className="InstitutionForm"
           onSubmit={event => this.handleSubmit(event, this.props.token)}
@@ -250,9 +273,6 @@ class Institution extends Component {
             return (
               <InputText
                 key={textInput.id}
-                ref={input => {
-                  this.institution[textInput.id] = input
-                }}
                 label={textInput.label}
                 inputId={textInput.id}
                 placeholder={textInput.placeholder}
@@ -266,6 +286,7 @@ class Institution extends Component {
                     ? true
                     : false
                 }
+                onChange={this.onInputChange}
               />
             )
           })}
@@ -280,6 +301,19 @@ class Institution extends Component {
             />
           ) : null}
         </form>
+        {this.state.isSubmitted ? (
+          <Alert
+            type="success"
+            heading="Success!"
+            message={action.successMessage}
+          >
+            <p>
+              You can update this institution by using the form above,{' '}
+              <Link to="/">search for an institution</Link>, or{' '}
+              <Link to="/add">add a new institution.</Link>
+            </p>
+          </Alert>
+        ) : null}
       </React.Fragment>
     )
   }

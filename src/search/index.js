@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import './Form.css'
 
 import {
-  flattenApiForInstitution,
-  nestInstitutionforAPI
+  flattenApiForInstitutionState,
+  nestInstitutionStateForAPI
 } from '../utils/convert'
 
 import Results from './Results'
@@ -79,7 +79,7 @@ class Form extends Component {
   handleDeleteClick(institution, key) {
     fetch('/v2/admin/institutions', {
       method: 'DELETE',
-      body: JSON.stringify(nestInstitutionforAPI(institution)),
+      body: JSON.stringify(nestInstitutionStateForAPI(institution)),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ class Form extends Component {
       .then(json => {
         if (typeof json === 'object') {
           this.setState({
-            institutions: [flattenApiForInstitution(json)],
+            institutions: [flattenApiForInstitutionState(json)],
             error: defaultState.error
           })
         } else {
