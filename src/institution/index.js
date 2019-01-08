@@ -234,8 +234,6 @@ class Institution extends Component {
           : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
     }
 
-    if (pathname === '/update' && !state) this.props.history.push('/')
-
     return this.state.isSubmitted ? (
       <React.Fragment>
         <Success institution={this.state} action={action.submitted} />
