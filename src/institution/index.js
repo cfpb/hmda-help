@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 import { nestStateForApi, flattenApiForState } from '../utils/convert'
 
 import InputText from '../InputText'
-import OtherFieldsToggleButton from './OtherFieldsToggleButton'
-import OtherFields from './OtherFields'
 import Success from './Success'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
@@ -47,6 +45,83 @@ const textInputs = [
     name: 'agency',
     defaultValue: '',
     placeholder: ''
+  },
+  {
+    label: 'Institution Type',
+    id: 'institutionType',
+    name: 'institutionType',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Institution ID 2017',
+    id: 'institutionId2017',
+    name: 'institutionId2017',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'RSSD',
+    id: 'rssd',
+    name: 'rssd',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Respondent State',
+    id: 'respondentState',
+    name: 'respondentState',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Respondent City',
+    id: 'respondentCity',
+    name: 'respondentCity',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Parent ID RSSD',
+    id: 'parentIdRssd',
+    name: 'parentIdRssd',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Parent Name',
+    id: 'parentName',
+    name: 'parentName',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Assets',
+    id: 'assets',
+    name: 'assets',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Other Lender Code',
+    id: 'otherLenderCode',
+    name: 'otherLenderCode',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Top Holder ID RSSD',
+    id: 'topHolderIdRssd',
+    name: 'topHolderIdRssd',
+    defaultValue: '',
+    placeholder: ''
+  },
+  {
+    label: 'Top Holder Name',
+    id: 'topHolderName',
+    name: 'topHolderName',
+    defaultValue: '',
+    placeholder: ''
   }
 ]
 
@@ -56,14 +131,12 @@ class Institution extends Component {
 
     this.state = {
       isSubmitted: false,
-      error: null,
-      showOtherFields: false
+      error: null
     }
 
     this.institution = {}
 
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
     this.getErrorHeading = this.getErrorHeading.bind(this)
     this.getErrorText = this.getErrorText.bind(this)
     this.backToUpdate = this.backToUpdate.bind(this)
@@ -90,12 +163,8 @@ class Institution extends Component {
 
   handleSubmit(event, pathname, token) {
     event.preventDefault()
-    console.log(this.institution)
 
     const institution = nestStateForApi(this.institution)
-
-    console.log(institution)
-
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
     fetch(`/v2/admin/institutions`, {
@@ -122,12 +191,6 @@ class Institution extends Component {
       .catch(error => {
         this.setState({ error: error.message })
       })
-  }
-
-  toggleShowOtherFields() {
-    this.setState(prevState => ({
-      showOtherFields: !prevState.showOtherFields
-    }))
   }
 
   getErrorHeading() {
@@ -194,7 +257,7 @@ class Institution extends Component {
         <Alert
           type="error"
           heading="Are you Tier 2 support?"
-          text={action.warning}
+          message={action.warning}
         />
         <form
           className="InstitutionForm"
@@ -226,26 +289,13 @@ class Institution extends Component {
             )
           })}
 
-          {/*<OtherFieldsToggleButton
-            showOtherFields={this.state.showOtherFields}
-            toggleShowOtherFields={this.toggleShowOtherFields}
-          />
-
-          {this.state.showOtherFields
-            ? null
-            : <OtherFields
-              formData={this.state}
-              handleChange={this.handleChange}
-            />
-            }
-          */}
           <InputSubmit actionType={action.type} />
 
           {this.state.error ? (
             <Alert
               type="error"
               heading={this.getErrorHeading()}
-              text={this.getErrorText()}
+              message={this.getErrorText()}
             />
           ) : null}
         </form>
