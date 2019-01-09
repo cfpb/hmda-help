@@ -203,10 +203,7 @@ class Institution extends Component {
             type="button"
             onClick={this.toggleShowOtherFields}
           >
-            {this.state.showOtherFields ? 'Hide' : 'Show'} other fields{' '}
-            <span style={{ fontWeight: 'bold' }}>
-              {this.state.showOtherFields ? '∧' : '∨'}
-            </span>
+            {this.state.showOtherFields ? 'Hide' : 'Show'} other fields
           </button>
 
           {this.state.showOtherFields ? (
