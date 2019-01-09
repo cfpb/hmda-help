@@ -7,6 +7,7 @@ import {
   flattenApiForInstitutionState
 } from '../utils/convert'
 
+import OtherFields from './OtherFields'
 import InputText from '../InputText'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
@@ -29,6 +30,7 @@ class Institution extends Component {
       isSubmitted: false,
       error: null,
       wasAddition: false,
+      showOtherFieldss: false,
       ...defaultInstitutionState
     }
 
@@ -36,6 +38,7 @@ class Institution extends Component {
     this.getErrorHeading = this.getErrorHeading.bind(this)
     this.getErrorText = this.getErrorText.bind(this)
     this.onInputChange = this.onInputChange.bind(this)
+    this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
   }
 
   componentDidMount() {
@@ -50,6 +53,12 @@ class Institution extends Component {
     if (state && state.wasAddition) {
       this.setState({ wasAddition: state.wasAddition })
     }
+  }
+
+  toggleShowOtherFields() {
+    this.setState(prevState => ({
+      showOtherFields: !prevState.showOtherFields
+    }))
   }
 
   onInputChange(event) {
@@ -167,7 +176,7 @@ class Institution extends Component {
           className="InstitutionForm"
           onSubmit={event => this.handleSubmit(event, this.props.token)}
         >
-          {searchInputs.concat(requiredInputs, otherInputs).map(textInput => {
+          {searchInputs.concat(requiredInputs).map(textInput => {
             return (
               <InputText
                 key={textInput.id}
@@ -188,6 +197,26 @@ class Institution extends Component {
               />
             )
           })}
+
+          <button
+            className="toggleButton"
+            type="button"
+            onClick={this.toggleShowOtherFields}
+          >
+            {this.state.showOtherFields ? 'Hide' : 'Show'} other fields{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              {this.state.showOtherFields ? '∧' : '∨'}
+            </span>
+          </button>
+
+          {this.state.showOtherFields ? (
+            <OtherFields
+              institution={
+                state && state.institution ? state.institution : null
+              }
+              onInputChange={this.onInputChange}
+            />
+          ) : null}
 
           <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
 
