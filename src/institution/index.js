@@ -112,10 +112,13 @@ class Institution extends Component {
   getErrorHeading() {
     let errorHeading = null
     if (this.state.error === '400') {
-      errorHeading = 'Not Found'
+      errorHeading = 'Duplicate LEI'
     }
     if (this.state.error === '403') {
       errorHeading = 'Access Denied'
+    }
+    if (this.state.error === '404') {
+      errorHeading = 'Not Found'
     }
 
     return errorHeading
@@ -125,11 +128,15 @@ class Institution extends Component {
     let errorText = null
     if (this.state.error === '400') {
       errorText =
-        "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
+        'Sorry, that LEI already exists. You can verify that by using the search.'
     }
     if (this.state.error === '403') {
       errorText =
         "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
+    }
+    if (this.state.error === '404') {
+      errorText =
+        "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
     }
 
     return errorText
