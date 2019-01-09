@@ -25,9 +25,10 @@ class SearchResults extends Component {
             <tr>
               <th width="15%">LEI</th>
               <th width="15%">Name</th>
-              <th width="15%">Email Domain</th>
+              <th width="15%">Email Domain(s)</th>
               <th width="15%">Tax ID</th>
-              <th width="40%" />
+              <th width="15%">Agency Code</th>
+              <th width="25%" />
             </tr>
           </thead>
           <tbody>
@@ -39,6 +40,7 @@ class SearchResults extends Component {
                     <td>{institution.respondentName}</td>
                     <td>{institution.emailDomains}</td>
                     <td>{institution.taxId}</td>
+                    <td>{institution.agency}</td>
                     <ResultsActions
                       institution={institution}
                       i={i}
@@ -51,7 +53,7 @@ class SearchResults extends Component {
                     className="otherData hidden"
                     ref={element => this.tables.set(i, element)}
                   >
-                    <td colSpan={5}>
+                    <td colSpan={6}>
                       <table>
                         <thead>
                           <tr>
