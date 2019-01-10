@@ -7,7 +7,7 @@ const flattenApiForInstitutionState = json => {
     institutionId2017: json.institutionId2017 || '',
     taxId: json.taxId || '',
     rssd: json.rssd || -1,
-    emailDomains: json.emailDomains || [],
+    emailDomains: json.emailDomains.join(', ') || '',
     respondentName: json.respondent.name || '',
     respondentState: json.respondent.state || '',
     respondentCity: json.respondent.city || '',
@@ -30,11 +30,7 @@ const nestInstitutionStateForAPI = state => {
     institutionId2017: state.institutionId2017 || '',
     taxId: state.taxId || '',
     rssd: parseInt(state.rssd, 10) || -1,
-    emailDomains: Array.isArray(state.emailDomains)
-      ? state.emailDomains
-      : state.emailDomains
-      ? [state.emailDomains]
-      : [],
+    emailDomains: state.emailDomains.replace(/\s/g, '').split(','),
     respondent: {
       name: state.respondentName || '',
       state: state.respondentState || '',
