@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 
-class InputText extends Component {
+import './InputSelect.css'
+
+class InputSelect extends Component {
   constructor(props) {
     super(props)
 
@@ -24,23 +26,27 @@ class InputText extends Component {
     return (
       <React.Fragment>
         <label>{this.props.label}</label>
-        <input
+        <select
           ref={this.props.innerRef}
-          type="text"
           name={this.props.inputId}
           id={this.props.inputId}
-          placeholder={this.props.placeholder}
-          value={this.state.value}
           onChange={this.handleChange}
           disabled={this.props.disabled || false}
-          maxLength={this.props.maxLength || ''}
-          size={this.props.maxLength || 75}
-        />
+          value={this.state.value}
+        >
+          {this.props.options.map((option, i) => {
+            return (
+              <option key={i} value={option.id}>
+                {option.name}
+              </option>
+            )
+          })}
+        </select>
       </React.Fragment>
     )
   }
 }
 
 export default React.forwardRef((props, ref) => {
-  return <InputText innerRef={ref} {...props} />
+  return <InputSelect innerRef={ref} {...props} />
 })

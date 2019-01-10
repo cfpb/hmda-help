@@ -9,6 +9,8 @@ import {
 
 import OtherFields from './OtherFields'
 import InputText from '../InputText'
+import InputRadio from '../InputRadio'
+import InputSelect from '../InputSelect'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
 
@@ -183,20 +185,53 @@ class Institution extends Component {
           className="InstitutionForm"
           onSubmit={event => this.handleSubmit(event, this.props.token)}
         >
-          {searchInputs.concat(requiredInputs).map(textInput => {
+          {searchInputs.concat(requiredInputs).map(searchInput => {
+            if (searchInput.type === 'select') {
+              return (
+                <InputSelect
+                  key={searchInput.id}
+                  label={searchInput.label}
+                  inputId={searchInput.id}
+                  options={searchInput.options}
+                  onChange={this.onInputChange}
+                  value={
+                    state && state.institution
+                      ? state.institution[searchInput.id]
+                      : searchInput.defaultValue
+                  }
+                />
+              )
+            }
+            if (searchInput.type === 'radio') {
+              return (
+                <InputRadio
+                  key={searchInput.id}
+                  label={searchInput.label}
+                  inputId={searchInput.id}
+                  options={searchInput.options}
+                  name={searchInput.name}
+                  onChange={this.onInputChange}
+                  value={
+                    state && state.institution
+                      ? state.institution[searchInput.id]
+                      : searchInput.defaultValue
+                  }
+                />
+              )
+            }
             return (
               <InputText
-                key={textInput.id}
-                label={textInput.label}
-                inputId={textInput.id}
-                placeholder={textInput.placeholder}
+                key={searchInput.id}
+                label={searchInput.label}
+                inputId={searchInput.id}
+                placeholder={searchInput.placeholder}
                 value={
                   state && state.institution
-                    ? state.institution[textInput.id]
-                    : textInput.defaultValue
+                    ? state.institution[searchInput.id]
+                    : searchInput.defaultValue
                 }
                 disabled={
-                  pathname === '/update' && textInput.id === 'lei'
+                  pathname === '/update' && searchInput.id === 'lei'
                     ? true
                     : false
                 }
