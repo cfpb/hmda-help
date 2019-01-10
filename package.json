@@ -20,10 +20,17 @@
   },
   "dependencies": {
     "keycloak-js": "4.5.0",
-    "react": "16.4.2",
-    "react-dom": "16.4.2",
+    "react": "16.7",
+    "react-dom": "16.7",
     "react-router-dom": "4.3.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "2.0.3"
   },
+  "browserslist": [
+    "Chrome >= 60",
+    "Safari >= 10.1",
+    "Firefox >= 54",
+    "Edge >= 15",
+    "ie >= 11"
+  ],
   "homepage": "/hmda-help"
 }
