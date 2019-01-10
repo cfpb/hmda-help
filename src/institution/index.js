@@ -30,7 +30,7 @@ class Institution extends Component {
       isSubmitted: false,
       error: null,
       wasAddition: false,
-      showOtherFieldss: false,
+      showOtherFields: false,
       ...defaultInstitutionState
     }
 
