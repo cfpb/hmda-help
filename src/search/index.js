@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import './Form.css'
+import '../Loading.css'
 
 import { searchInputs } from '../constants/inputs.js'
 import {
@@ -13,6 +14,7 @@ import Results from './Results'
 import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
 import Alert from '../Alert'
+import Loading from '../Loading.jsx'
 
 const defaultState = {
   error: null,
@@ -74,6 +76,8 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
+    this.setState({fetching: true})
+
     fetch(`/v2/admin/institutions/${this.lei.value}`, {
       headers: {
         Accept: 'application/json',
@@ -88,7 +92,8 @@ class Form extends Component {
         if (typeof json === 'object') {
           this.setState({
             institutions: [flattenApiForInstitutionState(json)],
-            error: defaultState.error
+            error: defaultState.error,
+            fetching: false
           })
         } else {
           if (json === 404) {
@@ -98,7 +103,8 @@ class Form extends Component {
                 message:
                   "That institution doesn't exist. Would you like to add it?"
               },
-              institutions: defaultState.institutions
+              institutions: defaultState.institutions,
+              fetching: false
             })
           }
         }
@@ -106,7 +112,8 @@ class Form extends Component {
       .catch(error => {
         this.setState({
           error: { message: 'The requested resource could not be found.' },
-          institutions: defaultState.institutions
+          institutions: defaultState.institutions,
+          fetching: false
         })
       })
   }
@@ -134,6 +141,7 @@ class Form extends Component {
             )
           })}
           <InputSubmit actionType="search" />
+          {this.state.fetching ? <Loading className="LoadingInline"/> : null}
         </form>
 
         {this.state.institutions ? (
