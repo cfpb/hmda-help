@@ -1,93 +1,69 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { nestStateForApi, flattenApiForState } from '../utils/convert'
+import { searchInputs, requiredInputs, otherInputs } from '../constants/inputs'
+import {
+  nestInstitutionStateForAPI,
+  flattenApiForInstitutionState
+} from '../utils/convert'
 
-import OtherFieldsToggleButton from './OtherFieldsToggleButton'
-import OtherFields from './OtherFields'
-import Success from './Success'
+import InputText from '../InputText'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
 
 import './Form.css'
 
+let defaultInstitutionState = {}
+searchInputs
+  .concat(requiredInputs, otherInputs)
+  .forEach(
+    textInput =>
+      (defaultInstitutionState[textInput.id] = textInput.defaultValue)
+  )
+
 class Institution extends Component {
   constructor(props) {
     super(props)
 
-    let institution = null
-    if (props.location.state && props.location.state.institution) {
-      institution = props.location.state.institution
-    }
-
     this.state = {
-      isSubmitted:
-        (props.location.state && props.location.state.isSubmitted) || false,
-      httpError: null,
-      showOtherFields: false,
-      activityYear: institution ? institution.activityYear : '',
-      lei: institution ? institution.lei : '',
-      agency: institution ? institution.agency : '',
-      institutionType: institution ? institution.institutionType : '',
-      institutionId2017: institution ? institution.institutionId2017 : '',
-      taxId: institution ? institution.taxId : '',
-      rssd: institution ? institution.rssd : '',
-      emailDomains: institution ? institution.emailDomains : '',
-      respondentName: institution ? institution.respondentName : '',
-      respondentState: institution ? institution.respondentState : '',
-      respondentCity: institution ? institution.respondentCity : '',
-      parentIdRssd: institution ? institution.parentIdRssd : '',
-      parentName: institution ? institution.parentName : '',
-      assets: institution ? institution.assets : '',
-      otherLenderCode: institution ? institution.otherLenderCode : '',
-      topHolderIdRssd: institution ? institution.topHolderIdRssd : '',
-      topHolderName: institution ? institution.topHolderName : ''
+      isSubmitted: false,
+      error: null,
+      wasAddition: false,
+      ...defaultInstitutionState
     }
 
-    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
-    this.getHttpErrorHeading = this.getHttpErrorHeading.bind(this)
-    this.getHttpErrorText = this.getHttpErrorText.bind(this)
-    this.backToUpdate = this.backToUpdate.bind(this)
+    this.getErrorHeading = this.getErrorHeading.bind(this)
+    this.getErrorText = this.getErrorText.bind(this)
+    this.onInputChange = this.onInputChange.bind(this)
   }
 
-  backToUpdate(event) {
-    event.preventDefault()
+  componentDidMount() {
+    const { state, pathname } = this.props.location
 
-    // if at /add we need to link, not just update state
-    // we have to go to /update, but keep the state
-    // so we use history.push(pathname: pathname, state: {})
-    if (this.props.location.pathname === '/add') {
-      this.props.history.push({
-        pathname: '/update',
-        state: { institution: this.state }
-      })
+    if (pathname === '/update' && !state) this.props.history.push('/add')
+
+    if (state && state.institution) {
+      this.setState({ ...state.institution })
     }
 
-    // this works if we're at /update
-    this.setState({
-      isSubmitted: false
-    })
+    if (state && state.wasAddition) {
+      this.setState({ wasAddition: state.wasAddition })
+    }
   }
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
-      isSubmitted: false
-    })
+  onInputChange(event) {
+    this.setState({ [event.target.id]: event.target.value })
   }
 
-  handleSubmit(event, pathname, token) {
+  handleSubmit(event, token) {
     event.preventDefault()
-
-    const institution = nestStateForApi(this.state)
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
     fetch(`/v2/admin/institutions`, {
       method: method,
-      body: JSON.stringify(institution),
+      body: JSON.stringify(nestInstitutionStateForAPI(this.state)),
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token
@@ -104,157 +80,126 @@ class Institution extends Component {
         // set the rest of the state here to be the json response
         // just in case something goes wrong
         // we then have the what the back-end has
-        this.setState({ isSubmitted: true, ...flattenApiForState(json) })
+        this.setState({
+          isSubmitted: true,
+          institution: flattenApiForInstitutionState(json),
+          wasAddition: false
+        })
+      })
+      .then(() => {
+        this.props.history.push({
+          pathname: '/update',
+          state: {
+            institution: this.state,
+            wasAddition: this.props.location.pathname === '/add'
+          }
+        })
       })
       .catch(error => {
-        this.setState({ httpError: error.message })
+        this.setState({ error: error.message })
       })
   }
 
-  toggleShowOtherFields() {
-    this.setState(prevState => ({
-      showOtherFields: !prevState.showOtherFields
-    }))
-  }
-
-  getHttpErrorHeading() {
-    let httpErrorHeading = null
-    if (this.state.httpError === '400') {
-      httpErrorHeading = 'Not Found'
+  getErrorHeading() {
+    let errorHeading = null
+    if (this.state.error === '400') {
+      errorHeading = 'Not Found'
     }
-    if (this.state.httpError === '403') {
-      httpErrorHeading = 'Access Denied'
+    if (this.state.error === '403') {
+      errorHeading = 'Access Denied'
     }
 
-    return httpErrorHeading
+    return errorHeading
   }
 
-  getHttpErrorText() {
-    let httpErrorText = null
-    if (this.state.httpError === '400') {
-      httpErrorText =
+  getErrorText() {
+    let errorText = null
+    if (this.state.error === '400') {
+      errorText =
         "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
     }
-    if (this.state.httpError === '403') {
-      httpErrorText =
+    if (this.state.error === '403') {
+      errorText =
         "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
     }
 
-    return httpErrorText
+    return errorText
   }
 
   render() {
     const { pathname, state } = this.props.location
-    const action = {
-      submitted: pathname === '/add' ? 'added' : 'updated',
-      type: pathname === '/add' ? 'add' : 'update',
-      heading:
-        pathname === '/add'
-          ? 'Add an institution record'
-          : 'Update an institution record',
-      warning:
-        pathname === '/add'
-          ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
-          : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
-    }
-
-    if (pathname === '/update' && !state) this.props.history.push('/')
-
-    return this.state.isSubmitted ? (
-      <React.Fragment>
-        <Success institution={this.state} action={action.submitted} />
+    const successAlert = this.state.isSubmitted ? (
+      <Alert
+        type="success"
+        heading="Success!"
+        message={
+          this.state.wasAddition
+            ? `The institution, ${this.state.lei}, has been added!`
+            : `The institution, ${this.state.lei}, has been updated.`
+        }
+      >
         <p>
-          <button
-            className="backToUpdate"
-            onClick={event => this.backToUpdate(event)}
-          >
-            Update this institution
-          </button>
+          You can update this institution by using the form below,{' '}
+          <Link to="/">search for an institution</Link>, or{' '}
+          <Link to="/add">add a new institution.</Link>
         </p>
-        <p>
-          <Link to="/">Search for a new institution</Link>
-        </p>
-      </React.Fragment>
-    ) : (
+      </Alert>
+    ) : null
+
+    return (
       <React.Fragment>
-        <h3>{action.heading}</h3>
+        <h3>
+          {pathname === '/add'
+            ? 'Add an institution record'
+            : 'Update an institution record'}
+        </h3>
         <Alert
           type="error"
           heading="Are you Tier 2 support?"
-          text={action.warning}
-          smallWidth={true}
+          message={
+            pathname === '/add'
+              ? 'New institutions should be submitted by Tier 2. Please escalate the case to Tier 2 for further support.'
+              : 'If any data fields other than Respondent Name or Email Domain need to be updated, please escalate the case to Tier 2 for further support.'
+          }
         />
+        {successAlert}
         <form
           className="InstitutionForm"
-          onSubmit={event =>
-            this.handleSubmit(event, pathname, this.props.token)
-          }
+          onSubmit={event => this.handleSubmit(event, this.props.token)}
         >
-          <label>LEI</label>
-          <input
-            type="text"
-            name="lei"
-            id="lei"
-            value={this.state.lei}
-            onChange={this.handleChange}
-            disabled={pathname === '/add' ? false : true}
-          />
-          <label>Respondent Name</label>
-          <input
-            type="text"
-            name="respondentName"
-            id="respondentName"
-            value={this.state.respondentName}
-            onChange={this.handleChange}
-          />
-          <label>Email Domains</label>
-          <input
-            type="text"
-            name="emailDomains"
-            id="emailDomains"
-            value={this.state.emailDomains}
-            onChange={this.handleChange}
-          />
-          <label>Tax Id</label>
-          <input
-            type="text"
-            name="taxId"
-            id="taxId"
-            value={this.state.taxId}
-            onChange={this.handleChange}
-          />
-          <label>Agency Code</label>
-          <input
-            type="text"
-            name="agency"
-            id="agency"
-            value={this.state.agency}
-            onChange={this.handleChange}
-          />
+          {searchInputs.concat(requiredInputs, otherInputs).map(textInput => {
+            return (
+              <InputText
+                key={textInput.id}
+                label={textInput.label}
+                inputId={textInput.id}
+                placeholder={textInput.placeholder}
+                value={
+                  state && state.institution
+                    ? state.institution[textInput.id]
+                    : textInput.defaultValue
+                }
+                disabled={
+                  pathname === '/update' && textInput.id === 'lei'
+                    ? true
+                    : false
+                }
+                onChange={this.onInputChange}
+              />
+            )
+          })}
 
-          <OtherFieldsToggleButton
-            showOtherFields={this.state.showOtherFields}
-            toggleShowOtherFields={this.toggleShowOtherFields}
-          />
+          <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
 
-          {this.state.showOtherFields ? (
-            <OtherFields
-              formData={this.state}
-              handleChange={this.handleChange}
-            />
-          ) : null}
-
-          <InputSubmit actionType={action.type} />
-
-          {this.state.httpError ? (
+          {this.state.error ? (
             <Alert
               type="error"
-              heading={this.getHttpErrorHeading()}
-              text={this.getHttpErrorText()}
-              smallWidth={true}
+              heading={this.getErrorHeading()}
+              message={this.getErrorText()}
             />
           ) : null}
         </form>
+        {successAlert}
       </React.Fragment>
     )
   }

@@ -3,45 +3,16 @@ import { Link } from 'react-router-dom'
 
 import './Form.css'
 
-import { flattenApiForState, nestStateForApi } from '../utils/convert'
+import { searchInputs } from '../constants/inputs.js'
+import {
+  flattenApiForInstitutionState,
+  nestInstitutionStateForAPI
+} from '../utils/convert'
 
 import Results from './Results'
 import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
 import Alert from '../Alert'
-
-// available inputs to search on
-// for now, only LEI is working
-const textInputs = [
-  {
-    label: 'LEI',
-    id: 'lei',
-    name: 'lei',
-    defaultValue: '',
-    placeholder: '987875HAG543RFDAHG54'
-  }
-  /*{
-    label: 'Respondent Name',
-    id: 'respondentName',
-    name: 'respondentName',
-    value: '',
-    placeholder: 'Bank of HMDA'
-  },
-  {
-    label: 'Email Domains',
-    id: 'emailDomains',
-    name: 'emailDomains',
-    value: '',
-    placeholder: 'hmda.com'
-  },
-  {
-    label: 'Tax Id',
-    id: 'taxId',
-    name: 'taxId',
-    value: '',
-    placeholder: '88-00000000'
-  }*/
-]
 
 const defaultState = {
   error: null,
@@ -76,7 +47,7 @@ class Form extends Component {
   handleDeleteClick(institution, key) {
     fetch('/v2/admin/institutions', {
       method: 'DELETE',
-      body: JSON.stringify(nestStateForApi(institution)),
+      body: JSON.stringify(nestInstitutionStateForAPI(institution)),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -116,7 +87,7 @@ class Form extends Component {
       .then(json => {
         if (typeof json === 'object') {
           this.setState({
-            institutions: [flattenApiForState(json)],
+            institutions: [flattenApiForInstitutionState(json)],
             error: defaultState.error
           })
         } else {
@@ -148,7 +119,7 @@ class Form extends Component {
           className="SearchForm"
           onSubmit={event => this.handleSubmit(event)}
         >
-          {textInputs.map(textInput => {
+          {searchInputs.map(textInput => {
             return (
               <InputText
                 key={textInput.id}

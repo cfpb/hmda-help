@@ -1,4 +1,4 @@
-const flattenApiForState = json => {
+const flattenApiForInstitutionState = json => {
   const state = {
     activityYear: json.activityYear || 2018,
     lei: json.lei || '',
@@ -21,7 +21,7 @@ const flattenApiForState = json => {
   return state
 }
 
-const nestStateForApi = state => {
+const nestInstitutionStateForAPI = state => {
   const api = {
     activityYear: 2018,
     lei: state.lei || '',
@@ -55,4 +55,4 @@ const nestStateForApi = state => {
   return api
 }
 
-export { nestStateForApi, flattenApiForState }
+export { nestInstitutionStateForAPI, flattenApiForInstitutionState }

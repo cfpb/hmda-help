@@ -62,6 +62,7 @@
   border-bottom: 0;
   font-weight: 400;
   padding: 2rem 1.5rem;
+  vertical-align: top;
 }
 
 .SearchResults td span.name {
@@ -152,7 +153,8 @@
 }
 
 .SearchResults button.showOtherFields {
-  margin-right: 2em;
+  display: block;
+  margin-top: 2em;
 }
 
 .SearchResults button.delete:hover {

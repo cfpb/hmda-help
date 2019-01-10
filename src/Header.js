@@ -15,7 +15,8 @@ const Header = props => {
                 lei: '',
                 taxId: '',
                 respondentName: ''
-              }
+              },
+              wasAddition: false
             },
             token: props.token
           }}

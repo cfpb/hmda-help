@@ -15,6 +15,9 @@ class TextInput extends Component {
     this.setState({
       value: event.target.value
     })
+    if (this.props.onChange) {
+      this.props.onChange(event)
+    }
   }
 
   render() {
@@ -29,6 +32,7 @@ class TextInput extends Component {
           placeholder={this.props.placeholder}
           value={this.state.value}
           onChange={this.handleChange}
+          disabled={this.props.disabled || false}
         />
       </React.Fragment>
     )
