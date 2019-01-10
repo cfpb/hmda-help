@@ -11,8 +11,10 @@ import OtherFields from './OtherFields'
 import InputText from '../InputText'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
+import Loading from '../Loading.jsx'
 
 import './Form.css'
+import '../Loading.css'
 
 let defaultInstitutionState = {}
 searchInputs
@@ -31,6 +33,7 @@ class Institution extends Component {
       error: null,
       wasAddition: false,
       showOtherFields: false,
+      fetching: false,
       ...defaultInstitutionState
     }
 
@@ -68,6 +71,8 @@ class Institution extends Component {
   handleSubmit(event, token) {
     event.preventDefault()
 
+    this.setState({fetching: true})
+
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
     fetch(`/v2/admin/institutions`, {
@@ -92,7 +97,8 @@ class Institution extends Component {
         this.setState({
           isSubmitted: true,
           institution: flattenApiForInstitutionState(json),
-          wasAddition: false
+          wasAddition: false,
+          fetching: false
         })
       })
       .then(() => {
@@ -105,7 +111,7 @@ class Institution extends Component {
         })
       })
       .catch(error => {
-        this.setState({ error: error.message })
+        this.setState({ error: error.message, fetching: false })
       })
   }
 
@@ -223,6 +229,8 @@ class Institution extends Component {
           ) : null}
 
           <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
+
+          {this.state.fetching ? <Loading className="LoadingInline"/> : null}
 
           {this.state.error ? (
             <Alert
