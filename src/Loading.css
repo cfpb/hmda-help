@@ -5,6 +5,10 @@
   margin-left: 8px;
 }
 
+tr > .LoadingIconWrapper.LoadingInline {
+  margin: 1.5rem;
+}
+
 .LoadingInline > .LoadingIcon {
   height: 22px;
   width: 22px;
