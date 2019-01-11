@@ -1,3 +1,8 @@
+import states from './states'
+import agencyCodes from './agencyCodes'
+import institutionTypes from './institutionTypes'
+import otherLenderCodes from './otherLenderCodes'
+
 const searchInputs = [
   {
     label: 'LEI',
@@ -35,7 +40,9 @@ const requiredInputs = [
     id: 'agency',
     name: 'agency',
     defaultValue: '',
-    placeholder: ''
+    placeholder: '',
+    type: 'radio',
+    options: agencyCodes
   }
 ]
 
@@ -45,7 +52,18 @@ const otherInputs = [
     id: 'institutionType',
     name: 'institutionType',
     defaultValue: '',
-    placeholder: ''
+    placeholder: '',
+    type: 'select',
+    options: institutionTypes
+  },
+  {
+    label: 'Other Lender Code',
+    id: 'otherLenderCode',
+    name: 'otherLenderCode',
+    defaultValue: '',
+    placeholder: '',
+    type: 'select',
+    options: otherLenderCodes
   },
   {
     label: 'Institution ID 2017',
@@ -66,7 +84,9 @@ const otherInputs = [
     id: 'respondentState',
     name: 'respondentState',
     defaultValue: '',
-    placeholder: ''
+    placeholder: '',
+    type: 'select',
+    options: states
   },
   {
     label: 'Respondent City',
@@ -93,13 +113,6 @@ const otherInputs = [
     label: 'Assets',
     id: 'assets',
     name: 'assets',
-    defaultValue: '',
-    placeholder: ''
-  },
-  {
-    label: 'Other Lender Code',
-    id: 'otherLenderCode',
-    name: 'otherLenderCode',
     defaultValue: '',
     placeholder: ''
   },
