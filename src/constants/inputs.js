@@ -10,10 +10,12 @@ const searchInputs = [
     name: 'lei',
     defaultValue: '',
     placeholder: '987875HAG543RFDAHG54',
+    // order matters
     validation: [
       { type: 'required' },
-      { type: 'regex', value: '^([A-Z0-9]{20})' },
-      { type: 'length', value: 20 }
+      { type: 'length', value: 20 },
+      // eg, 1234ASDF5678QWER00ZZ (20 characters, uppercase)
+      { type: 'regex', value: '([A-Z0-9]{20})' }
     ]
   }
 ]
@@ -42,8 +44,10 @@ const requiredInputs = [
     placeholder: '',
     validation: [
       { type: 'required' },
-      { type: 'regex', value: '^([a-zA-Z0-9]{2}-[a-zA-Z0-9]{8})' },
-      { type: 'length', value: 11 } // 11 is including the dash
+      // 11 is including the dash
+      { type: 'length', value: 11 },
+      // eg, 99-99999999 (2 characters, followed by a dash, followed by 8 characters)
+      { type: 'regex', value: '^([a-zA-Z0-9]{2}-[a-zA-Z0-9]{8})' }
     ]
   },
   {

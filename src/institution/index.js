@@ -73,7 +73,7 @@ class Institution extends Component {
   handleSubmit(event, token) {
     event.preventDefault()
 
-    this.setState({fetching: true})
+    this.setState({ fetching: true })
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
@@ -196,9 +196,7 @@ class Institution extends Component {
               return (
                 <InputSelect
                   key={searchInput.id}
-                  label={searchInput.label}
-                  inputId={searchInput.id}
-                  options={searchInput.options}
+                  {...searchInput}
                   onChange={this.onInputChange}
                   value={
                     state && state.institution
@@ -228,9 +226,7 @@ class Institution extends Component {
             return (
               <InputText
                 key={searchInput.id}
-                label={searchInput.label}
-                inputId={searchInput.id}
-                placeholder={searchInput.placeholder}
+                {...searchInput}
                 value={
                   state && state.institution
                     ? state.institution[searchInput.id]
@@ -265,7 +261,7 @@ class Institution extends Component {
 
           <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
 
-          {this.state.fetching ? <Loading className="LoadingInline"/> : null}
+          {this.state.fetching ? <Loading className="LoadingInline" /> : null}
 
           {this.state.error ? (
             <Alert
