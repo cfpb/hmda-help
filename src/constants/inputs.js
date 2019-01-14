@@ -9,7 +9,12 @@ const searchInputs = [
     id: 'lei',
     name: 'lei',
     defaultValue: '',
-    placeholder: '987875HAG543RFDAHG54'
+    placeholder: '987875HAG543RFDAHG54',
+    validation: [
+      { type: 'required' },
+      { type: 'regex', value: '^([A-Z0-9]{20})' },
+      { type: 'length', value: 20 }
+    ]
   }
 ]
 
@@ -19,7 +24,8 @@ const requiredInputs = [
     id: 'respondentName',
     name: 'respondentName',
     defaultValue: '',
-    placeholder: ''
+    placeholder: '',
+    validation: [{ type: 'required' }]
   },
   {
     label: 'Email Domains',
@@ -33,7 +39,12 @@ const requiredInputs = [
     id: 'taxId',
     name: 'taxId',
     defaultValue: '',
-    placeholder: ''
+    placeholder: '',
+    validation: [
+      { type: 'required' },
+      { type: 'regex', value: '^([a-zA-Z0-9]{2}-[a-zA-Z0-9]{8})' },
+      { type: 'length', value: 11 } // 11 is including the dash
+    ]
   },
   {
     label: 'Agency Code',
@@ -42,7 +53,8 @@ const requiredInputs = [
     defaultValue: '',
     placeholder: '',
     type: 'radio',
-    options: agencyCodes
+    options: agencyCodes,
+    validation: [{ type: 'required' }]
   }
 ]
 
