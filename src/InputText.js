@@ -6,21 +6,28 @@ class InputText extends Component {
     super(props)
 
     this.state = {
-      value: props.value || ''
+      value: props.value || '',
+      error: null
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleBlur = this.handleBlur.bind(this)
   }
 
   handleChange(event) {
     this.setState({
       value: event.target.value
     })
-    if (this.props.validation) {
-      validate(this.props.validation, event.target.value)
-    }
     if (this.props.onChange) {
       this.props.onChange(event)
+    }
+  }
+
+  handleBlur(event) {
+    if (this.props.validation) {
+      this.setState({
+        error: validate(this.props.validation, event.target.value)
+      })
     }
   }
 
@@ -28,6 +35,7 @@ class InputText extends Component {
     return (
       <React.Fragment>
         <label>{this.props.label}</label>
+        {this.state.error ? this.state.error : null}
         <input
           ref={this.props.innerRef}
           type="text"
@@ -36,6 +44,7 @@ class InputText extends Component {
           placeholder={this.props.placeholder}
           value={this.state.value}
           onChange={this.handleChange}
+          onBlur={this.handleBlur}
           disabled={this.props.disabled || false}
           maxLength={this.props.maxLength || ''}
           size={this.props.maxLength || 75}
