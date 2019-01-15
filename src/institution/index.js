@@ -70,14 +70,16 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    console.log(event)
-    this.setState({ [event.target.id]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   onInputBlur() {
-    console.log(this.state)
-    validateAll(searchInputs.concat(requiredInputs), this.state)
-    console.log('form input blur')
+    this.setState({
+      disabledSubmit: validateAll(
+        searchInputs.concat(requiredInputs),
+        this.state
+      )
+    })
   }
 
   handleSubmit(event, token) {
@@ -221,10 +223,7 @@ class Institution extends Component {
               return (
                 <InputRadio
                   key={searchInput.id}
-                  label={searchInput.label}
-                  inputId={searchInput.id}
-                  options={searchInput.options}
-                  name={searchInput.name}
+                  {...searchInput}
                   onChange={this.onInputChange}
                   onBlur={this.onInputBlur}
                   value={

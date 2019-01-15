@@ -42,12 +42,42 @@ const validateInput = (validation, inputValue) => {
 }
 
 const validateAll = (inputs, state) => {
+  console.log('validateAll', state)
   let error = false
   const inputLength = inputs.length
 
   for (let i = 0; i < inputLength; i++) {
-    if (inputs[i].validation) console.log(inputs[i], state[inputs[i].id])
+    if (inputs[i].validation) {
+      const currentValue = state[inputs[i].id]
+      const currentValidation = inputs[i].validation
+      const validationLength = currentValidation.length
+
+      for (let n = 0; n < validationLength; n++) {
+        if (currentValidation[n].type === 'required') {
+          if (!_hasContent(currentValue)) {
+            error = true
+            break
+          }
+        }
+
+        if (currentValidation[n].type === 'length') {
+          if (!_isCorrectLength(currentValidation[n].value, currentValue)) {
+            error = true
+            break
+          }
+        }
+
+        if (currentValidation[n].type === 'regex') {
+          if (_regexMatch(currentValidation[n].value, currentValue) === -1) {
+            error = true
+            break
+          }
+        }
+      }
+    }
   }
+
+  return error
 }
 
 export { validateInput, validateAll }

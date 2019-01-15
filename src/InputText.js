@@ -15,7 +15,6 @@ class InputText extends Component {
   }
 
   handleChange(event) {
-    console.log(this.state)
     this.setState({
       value: event.target.value
     })
@@ -43,8 +42,8 @@ class InputText extends Component {
         <input
           ref={this.props.innerRef}
           type="text"
-          name={this.props.inputId}
-          id={this.props.inputId}
+          name={this.props.id}
+          id={this.props.id}
           placeholder={this.props.placeholder}
           value={this.state.value}
           onChange={this.handleChange}
