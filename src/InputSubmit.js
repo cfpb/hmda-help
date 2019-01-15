@@ -16,6 +16,7 @@ class InputSubmit extends Component {
         className="inputSubmit"
         type="submit"
         value={values[this.props.actionType]}
+        disabled={this.props.disabled || false}
       />
     )
   }

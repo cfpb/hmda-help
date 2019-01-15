@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import validate from './utils/validate'
+import { validateInput } from './utils/validate'
 
 class InputText extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class InputText extends Component {
   }
 
   handleChange(event) {
+    console.log(this.state)
     this.setState({
       value: event.target.value
     })
@@ -26,8 +27,11 @@ class InputText extends Component {
   handleBlur(event) {
     if (this.props.validation) {
       this.setState({
-        error: validate(this.props.validation, event.target.value)
+        error: validateInput(this.props.validation, event.target.value)
       })
+    }
+    if (this.props.onBlur) {
+      this.props.onBlur()
     }
   }
 

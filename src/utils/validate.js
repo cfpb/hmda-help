@@ -10,7 +10,7 @@ const _regexMatch = (pattern, inputValue) => {
   return inputValue.search(pattern)
 }
 
-export default (validation, inputValue) => {
+const validateInput = (validation, inputValue) => {
   let message = null
 
   const validationLength = validation.length
@@ -38,7 +38,16 @@ export default (validation, inputValue) => {
     }
   }
 
-  console.log(message)
-
   return message
 }
+
+const validateAll = (inputs, state) => {
+  let error = false
+  const inputLength = inputs.length
+
+  for (let i = 0; i < inputLength; i++) {
+    if (inputs[i].validation) console.log(inputs[i], state[inputs[i].id])
+  }
+}
+
+export { validateInput, validateAll }

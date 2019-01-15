@@ -6,6 +6,7 @@ import {
   nestInstitutionStateForAPI,
   flattenApiForInstitutionState
 } from '../utils/convert'
+import { validateAll } from '../utils/validate'
 
 import OtherFields from './OtherFields'
 import InputText from '../InputText'
@@ -36,6 +37,7 @@ class Institution extends Component {
       wasAddition: false,
       showOtherFields: false,
       fetching: false,
+      disabledSubmit: true,
       ...defaultInstitutionState
     }
 
@@ -43,6 +45,7 @@ class Institution extends Component {
     this.getErrorHeading = this.getErrorHeading.bind(this)
     this.getErrorText = this.getErrorText.bind(this)
     this.onInputChange = this.onInputChange.bind(this)
+    this.onInputBlur = this.onInputBlur.bind(this)
     this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
   }
 
@@ -67,7 +70,14 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
+    console.log(event)
     this.setState({ [event.target.id]: event.target.value })
+  }
+
+  onInputBlur() {
+    console.log(this.state)
+    validateAll(searchInputs.concat(requiredInputs), this.state)
+    console.log('form input blur')
   }
 
   handleSubmit(event, token) {
@@ -198,6 +208,7 @@ class Institution extends Component {
                   key={searchInput.id}
                   {...searchInput}
                   onChange={this.onInputChange}
+                  onBlur={this.onInputBlur}
                   value={
                     state && state.institution
                       ? state.institution[searchInput.id]
@@ -215,6 +226,7 @@ class Institution extends Component {
                   options={searchInput.options}
                   name={searchInput.name}
                   onChange={this.onInputChange}
+                  onBlur={this.onInputBlur}
                   value={
                     state && state.institution
                       ? state.institution[searchInput.id]
@@ -238,6 +250,7 @@ class Institution extends Component {
                     : false
                 }
                 onChange={this.onInputChange}
+                onBlur={this.onInputBlur}
               />
             )
           })}
@@ -259,7 +272,10 @@ class Institution extends Component {
             />
           ) : null}
 
-          <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
+          <InputSubmit
+            actionType={pathname === '/add' ? 'add' : 'update'}
+            disabled={this.state.disabledSubmit}
+          />
 
           {this.state.fetching ? <Loading className="LoadingInline" /> : null}
 
