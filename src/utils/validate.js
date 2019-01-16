@@ -42,7 +42,6 @@ const validateInput = (validation, inputValue) => {
 }
 
 const validateAll = (inputs, state) => {
-  console.log('validateAll', state)
   let error = false
   const inputLength = inputs.length
 

@@ -70,7 +70,13 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value })
+    if (event.target.type === 'radio') {
+      this.setState({ [event.target.name]: event.target.value }, () => {
+        this.onInputBlur()
+      })
+    } else {
+      this.setState({ [event.target.name]: event.target.value })
+    }
   }
 
   onInputBlur() {
@@ -175,7 +181,7 @@ class Institution extends Component {
         }
       >
         <p>
-          You can update this institution by using the form below,{' '}
+          You can update this institution by using the form on this page,{' '}
           <Link to="/">search for an institution</Link>, or{' '}
           <Link to="/add">add a new institution.</Link>
         </p>
@@ -225,7 +231,6 @@ class Institution extends Component {
                   key={searchInput.id}
                   {...searchInput}
                   onChange={this.onInputChange}
-                  onBlur={this.onInputBlur}
                   value={
                     state && state.institution
                       ? state.institution[searchInput.id]

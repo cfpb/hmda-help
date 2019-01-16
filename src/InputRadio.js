@@ -11,7 +11,6 @@ class InputRadio extends Component {
     }
 
     this.handleChange = this.handleChange.bind(this)
-    this.handleBlur = this.handleBlur.bind(this)
   }
 
   handleChange(event) {
@@ -20,18 +19,6 @@ class InputRadio extends Component {
     })
     if (this.props.onChange) {
       this.props.onChange(event)
-    }
-    if (this.props.onBlur) {
-      this.props.onBlur()
-    }
-
-    //this.handleBlur(event)
-  }
-
-  handleBlur(event) {
-    console.log('radio handleBlur')
-    if (this.props.onBlur) {
-      this.props.onBlur()
     }
   }
 
@@ -49,7 +36,6 @@ class InputRadio extends Component {
                   name={this.props.id}
                   value={option.id}
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur}
                   checked={
                     parseInt(this.state.value, 10) === parseInt(option.id, 10)
                       ? true
