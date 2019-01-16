@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import ResultsHeading from './ResultsHeading'
 import ResultsActions from './ResultsActions'
@@ -43,7 +44,7 @@ class SearchResults extends Component {
                     <td>{institution.agency}</td>
                     <ResultsActions
                       institution={institution}
-                      i={i}
+                      index={i}
                       error={error}
                       handleDeleteClick={handleDeleteClick}
                       tables={this.tables}
@@ -103,4 +104,9 @@ class SearchResults extends Component {
   }
 }
 
+SearchResults.propTypes = {
+  institutions: PropTypes.array.isRequired,
+  handleDeleteClick: PropTypes.func.isRequired,
+  error: PropTypes.string
+}
 export default SearchResults

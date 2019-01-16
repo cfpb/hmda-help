@@ -63,7 +63,7 @@ p {
   margin-bottom: 0;
 }
 
-.alert-text {
+.alert-text:first-of-type {
   margin-bottom: 0;
   margin-top: 0;
 }

@@ -16,14 +16,19 @@ class InputSubmit extends Component {
         className="inputSubmit"
         type="submit"
         value={values[this.props.actionType]}
-        disabled={this.props.disabled || false}
+        disabled={this.props.disabled}
       />
     )
   }
 }
 
+InputSubmit.defaultProps = {
+  disabled: false
+}
+
 InputSubmit.propTypes = {
-  actionType: PropTypes.string.isRequired
+  actionType: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
 }
 
 export default InputSubmit

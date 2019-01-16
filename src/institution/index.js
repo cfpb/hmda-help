@@ -23,8 +23,7 @@ let defaultInstitutionState = {}
 searchInputs
   .concat(requiredInputs, otherInputs)
   .forEach(
-    textInput =>
-      (defaultInstitutionState[textInput.id] = textInput.defaultValue)
+    textInput => (defaultInstitutionState[textInput.id] = textInput.value)
   )
 
 class Institution extends Component {
@@ -220,7 +219,7 @@ class Institution extends Component {
                   value={
                     state && state.institution
                       ? state.institution[searchInput.id]
-                      : searchInput.defaultValue
+                      : searchInput.value
                   }
                 />
               )
@@ -234,7 +233,7 @@ class Institution extends Component {
                   value={
                     state && state.institution
                       ? state.institution[searchInput.id]
-                      : searchInput.defaultValue
+                      : searchInput.value
                   }
                 />
               )
@@ -246,7 +245,7 @@ class Institution extends Component {
                 value={
                   state && state.institution
                     ? state.institution[searchInput.id]
-                    : searchInput.defaultValue
+                    : searchInput.value
                 }
                 disabled={
                   pathname === '/update' && searchInput.id === 'lei'
