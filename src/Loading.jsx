@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import './Loading.css'
 
@@ -10,6 +11,10 @@ const LoadingIcon = props => {
       <div className="LoadingIcon" />
     </div>
   )
+}
+
+LoadingIcon.propTypes = {
+  className: PropTypes.string
 }
 
 export default LoadingIcon

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import './InputRadio.css'
 
@@ -52,6 +53,20 @@ class InputRadio extends Component {
       </React.Fragment>
     )
   }
+}
+
+InputRadio.defaultProps = {
+  disabled: false
+}
+
+InputRadio.propTypes = {
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
+  options: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool
 }
 
 export default React.forwardRef((props, ref) => {

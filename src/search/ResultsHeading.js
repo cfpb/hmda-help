@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const ResultsHeading = props => {
   if (props.numOfResults === 0) return <h2>Sorry, no results were found.</h2>
@@ -9,6 +10,10 @@ const ResultsHeading = props => {
       {props.numOfResults} {resultsText} found
     </h2>
   )
+}
+
+ResultsHeading.propTypes = {
+  numOfResults: PropTypes.number.isRequired
 }
 
 export default ResultsHeading

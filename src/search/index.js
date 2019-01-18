@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import './Form.css'
@@ -76,7 +77,7 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.setState({fetching: true})
+    this.setState({ fetching: true })
 
     fetch(`/v2/admin/institutions/${this.lei.value}`, {
       headers: {
@@ -127,21 +128,19 @@ class Form extends Component {
           onSubmit={event => this.handleSubmit(event)}
         >
           {searchInputs.map(textInput => {
+            delete textInput.validation
             return (
               <InputText
                 key={textInput.id}
                 ref={input => {
                   this[textInput.id] = input
                 }}
-                label={textInput.label}
-                inputId={textInput.id}
-                placeholder={textInput.placeholder}
-                value={textInput.defaultValue}
+                {...textInput}
               />
             )
           })}
           <InputSubmit actionType="search" />
-          {this.state.fetching ? <Loading className="LoadingInline"/> : null}
+          {this.state.fetching ? <Loading className="LoadingInline" /> : null}
         </form>
 
         {this.state.institutions ? (
@@ -177,6 +176,10 @@ class Form extends Component {
       </React.Fragment>
     )
   }
+}
+
+Form.propTypes = {
+  token: PropTypes.string.isRequired
 }
 
 export default Form

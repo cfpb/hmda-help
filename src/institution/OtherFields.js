@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import InputText from '../InputText'
 import InputSelect from '../InputSelect'
@@ -7,14 +8,13 @@ import InputRadio from '../InputRadio'
 import { otherInputs } from '../constants/inputs'
 
 const OtherFields = props => {
+  console.log(props)
   return otherInputs.map(otherInput => {
     if (otherInput.type === 'select') {
       return (
         <InputSelect
           key={otherInput.id}
-          label={otherInput.label}
-          inputId={otherInput.id}
-          options={otherInput.options}
+          {...otherInput}
           onChange={props.onInputChange}
           value={
             props.institution
@@ -28,10 +28,7 @@ const OtherFields = props => {
       return (
         <InputRadio
           key={otherInput.id}
-          label={otherInput.label}
-          inputId={otherInput.id}
-          options={otherInput.options}
-          name={otherInput.name}
+          {...otherInput}
           onChange={props.onInputChange}
           value={
             props.institution
@@ -44,9 +41,7 @@ const OtherFields = props => {
     return (
       <InputText
         key={otherInput.id}
-        label={otherInput.label}
-        inputId={otherInput.id}
-        placeholder={otherInput.placeholder}
+        {...otherInput}
         value={
           props.institution
             ? props.institution[otherInput.id]
@@ -56,6 +51,11 @@ const OtherFields = props => {
       />
     )
   })
+}
+
+OtherFields.propTypes = {
+  institution: PropTypes.object,
+  onInputChange: PropTypes.func.isRequired
 }
 
 export default OtherFields

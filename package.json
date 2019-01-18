@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "keycloak-js": "4.5.0",
+    "prop-types": "15.6.2",
     "react": "16.7",
     "react-dom": "16.7",
     "react-router-dom": "4.3.1",

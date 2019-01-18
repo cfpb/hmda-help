@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
 import { validateInput } from './utils/validate'
 
 class InputText extends Component {
@@ -48,13 +50,29 @@ class InputText extends Component {
           value={this.state.value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
-          disabled={this.props.disabled || false}
+          disabled={this.props.disabled}
           maxLength={this.props.maxLength || ''}
           size={this.props.maxLength || 75}
         />
       </React.Fragment>
     )
   }
+}
+
+InputText.defaultProps = {
+  disabled: false
+}
+
+InputText.propTypes = {
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool,
+  validation: PropTypes.array
 }
 
 export default React.forwardRef((props, ref) => {

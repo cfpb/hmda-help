@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import './InputSelect.css'
 
@@ -31,7 +32,7 @@ class InputSelect extends Component {
           name={this.props.inputId}
           id={this.props.inputId}
           onChange={this.handleChange}
-          disabled={this.props.disabled || false}
+          disabled={this.props.disabled}
           value={this.state.value}
         >
           {this.props.options.map((option, i) => {
@@ -45,6 +46,20 @@ class InputSelect extends Component {
       </React.Fragment>
     )
   }
+}
+
+InputSelect.defaultProps = {
+  disabled: false
+}
+
+InputSelect.propTypes = {
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
+  options: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool
 }
 
 export default React.forwardRef((props, ref) => {
