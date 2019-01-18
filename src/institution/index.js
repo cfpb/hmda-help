@@ -6,6 +6,7 @@ import {
   nestInstitutionStateForAPI,
   flattenApiForInstitutionState
 } from '../utils/convert'
+import { validateAll } from '../utils/validate'
 
 import OtherFields from './OtherFields'
 import InputText from '../InputText'
@@ -36,6 +37,7 @@ class Institution extends Component {
       wasAddition: false,
       showOtherFields: false,
       fetching: false,
+      disabledSubmit: true,
       ...defaultInstitutionState
     }
 
@@ -43,6 +45,7 @@ class Institution extends Component {
     this.getErrorHeading = this.getErrorHeading.bind(this)
     this.getErrorText = this.getErrorText.bind(this)
     this.onInputChange = this.onInputChange.bind(this)
+    this.onInputBlur = this.onInputBlur.bind(this)
     this.toggleShowOtherFields = this.toggleShowOtherFields.bind(this)
   }
 
@@ -67,13 +70,28 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    this.setState({ [event.target.id]: event.target.value })
+    if (event.target.type === 'radio') {
+      this.setState({ [event.target.name]: event.target.value }, () => {
+        this.onInputBlur()
+      })
+    } else {
+      this.setState({ [event.target.name]: event.target.value })
+    }
+  }
+
+  onInputBlur() {
+    this.setState({
+      disabledSubmit: validateAll(
+        searchInputs.concat(requiredInputs),
+        this.state
+      )
+    })
   }
 
   handleSubmit(event, token) {
     event.preventDefault()
 
-    this.setState({fetching: true})
+    this.setState({ fetching: true })
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
@@ -163,7 +181,7 @@ class Institution extends Component {
         }
       >
         <p>
-          You can update this institution by using the form below,{' '}
+          You can update this institution by using the form on this page,{' '}
           <Link to="/">search for an institution</Link>, or{' '}
           <Link to="/add">add a new institution.</Link>
         </p>
@@ -196,10 +214,9 @@ class Institution extends Component {
               return (
                 <InputSelect
                   key={searchInput.id}
-                  label={searchInput.label}
-                  inputId={searchInput.id}
-                  options={searchInput.options}
+                  {...searchInput}
                   onChange={this.onInputChange}
+                  onBlur={this.onInputBlur}
                   value={
                     state && state.institution
                       ? state.institution[searchInput.id]
@@ -212,10 +229,7 @@ class Institution extends Component {
               return (
                 <InputRadio
                   key={searchInput.id}
-                  label={searchInput.label}
-                  inputId={searchInput.id}
-                  options={searchInput.options}
-                  name={searchInput.name}
+                  {...searchInput}
                   onChange={this.onInputChange}
                   value={
                     state && state.institution
@@ -228,9 +242,7 @@ class Institution extends Component {
             return (
               <InputText
                 key={searchInput.id}
-                label={searchInput.label}
-                inputId={searchInput.id}
-                placeholder={searchInput.placeholder}
+                {...searchInput}
                 value={
                   state && state.institution
                     ? state.institution[searchInput.id]
@@ -242,6 +254,7 @@ class Institution extends Component {
                     : false
                 }
                 onChange={this.onInputChange}
+                onBlur={this.onInputBlur}
               />
             )
           })}
@@ -263,9 +276,12 @@ class Institution extends Component {
             />
           ) : null}
 
-          <InputSubmit actionType={pathname === '/add' ? 'add' : 'update'} />
+          <InputSubmit
+            actionType={pathname === '/add' ? 'add' : 'update'}
+            disabled={this.state.disabledSubmit}
+          />
 
-          {this.state.fetching ? <Loading className="LoadingInline"/> : null}
+          {this.state.fetching ? <Loading className="LoadingInline" /> : null}
 
           {this.state.error ? (
             <Alert

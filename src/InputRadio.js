@@ -33,7 +33,7 @@ class InputRadio extends Component {
                 <input
                   type="radio"
                   id={`radio${i}`}
-                  name={this.props.inputId}
+                  name={this.props.id}
                   value={option.id}
                   onChange={this.handleChange}
                   checked={
