@@ -45,9 +45,9 @@ const requiredInputs = [
     validation: [
       { type: 'required' },
       // 11 is including the dash
-      { type: 'length', value: 11 },
+      { type: 'length', value: 10 },
       // eg, 99-99999999 (2 digits, followed by a dash, followed by 8 digits)
-      { type: 'regex', value: '^([0-9]{2}-[0-9]{8})' }
+      { type: 'regex', value: '^([0-9]{2}-[0-9]{7})' }
     ]
   },
   {
