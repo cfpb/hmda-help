@@ -6,7 +6,6 @@
 [type='radio'] + label {
   cursor: pointer;
   display: inline-block;
-  font-family: 'SourceSansPro';
   margin: 0.65em 0 0.65em 10px;
   max-width: 100%;
 }
