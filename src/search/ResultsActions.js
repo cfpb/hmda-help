@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-import Alert from '../Alert'
-import Loading from '../Loading.jsx'
-
 import './Results.css'
-import '../Loading.css'
+
+const Alert = lazy(() => import('../Alert'))
+const Loading = lazy(() => import('../Loading.jsx'))
 
 class ResultsActions extends Component {
   constructor(props) {

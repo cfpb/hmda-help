@@ -1,21 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import './Form.css'
-import '../Loading.css'
 
 import { searchInputs } from '../constants/inputs.js'
-import {
-  flattenApiForInstitutionState,
-  nestInstitutionStateForAPI
-} from '../utils/convert'
+import { flattenApiForInstitutionState } from '../utils/convert'
 
-import Results from './Results'
 import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
-import Alert from '../Alert'
-import Loading from '../Loading.jsx'
+
+const Results = lazy(() => import('./Results'))
+const Alert = lazy(() => import('../Alert'))
+const Loading = lazy(() => import('../Loading.jsx'))
 
 const defaultState = {
   error: null,
@@ -48,30 +45,32 @@ class Form extends Component {
   }
 
   handleDeleteClick(institution, key) {
-    fetch('/v2/admin/institutions', {
-      method: 'DELETE',
-      body: JSON.stringify(nestInstitutionStateForAPI(institution)),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.props.token
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          this.setState({ errorDelete: defaultState.errorDelete })
-          return response.json()
-        } else {
-          throw new Error(response.status)
+    import('../utils/convert').then(convert => {
+      fetch('/v2/admin/institutions', {
+        method: 'DELETE',
+        body: JSON.stringify(convert.nestInstitutionStateForAPI(institution)),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.props.token
         }
       })
-      .then(json => {
-        // need to remove the institution from the state
-        this.removeAnInstitutionFromState(key)
-      })
-      .catch(error => {
-        this.setState({ errorDelete: error.message })
-      })
+        .then(response => {
+          if (response.ok) {
+            this.setState({ errorDelete: defaultState.errorDelete })
+            return response.json()
+          } else {
+            throw new Error(response.status)
+          }
+        })
+        .then(json => {
+          // need to remove the institution from the state
+          this.removeAnInstitutionFromState(key)
+        })
+        .catch(error => {
+          this.setState({ errorDelete: error.message })
+        })
+    })
   }
 
   handleSubmit(event) {

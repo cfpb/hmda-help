@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, lazy, Suspense } from 'react'
 import { BrowserRouter as Switch, Route } from 'react-router-dom'
 import Keycloak from 'keycloak-js'
 
-import NotAuthorized from './NotAuthorized'
-import Header from './Header'
-import Search from './search/'
-import Institution from './institution/'
 import './App.css'
+
+const NotAuthorized = lazy(() => import('./NotAuthorized'))
+const Header = lazy(() => import('./Header'))
+const Search = lazy(() => import('./search/'))
+const Institution = lazy(() => import('./institution/'))
 
 const keycloak = Keycloak(process.env.PUBLIC_URL + '/keycloak.json')
 
@@ -68,29 +69,31 @@ class App extends Component {
     if (this.state.authenticated) {
       if (this.state.authorized) {
         return (
-          <Switch basename="/hmda-help">
-            <React.Fragment>
-              <Header token={this.state.token} logout={keycloak.logout} />
-              <ProtectedRoute
-                exact
-                path="/"
-                component={Search}
-                token={this.state.token}
-              />
-              <ProtectedRoute
-                exact
-                path="/add"
-                component={Institution}
-                token={this.state.token}
-              />
-              <ProtectedRoute
-                exact
-                path="/update"
-                component={Institution}
-                token={this.state.token}
-              />
-            </React.Fragment>
-          </Switch>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Switch basename="/hmda-help">
+              <React.Fragment>
+                <Header token={this.state.token} logout={keycloak.logout} />
+                <ProtectedRoute
+                  exact
+                  path="/"
+                  component={Search}
+                  token={this.state.token}
+                />
+                <ProtectedRoute
+                  exact
+                  path="/add"
+                  component={Institution}
+                  token={this.state.token}
+                />
+                <ProtectedRoute
+                  exact
+                  path="/update"
+                  component={Institution}
+                  token={this.state.token}
+                />
+              </React.Fragment>
+            </Switch>
+          </Suspense>
         )
       } else {
         return <NotAuthorized />
