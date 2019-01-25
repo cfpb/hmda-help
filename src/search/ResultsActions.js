@@ -40,7 +40,9 @@ class ResultsActions extends Component {
     const { institution, index, error, handleDeleteClick } = this.props
 
     return this.state.deleting ? (
-      <Loading className="LoadingInline" />
+      <td className="action">
+        <Loading className="LoadingInline" />
+      </td>
     ) : (
       <td className="action">
         <div className="initialActions" id={`initialActions${index}`}>
