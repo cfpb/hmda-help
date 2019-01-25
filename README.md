@@ -1,27 +1,66 @@
 # HMDA Help
 
-__This project is a work in progress.__
+The HMDA Help application allows for management (create, update, delete) of HMDA institutions.
 
-### Project description coming soon.
+_This project was bootstrapped with [Create React App (CRA)](https://facebook.github.io/create-react-app/)._
 
-_This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find the most recent information on how to perform common tasks in [this guide](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)._
+## Installation
 
-### Get up and running ... for now
+We use node and yarn to manage front-end dependencies. You should have both [node](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/lang/en/docs/install/) installed.
 
-#### Back-end
+```shell
+$ git clone git@github.com:cfpb/hmda-help.git
+$ cd hmda-help
+$ yarn
+```
 
-To be able to use the back-end API:
+## Building and viewing
 
-- Open a terminal window and create a Cassandra database with
-  `docker run -it  -p 9042:9042 cassandra`
-- Open a different terminal window and run
-  `docker run -p 8080:8080 -p 8081:8081 -p 8082:8082 -p 9080:9080 -p 8558:8558 -e HMDA_RUNTIME_MODE=dev-node -e CASSANDRA_CLUSTER_HOSTS=192.168.99.100 hmda/hmda-platform:2.5.3`
+Due to the back-end API and authentication requirements there are 2 files changes required before building the UI:
 
-Once that is complete that back-end API should be available.
+### 1. package.json
 
-#### Front-end (this repo)
+Update [`package.json`](package.json) to add a `proxy`. This should be set to the development environment. For example:
 
-After closing the repo:
+```json
+{
+  "homepage": "/hmda-help",
+  "proxy": "https://[devenv].cfpb.gov"
+}
+```
 
-- run `yarn`
-- run `yarn start` to begin using the UI in development mode (see [create react apps instructions](https://github.com/facebook/create-react-app) for more information)
+This will proxy all API requests to the `[devenv].cfpb.gov` environment. See the [CRA "Proxying API Requests in Development" documentation](https://facebook.github.io/create-react-app/docs/proxying-api-requests-in-development) for more details.
+
+### 2. keycloak.json
+
+Update the [`"auth-server-url": "/auth"`](https://github.com/cfpb/hmda-help/blob/2a36dd2ce3e65d2e5fd42e3c849566aa30359596/public/keycloak.json#L3) property of the [`keycloak.json`](public/keycloak.json) file to use the `[devenv].cfpb.gov` environment.
+
+For example:
+
+```json
+{
+  "realm": "hmda2",
+  "auth-server-url": "https://[devenv].cfpb.gov/auth",
+  "ssl-required": "all",
+  "resource": "hmda2-api",
+  "public-client": true,
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}
+```
+
+This will allow authentication using Keycloak.
+
+### `yarn start`
+
+Now you can run `yarn start` to begin using the UI in development mode. See the [available scripts](https://facebook.github.io/create-react-app/docs/available-scripts) in the CRA documentation for more details.
+
+## Getting involved
+
+[CONTRIBUTING](CONTRIBUTING.md)
+
+## Open source licensing info
+
+1. [TERMS](TERMS.md)
+2. [LICENSE](LICENSE)
+3. [CFPB Source Code Policy](https://github.com/cfpb/source-code-policy/)
