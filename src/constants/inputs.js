@@ -9,13 +9,17 @@ const searchInputs = [
     id: 'lei',
     name: 'lei',
     value: '',
-    placeholder: '987875HAG543RFDAHG54',
+    placeholder: 'eg 987875HAG543RFDAHG54',
     // order matters
     validation: [
       { type: 'required' },
       { type: 'length', value: 20 },
       // eg, 1234ASDF5678QWER00ZZ (20 characters)
-      { type: 'regex', value: '([a-zA-Z0-9]{20})' }
+      {
+        type: 'regex',
+        value: '([a-zA-Z0-9]{20})',
+        message: 'Must contain only a-z, A-Z, and 0-9 (no special characters).'
+      }
     ]
   }
 ]
@@ -41,13 +45,17 @@ const requiredInputs = [
     id: 'taxId',
     name: 'taxId',
     value: '',
-    placeholder: '',
+    placeholder: 'eg 99-9999999',
     validation: [
       { type: 'required' },
-      // 11 is including the dash
+      // 10 is including the dash
       { type: 'length', value: 10 },
       // eg, 99-9999999 (2 digits, followed by a dash, followed by 7 digits)
-      { type: 'regex', value: '^([0-9]{2}-[0-9]{7})' }
+      {
+        type: 'regex',
+        value: '^([0-9]{2}-[0-9]{7})',
+        message: 'Must be 2 digits, followed by a dash, followed by 7 digits.'
+      }
     ]
   },
   {
