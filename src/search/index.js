@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-import './Form.css'
 import '../Loading.css'
 
 import { searchInputs } from '../constants/inputs.js'
