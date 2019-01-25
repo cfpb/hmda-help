@@ -16,58 +16,6 @@ nav a {
   margin-right: 2em;
 }
 
-input[type='text'] {
-  border: 0.1rem solid #5b616b;
-  border-radius: 0;
-  box-sizing: border-box;
-  color: #212121;
-  display: block;
-  font-family: SourceSansPro;
-  font-size: 1.7rem;
-  height: 4.4rem;
-  line-height: 1.3;
-  margin: 0.2em 0;
-  max-width: 46rem;
-  padding: 1rem 0.7em;
-}
-input[type='text']:disabled {
-  border: 0.1rem solid #aeb0b5;
-  color: #aeb0b5;
-  cursor: not-allowed;
-}
-input.input-error {
-  border-left: 4px solid #cd2026;
-}
-.input-error input {
-  border: 3px solid #cd2026;
-  width: calc(100% + 1.9rem);
-}
-.input-error label {
-  margin-top: 0;
-}
-.input-error .input-inline {
-  border: 0.1rem solid #5b616b;
-  width: inherit;
-}
-.input-error .input-inline-error {
-  border: 3px solid #cd2026;
-}
-
-.input-error-label {
-  display: block;
-  font-size: 1.7rem;
-  font-weight: 700;
-}
-
-.input-error-message {
-  color: #cd2026;
-  display: block;
-  font-size: 1.7rem;
-  font-weight: 700;
-  padding-bottom: 3px;
-  padding-top: 3px;
-}
-
 label {
   display: block;
   font-family: SourceSansProBold;
