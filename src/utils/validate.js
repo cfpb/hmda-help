@@ -32,7 +32,7 @@ const validateInput = (validation, inputValue) => {
 
     if (validation[i].type === 'regex') {
       if (_regexMatch(validation[i].value, inputValue) === -1) {
-        message = `Must match the ${validation[i].value} pattern.`
+        message = validation[i].message
         break
       }
     }
