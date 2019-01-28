@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { validateInput } from './utils/validate'
 
+import './InputText.css'
+
 class InputText extends Component {
   constructor(props) {
     super(props)
@@ -40,10 +42,13 @@ class InputText extends Component {
     return (
       <React.Fragment>
         <label>{this.props.label}</label>
-        {this.state.error ? this.state.error : null}
+        {this.state.error ? (
+          <span className="input-error-message">{this.state.error}</span>
+        ) : null}
         <input
           ref={this.props.innerRef}
           type="text"
+          className={this.state.error ? 'input-error' : null}
           name={this.props.id}
           id={this.props.id}
           placeholder={this.props.placeholder}
