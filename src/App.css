@@ -12,6 +12,7 @@ nav a {
   margin-right: 2em;
 }
 
+<<<<<<< HEAD
 input[type='text'] {
   border: 0.1rem solid #5b616b;
   border-radius: 0;
@@ -63,6 +64,8 @@ input.input-error {
   padding-top: 3px;
 }
 
+=======
+>>>>>>> master
 label {
   display: block;
   font-weight: bold;

@@ -38,51 +38,60 @@ class ResultsActions extends Component {
   render() {
     const { institution, index, error, handleDeleteClick } = this.props
 
-    return this.state.deleting ? (
-      <Loading className="LoadingInline" />
-    ) : (
+    return (
       <td className="action">
-        <div className="initialActions" id={`initialActions${index}`}>
-          <Link
-            to={{ pathname: '/update', state: { institution: institution } }}
-          >
-            Update
-          </Link>
-          <button
-            className="delete"
-            onClick={event => this.toggleAreYouSure(index)}
-          >
-            Delete
-          </button>
-          <button
-            onClick={event => this.handleViewMoreClick(index)}
-            ref={element => this.buttons.set(index, element)}
-            className="showOtherFields"
-          >
-            Show other fields
-          </button>
-        </div>
-        <div className="areYouSure hidden" id={`areYouSure${index}`}>
-          <span>Are you sure?</span>{' '}
-          <button
-            className="delete"
-            onClick={event => {
-              this.setState({ deleting: true })
-              handleDeleteClick(institution, index, this.props.token)
-            }}
-          >
-            Yes
-          </button>
-          <button onClick={event => this.toggleAreYouSure(index)}>No</button>
-        </div>
-        {error ? (
-          <Alert
-            type="error"
-            heading="Access Denied"
-            text="Sorry, it doesn't look like you have the correct permissions to
-                  perform this action."
-          />
-        ) : null}
+        {this.state.deleting ? (
+          <Loading className="LoadingInline" />
+        ) : (
+          <React.Fragment>
+            <div className="initialActions" id={`initialActions${index}`}>
+              <Link
+                to={{
+                  pathname: '/update',
+                  state: { institution: institution }
+                }}
+              >
+                Update
+              </Link>
+              <button
+                className="delete"
+                onClick={event => this.toggleAreYouSure(index)}
+              >
+                Delete
+              </button>
+              <button
+                onClick={event => this.handleViewMoreClick(index)}
+                ref={element => this.buttons.set(index, element)}
+                className="showOtherFields"
+              >
+                Show other fields
+              </button>
+            </div>
+            <div className="areYouSure hidden" id={`areYouSure${index}`}>
+              <span>Are you sure?</span>{' '}
+              <button
+                className="delete"
+                onClick={event => {
+                  this.setState({ deleting: true })
+                  handleDeleteClick(institution, index, this.props.token)
+                }}
+              >
+                Yes
+              </button>
+              <button onClick={event => this.toggleAreYouSure(index)}>
+                No
+              </button>
+            </div>
+            {error ? (
+              <Alert
+                type="error"
+                heading="Access Denied"
+                text="Sorry, it doesn't look like you have the correct permissions to
+                    perform this action."
+              />
+            ) : null}
+          </React.Fragment>
+        )}
       </td>
     )
   }
