@@ -57,7 +57,7 @@ volumes: [
       }
 
     stage('Deploy') {
-      if (env.BRANCH_NAME == 'master') {
+      if (env.BRANCH_NAME == 'master' || isDeployPR) {
         container('helm') {
           sh "helm upgrade --install --force \
             --namespace=default \
