@@ -1,4 +1,4 @@
-FROM node:8.11.4-alpine as build-stage
+FROM node:8.16.0-alpine as build-stage
 WORKDIR /usr/src/app
 
 # install build dependencies
@@ -13,7 +13,7 @@ COPY public ./public
 
 RUN yarn build
 
-FROM nginx:1.15.1-alpine
+FROM nginx:1.15.12-alpine
 RUN rm -rf /etc/nginx/conf.d
 COPY nginx /etc/nginx
 COPY --from=build-stage /usr/src/app/build /usr/share/nginx/html/hmda-help
