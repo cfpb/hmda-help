@@ -14,7 +14,7 @@ COPY public ./public
 RUN yarn build
 
 FROM nginx:1.16-alpine
-ENV NGINX_USER=nginx
+ENV NGINX_USER=svc_nginx_hmda
 RUN rm -rf /etc/nginx/conf.d
 COPY nginx /etc/nginx
 COPY --from=build-stage /usr/src/app/build /usr/share/nginx/html/hmda-help
