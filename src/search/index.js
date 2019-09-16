@@ -19,7 +19,8 @@ import Loading from '../Loading.jsx'
 const defaultState = {
   error: null,
   errorDelete: null,
-  institutions: null
+  institutions: null,
+  year: null
 }
 
 class Form extends Component {
@@ -27,12 +28,12 @@ class Form extends Component {
     super(props)
 
     this.state = defaultState
-
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
     this.removeAnInstitutionFromState = this.removeAnInstitutionFromState.bind(
       this
     )
+    this.handleYearSelection = this.handleYearSelection.bind(this)
   }
 
   removeAnInstitutionFromState(key) {
@@ -78,7 +79,7 @@ class Form extends Component {
 
     this.setState({ fetching: true })
 
-    fetch(`/v2/admin/institutions/${this.lei.value}`, {
+    fetch(`/v2/admin/institutions/${this.lei.value}/year/${this.state.year}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -118,29 +119,40 @@ class Form extends Component {
       })
   }
 
+  handleYearSelection(y) {
+    this.setState({
+      institutions: null,
+      error: null,
+      fetching: false,
+      year: y
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
-        <h3>Search for institution records</h3>
-        <form
-          className="SearchForm"
-          onSubmit={event => this.handleSubmit(event)}
-        >
-          {searchInputs.map(textInput => {
-            delete textInput.validation
-            return (
-              <InputText
-                key={textInput.id}
-                ref={input => {
-                  this[textInput.id] = input
-                }}
-                {...textInput}
-              />
-            )
-          })}
-          <InputSubmit actionType="search" />
-          {this.state.fetching ? <Loading className="LoadingInline" /> : null}
-        </form>
+          <div >
+            <h3>Search for institution records</h3>
+            <form
+              className="SearchForm"
+              onSubmit={event => this.handleSubmit(event)}
+            >
+              {searchInputs.map(textInput => {
+                delete textInput.validation
+                return (
+                  <InputText
+                    key={textInput.id}
+                    ref={input => {
+                      this[textInput.id] = input
+                    }}
+                    {...textInput}
+                  />
+                )
+              })}
+              <InputSubmit actionType="search" />
+              {this.state.fetching ? <Loading className="LoadingInline" /> : null}
+            </form>
+          </div>
 
         {this.state.institutions ? (
           <Results
