@@ -78,11 +78,11 @@ class Form extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-     this.setState({ fetching: true })
-     this.setState({ institutions: [] })
-     console.log(FILING_PERIODS)
+    this.setState({ fetching: true,
+                    institutions: []
+                  })
+                  
     Object.keys(FILING_PERIODS).forEach((y) => {
-      console.log(FILING_PERIODS[y].id)
       let year = FILING_PERIODS[y].id
 
       fetch(`/v2/admin/institutions/${this.lei.value}/year/${year}`, {
