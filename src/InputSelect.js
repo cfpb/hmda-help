@@ -29,7 +29,7 @@ class InputSelect extends Component {
         <label>{this.props.label}</label>
         <select
           ref={this.props.innerRef}
-          name={this.props.inputId}
+          name={this.props.name}
           id={this.props.inputId}
           onChange={this.handleChange}
           disabled={this.props.disabled}

@@ -81,7 +81,7 @@ class Form extends Component {
     this.setState({ fetching: true,
                     institutions: []
                   })
-                  
+
     Object.keys(FILING_PERIODS).forEach((y) => {
       let year = FILING_PERIODS[y].id
 

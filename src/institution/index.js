@@ -89,7 +89,6 @@ class Institution extends Component {
 
   handleSubmit(event, token) {
     event.preventDefault()
-
     this.setState({ fetching: true })
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'

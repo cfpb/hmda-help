@@ -8,7 +8,6 @@ import InputRadio from '../InputRadio'
 import { otherInputs } from '../constants/inputs'
 
 const OtherFields = props => {
-  console.log(props)
   return otherInputs.map(otherInput => {
     if (otherInput.type === 'select') {
       return (
