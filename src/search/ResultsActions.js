@@ -71,7 +71,6 @@ class ResultsActions extends Component {
             <div className="areYouSure hidden" id={`areYouSure${index}`}>
               <span>Are you sure?</span>{' '}
               <button
-                className="delete"
                 onClick={event => {
                   this.setState({ deleting: true })
                   handleDeleteClick(institution, index, this.props.token)
@@ -79,7 +78,9 @@ class ResultsActions extends Component {
               >
                 Yes
               </button>
-              <button onClick={event => this.toggleAreYouSure(index)}>
+              <button
+              className="delete"
+              onClick={event => this.toggleAreYouSure(index)}>
                 No
               </button>
             </div>
