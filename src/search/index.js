@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 
 import '../Loading.css'
 
@@ -13,7 +12,6 @@ import {
 import Results from './Results'
 import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
-import Alert from '../Alert'
 import Loading from '../Loading.jsx'
 import FILING_PERIODS from '../constants/dates.js'
 
@@ -145,7 +143,7 @@ class Form extends Component {
             </form>
           </div>
 
-          <p>{this.state.fetching && this.state.institutions && this.state.institutions.length == 3 ? this.doneLoanding() : null}</p>
+          <p>{this.state.fetching && this.state.institutions && this.state.institutions.length === FILING_PERIODS.length ? this.doneLoanding() : null}</p>
 
         {this.state.institutions  ? (
           <Results
