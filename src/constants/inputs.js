@@ -34,7 +34,7 @@ const requiredInputs = [
     value: '',
     placeholder: '',
     type: 'select',
-    options: FILING_PERIODS
+    options: [{name:'Select Year'}].concat(FILING_PERIODS)
   },
   {
     label: 'Respondent Name',
