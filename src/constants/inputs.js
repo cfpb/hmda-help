@@ -1,3 +1,5 @@
+import FILING_PERIODS from './dates.js'
+
 import states from './states'
 import agencyCodes from './agencyCodes'
 import institutionTypes from './institutionTypes'
@@ -25,6 +27,15 @@ const searchInputs = [
 ]
 
 const requiredInputs = [
+  {
+    label: 'Activity Year',
+    id: 'activityYear',
+    name: 'activityYear',
+    value: '',
+    placeholder: '',
+    type: 'select',
+    options: [{name:'Select Year'}].concat(FILING_PERIODS)
+  },
   {
     label: 'Respondent Name',
     id: 'respondentName',
