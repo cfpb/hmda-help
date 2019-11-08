@@ -69,7 +69,7 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    if (event.target.type === 'radio') {
+    if (['radio', 'select-one'].includes(event.target.type)) {
       this.setState({ [event.target.name]: event.target.value }, () => {
         this.onInputBlur()
       })

@@ -58,7 +58,11 @@ InputSelect.propTypes = {
   onChange: PropTypes.func,
   options: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool
+  ]),
   disabled: PropTypes.bool
 }
 

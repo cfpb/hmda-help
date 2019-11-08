@@ -65,6 +65,10 @@
   vertical-align: top;
 }
 
+.SearchResults td.action {
+  padding: 2rem 1rem;
+}
+
 .SearchResults td span.name {
   font-weight: bold;
 }
@@ -88,6 +92,10 @@
   text-align: left;
 }
 
+.SearchResults .action {
+  text-align: center;
+}
+
 .SearchResults .action a,
 .SearchResults .action a:visited {
   -moz-osx-font-smoothing: grayscale;
@@ -101,16 +109,18 @@
   font-weight: bold;
   font-size: 0.9em;
   line-height: 1;
-  margin-right: 2em;
   padding: 0.5rem 1rem;
   text-decoration: none;
 }
 
 .SearchResults .action a:hover,
+.SearchResults .action a:focus,
 .SearchResults .action a:visited:hover {
   background-color: #205493;
 }
+
 .SearchResults .action a:active,
+.SearchResults .action a:visited:focus,
 .SearchResults .action a:visited:active {
   background-color: #112e51;
 }
@@ -126,15 +136,19 @@
 }
 
 .SearchResults button:hover,
+.SearchResults button:focus,
+.SearchResults button:visited:focus,
 .SearchResults button:visited:hover {
   color: #205493;
 }
+
 .SearchResults button:active,
 .SearchResults button:visited:active {
   color: #112e51;
 }
 
-.SearchResults button.delete {
+.SearchResults button.delete,
+.SearchResults button.yes {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   background-color: #e31c3d;
@@ -144,23 +158,43 @@
   font-weight: bold;
   line-height: 1;
   padding: 0.5rem 1rem;
-}
-
-.SearchResults button.delete:not(:last-child) {
-  margin-right: 2em;
+  margin-top: 2px;
 }
 
 .SearchResults button.showOtherFields {
   display: block;
   margin-top: 2em;
+  background-color: white;
 }
 
-.SearchResults button.delete:hover {
+.SearchResults button.delete:hover,
+.SearchResults button.delete:focus {
   background-color: #cd2026;
 }
 
 .SearchResults .areYouSure span {
   display: inline-block;
   font-size: 1em;
-  margin-right: 2em;
+}
+
+.SearchResults .areYouSure .buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+
+.SearchResults .areYouSure .buttons button {
+  margin: 0 5px;
+}
+
+.SearchResults button.yes {
+  color: #0071bc;
+  background-color: white;
+}
+
+.SearchResults .areYouSure button.yes:hover,
+.SearchResults .areYouSure button.yes:focus {
+  background: #205493;
+  color: white;
 }

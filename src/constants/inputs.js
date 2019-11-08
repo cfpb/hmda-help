@@ -34,7 +34,7 @@ const requiredInputs = [
     value: '',
     placeholder: '',
     type: 'select',
-    options: [{name:'Select Year'}].concat(FILING_PERIODS)
+    options: [{ name: 'Select Year' }].concat(FILING_PERIODS)
   },
   {
     label: 'Respondent Name',
@@ -77,6 +77,18 @@ const requiredInputs = [
     type: 'radio',
     options: agencyCodes,
     validation: [{ type: 'required' }]
+  },
+  {
+    label: 'Quarterly Filer',
+    id: 'quarterlyFiler',
+    name: 'quarterlyFiler',
+    value: '',
+    placeholder: '',
+    type: 'select',
+    options: [
+      { id: 'false', name: 'false', value: false },
+      { id: 'true', name: 'true', value: true }
+    ]
   }
 ]
 
