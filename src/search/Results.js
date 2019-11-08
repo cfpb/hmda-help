@@ -17,8 +17,9 @@ class SearchResults extends Component {
     if (!this.props.institutions) return null
 
     const { institutions, handleDeleteClick, error } = this.props
-    institutions.sort((a, b) => (b.activityYear > a.activityYear) ? 1 : -1)
-
+    institutions.sort((a, b) => (b.activityYear > a.activityYear ? 1 : -1))
+    const colCount = 7
+    const colWidth = 90 / colCount
 
     return (
       <div className="SearchResults">
@@ -27,22 +28,21 @@ class SearchResults extends Component {
           <thead>
             <tr>
               <th width="10%">Year</th>
-              <th width="15%">LEI</th>
-              <th width="15%">Name</th>
-              <th width="15%">Email Domain(s)</th>
-              <th width="15%">Tax ID</th>
-              <th width="15%">Agency Code</th>
-              <th width="15%" />
+              <th width={colWidth}>LEI</th>
+              <th width={colWidth}>Name</th>
+              <th width={colWidth}>Email Domain(s)</th>
+              <th width={colWidth}>Tax ID</th>
+              <th width={colWidth}>Agency Code</th>
+              <th width={colWidth}>Quarterly Filer</th>
+              <th width={colWidth} />
             </tr>
           </thead>
           <tbody>
             {institutions.map((institution, i) => {
-//            {institutions.sort((a, b) => a.activityYear - b.activityYear).map((institution, i) => {
               if (!institution)
                 return (
                   <React.Fragment key={i}>
-                    <tr>
-                    </tr>
+                    <tr></tr>
                   </React.Fragment>
                 )
               else
@@ -55,6 +55,7 @@ class SearchResults extends Component {
                       <td>{institution.emailDomains}</td>
                       <td>{institution.taxId}</td>
                       <td>{institution.agency}</td>
+                      <td>{institution.quarterlyFiler.toString()}</td>
                       <ResultsActions
                         institution={institution}
                         index={i}
@@ -67,7 +68,7 @@ class SearchResults extends Component {
                       className="otherData hidden"
                       ref={element => this.tables.set(i, element)}
                     >
-                      <td colSpan={6}>
+                      <td colSpan={colCount}>
                         <table>
                           <thead>
                             <tr>
@@ -108,12 +109,12 @@ class SearchResults extends Component {
                       </td>
                     </tr>
                   </React.Fragment>
-               )
-              })}
-            </tbody>
-          </table>
-        </div>
-      )
+                )
+            })}
+          </tbody>
+        </table>
+      </div>
+    )
   }
 }
 
