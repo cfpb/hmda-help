@@ -14,12 +14,14 @@ import InputSubmit from '../InputSubmit'
 import InputText from '../InputText'
 import Loading from '../Loading.jsx'
 import FILING_PERIODS from '../constants/dates.js'
+import { InstitutionNotFound } from './InstitutionNotFound'
 
 const defaultState = {
   error: null,
   errorDelete: null,
   institutions: null,
-  year: null
+  year: null,
+  notFound: []
 }
 
 class Form extends Component {
@@ -77,7 +79,8 @@ class Form extends Component {
     event.preventDefault()
 
     this.setState({ fetching: true,
-                    institutions: []
+                    institutions: [],
+                    notFound: []
                   })
 
     Object.keys(FILING_PERIODS).forEach((y) => {
@@ -96,7 +99,11 @@ class Form extends Component {
         .then(json => {
           if (typeof json === 'object') {
             this.setState({ institutions: [...this.state.institutions, flattenApiForInstitutionState(json)] })
-          }})
+          } else {
+            // Track years not found
+            this.setState(s => ({ notFound: [...s.notFound, {lei: this.lei.value, year}]}))
+          }
+        })
         .catch(error => { })
       })
 
@@ -145,14 +152,15 @@ class Form extends Component {
 
           <p>{this.state.fetching && this.state.institutions && this.state.institutions.length === FILING_PERIODS.length ? this.doneLoanding() : null}</p>
 
-        {this.state.institutions  ? (
+        {this.state.institutions && this.state.institutions.length  ? (
           <Results
             institutions={this.state.institutions}
             handleDeleteClick={this.handleDeleteClick}
             error={this.state.errorDelete}
           />
         ) : null}
-
+        
+        {this.state.notFound && <InstitutionNotFound notFound={this.state.notFound} />}
 
 
       </React.Fragment>
