@@ -48,7 +48,10 @@ const nestInstitutionStateForAPI = state => {
       name: state.topHolderName || ''
     },
     hmdaFiler: false,
-    quarterlyFiler: state.quarterlyFiler === 'true'
+    quarterlyFiler: state.quarterlyFiler === 'true',
+    quarterlyFilerHasFiledQ1: false,
+    quarterlyFilerHasFiledQ2: false,
+    quarterlyFilerHasFiledQ3: false
   }
   return api
 }
