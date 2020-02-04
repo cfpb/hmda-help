@@ -74,7 +74,9 @@ class Institution extends Component {
         this.onInputBlur()
       })
     } else {
-      this.setState({ [event.target.name]: event.target.value })
+      let value = event.target.value
+      if (event.target.name === 'lei') value = value.toUpperCase()
+      this.setState({ [event.target.name]: value })
     }
   }
 
