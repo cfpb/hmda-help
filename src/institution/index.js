@@ -62,6 +62,13 @@ class Institution extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.error !== this.state.error){
+      let errorMsg = document.getElementById('bottomError') 
+      errorMsg && errorMsg.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   toggleShowOtherFields() {
     this.setState(prevState => ({
       showOtherFields: !prevState.showOtherFields
@@ -281,6 +288,7 @@ class Institution extends Component {
 
           {this.state.error ? (
             <Alert
+              id='bottomError'
               type="error"
               heading={this.getErrorHeading()}
               message={this.getErrorText()}
