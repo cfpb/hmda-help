@@ -7,7 +7,7 @@ const Alert = props => {
   let alertClass = `alert alert-${props.type}`
 
   return (
-    <div className={alertClass}>
+    <div id={props.id} className={alertClass}>
       <div className="alert-body">
         <h3 className="alert-heading">{props.heading}</h3>
         {props.message ? <p className="alert-text">{props.message}</p> : null}

@@ -19,9 +19,10 @@ class InputText extends Component {
   }
 
   handleChange(event) {
-    this.setState({
-      value: event.target.value
-    })
+    let value = event.target.value
+    if (this.props.name === 'lei') value = value.toUpperCase()
+
+    this.setState({ value: value })
     if (this.props.onChange) {
       this.props.onChange(event)
     }

@@ -62,6 +62,13 @@ class Institution extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.error !== this.state.error){
+      let errorMsg = document.getElementById('bottomError') 
+      errorMsg && errorMsg.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   toggleShowOtherFields() {
     this.setState(prevState => ({
       showOtherFields: !prevState.showOtherFields
@@ -74,7 +81,9 @@ class Institution extends Component {
         this.onInputBlur()
       })
     } else {
-      this.setState({ [event.target.name]: event.target.value })
+      let value = event.target.value
+      if (event.target.name === 'lei') value = value.toUpperCase()
+      this.setState({ [event.target.name]: value })
     }
   }
 
@@ -89,7 +98,7 @@ class Institution extends Component {
 
   handleSubmit(event, token) {
     event.preventDefault()
-    this.setState({ fetching: true })
+    this.setState({ fetching: true, error: null })
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
@@ -102,11 +111,12 @@ class Institution extends Component {
       }
     })
       .then(response => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error(response.status)
-        }
+        if (response.ok) return response.json()
+        if ([403, 404].indexOf(response.status) > -1) 
+          return Promise.reject(
+            new Promise(resolve => resolve({ httpStatus: response.status }))
+          )
+        return Promise.reject(response.json())
       })
       .then(json => {
         // set the rest of the state here to be the json response
@@ -129,41 +139,36 @@ class Institution extends Component {
         })
       })
       .catch(error => {
-        this.setState({ error: error.message, fetching: false })
+        error.then(json => {
+          const status = this.getResponseStatus(json)
+          this.setState({ error: status, fetching: false })
+        })
       })
   }
 
-  getErrorHeading() {
-    let errorHeading = null
-    if (this.state.error === '400') {
-      errorHeading = 'Duplicate LEI'
-    }
-    if (this.state.error === '403') {
-      errorHeading = 'Access Denied'
-    }
-    if (this.state.error === '404') {
-      errorHeading = 'Not Found'
-    }
+  getResponseStatus(json) {
+    if (json === 'Incorrect lei format') return '601'
+    return `${json.httpStatus}`
+  }
 
-    return errorHeading
+  getErrorHeading() {
+    switch(this.state.error){
+      case '400': return 'Duplicate LEI'
+      case '403': return 'Access Denied'
+      case '404': return 'Not Found'
+      case '601': return 'Invalid LEI format'
+      default: return ''
+    }
   }
 
   getErrorText() {
-    let errorText = null
-    if (this.state.error === '400') {
-      errorText =
-        'Sorry, that LEI already exists. You can verify that by using the search.'
+    switch(this.state.error){
+      case '400': return "Sorry, that LEI already exists. You can verify that by using the search."
+      case '403': return "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
+      case '404': return "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
+      case '601': return "Please verify the format of the LEI and try again."
+      default: return ''
     }
-    if (this.state.error === '403') {
-      errorText =
-        "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
-    }
-    if (this.state.error === '404') {
-      errorText =
-        "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
-    }
-
-    return errorText
   }
 
   render() {
@@ -283,6 +288,7 @@ class Institution extends Component {
 
           {this.state.error ? (
             <Alert
+              id='bottomError'
               type="error"
               heading={this.getErrorHeading()}
               message={this.getErrorText()}
