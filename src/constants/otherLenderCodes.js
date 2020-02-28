@@ -7,6 +7,6 @@ export default [
     name:
       'Mortgage Banking Subsidiary or Bank Holding Company or Service Corporation'
   },
-  { id: '3', name: 'HUD' },
+  { id: '3', name: 'Independent MBS' },
   { id: '5', name: 'Affiliate' }
 ]
