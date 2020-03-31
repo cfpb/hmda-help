@@ -21,7 +21,7 @@ pipeline {
 
     stage('Build And Publish Docker Image') {
       steps {
-        scripts {
+        script {
           withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
             usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hmda-platform-jenkins-service',
