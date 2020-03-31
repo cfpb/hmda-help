@@ -21,13 +21,15 @@ pipeline {
 
     stage('Build And Publish Docker Image') {
       steps {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
-          usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hmda-platform-jenkins-service',
-            usernameVariable: 'DTR_USER', passwordVariable: 'DTR_PASSWORD']]) {
-            withCredentials([string(credentialsId: 'internal-docker-registry', variable: 'DOCKER_REGISTRY_URL')]){
-              dockerBuild.dockerBuild('hmda-help', '')
-              security.dockerImageScan('hmda-help', env.DOCKER_TAG)
+        scripts {
+          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
+            usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hmda-platform-jenkins-service',
+              usernameVariable: 'DTR_USER', passwordVariable: 'DTR_PASSWORD']]) {
+              withCredentials([string(credentialsId: 'internal-docker-registry', variable: 'DOCKER_REGISTRY_URL')]){
+                dockerBuild.dockerBuild('hmda-help', '')
+                security.dockerImageScan('hmda-help', env.DOCKER_TAG)
+              }
             }
           }
         }
