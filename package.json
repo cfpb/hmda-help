@@ -21,9 +21,9 @@
   "dependencies": {
     "keycloak-js": "4.5.0",
     "prop-types": "15.6.2",
-    "react": "16.7",
+    "react": "16.13.1",
     "react-app-polyfill": "1.0.3",
-    "react-dom": "16.7",
+    "react-dom": "16.13.1",
     "react-router-dom": "4.3.1",
     "react-scripts": "2.0.3"
   },
