@@ -26,14 +26,13 @@ pipeline {
             usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dtr-ext-jenkins-service',
               usernameVariable: 'DTR_USER', passwordVariable: 'DTR_PASSWORD']]) {
-                dockerBuild.dockerBuild('hmda-help', '')
+                dockerBuild.dockerBuild('hmda-help', '.')
                 scanImage('hmda/hmda-help', env.DOCKER_TAG)
               }
             }
           }
         }
       }
-    }
 
      stage('Deploy') {
       agent {
