@@ -175,6 +175,13 @@ const otherInputs = [
     name: 'topHolderName',
     value: '',
     placeholder: ''
+  },
+  {
+    label: 'Notes',
+    id: 'notes',
+    name: 'notes',
+    value: '',
+    placeholder: ''
   }
 ]
 
