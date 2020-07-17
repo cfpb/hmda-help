@@ -18,7 +18,8 @@ const flattenApiForInstitutionState = json => {
     topHolderIdRssd: (json.topHolder && json.topHolder.idRssd) || -1,
     topHolderName: (json.topHolder && json.topHolder.name) || '',
     quarterlyFiler: json.quarterlyFiler || false,
-    notes: json.notes || ''
+    notes: '',
+    prevNotes: json.notes || '',
   }
   return state
 }
@@ -53,7 +54,7 @@ const nestInstitutionStateForAPI = state => {
     quarterlyFilerHasFiledQ1: false,
     quarterlyFilerHasFiledQ2: false,
     quarterlyFilerHasFiledQ3: false,
-    notes: state.notes
+    notes: state.requiresNewNotes ? state.notes : state.prevNotes
   }
   return api
 }
