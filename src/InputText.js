@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { InputErrorMsg } from './InputErrorMsg'
 import { validateInput } from './utils/validate'
 
 import './InputText.css'
@@ -9,23 +10,13 @@ class InputText extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      value: props.value || '',
-      error: null
-    }
-
+    this.state = { error: null }
     this.handleChange = this.handleChange.bind(this)
     this.handleBlur = this.handleBlur.bind(this)
   }
 
   handleChange(event) {
-    let value = event.target.value
-    if (this.props.name === 'lei') value = value.toUpperCase()
-
-    this.setState({ value: value })
-    if (this.props.onChange) {
-      this.props.onChange(event)
-    }
+    if (this.props.onChange) this.props.onChange(event)
   }
 
   handleBlur(event) {
@@ -34,31 +25,31 @@ class InputText extends Component {
         error: validateInput(this.props.validation, event.target.value)
       })
     }
-    if (this.props.onBlur) {
-      this.props.onBlur()
-    }
+
+    if (this.props.onBlur) this.props.onBlur()
   }
 
-  render() {
+  render(){
+    const { disabled, id, innerRef, label, maxLength, placeholder, value } = this.props
+    const { error } = this.state
+
     return (
       <React.Fragment>
-        <label>{this.props.label}</label>
-        {this.state.error ? (
-          <span className="input-error-message">{this.state.error}</span>
-        ) : null}
+        <label>{label}</label>
+        <InputErrorMsg msg={error} />
         <input
-          ref={this.props.innerRef}
+          ref={innerRef}
           type="text"
-          className={this.state.error ? 'input-error' : null}
-          name={this.props.id}
-          id={this.props.id}
-          placeholder={this.props.placeholder}
-          value={this.state.value}
+          className={error ? 'input-error' : null}
+          name={id}
+          id={id}
+          placeholder={placeholder}
+          value={value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
-          disabled={this.props.disabled}
-          maxLength={this.props.maxLength || ''}
-          size={this.props.maxLength || 75}
+          disabled={disabled}
+          maxLength={maxLength || ''}
+          size={maxLength || 75}
         />
       </React.Fragment>
     )
