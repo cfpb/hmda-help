@@ -78,10 +78,14 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    // Update to Notes field required on Institution data change 
-    let additionalKeys = { requiresNewNotes: true }
-    if(event.target.id !== 'notes' && this.state.notes === this.state.prevNotes){
-      additionalKeys.notes = ''
+    let additionalKeys = {}
+
+    if(this.props.location.pathname === '/update'){
+      // Update to Notes field required on Institution data change 
+      additionalKeys.requiresNewNotes = true
+      if(event.target.id !== 'notes' && this.state.notes === this.state.prevNotes){
+        additionalKeys.notes = ''
+      }
     }
     
     if (['radio', 'select-one'].includes(event.target.type)) {
@@ -271,6 +275,7 @@ class Institution extends Component {
             required={this.state.requiresNewNotes}
             notes={this.state.notes}
             prevNotes={this.state.prevNotes}
+            hide={pathname !== '/update'}
           />
 
           <button

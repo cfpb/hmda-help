@@ -4,7 +4,9 @@ import { notesInput } from './constants/inputs'
 import { PropTypes } from 'prop-types'
 
 const Notes = props => {
-  const { notes, onBlur, onChange, prevNotes, required } = props
+  const { hide, notes, onBlur, onChange, prevNotes, required } = props
+  
+  if(hide) return null
 
   if (required)
     return (
