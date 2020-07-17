@@ -176,13 +176,14 @@ const otherInputs = [
     value: '',
     placeholder: ''
   },
-  {
-    label: 'Notes',
-    id: 'notes',
-    name: 'notes',
-    value: '',
-    placeholder: ''
-  }
 ]
+
+export const notesInput = {
+  label: 'Notes',
+  id: 'notes',
+  name: 'notes',
+  placeholder: '',
+  validation: [{ type: 'required' }]
+}
 
 export { searchInputs, requiredInputs, otherInputs }
