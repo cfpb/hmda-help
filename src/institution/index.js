@@ -68,6 +68,12 @@ class Institution extends Component {
     if(prevState.error !== this.state.error){
       let errorMsg = document.getElementById('bottomError') 
       errorMsg && errorMsg.scrollIntoView({ behavior: 'smooth' })
+    } else if( this.state.isSubmitted ) {
+      const successMsg = document.querySelectorAll('.alert-success')
+      if ( successMsg.length ) 
+        successMsg[successMsg.length - 1].scrollIntoView({
+          behavior: 'smooth'
+        })
     }
   }
 
@@ -78,7 +84,7 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
-    let additionalKeys = {}
+    let additionalKeys = { isSubmitted: false, error: null }
 
     if(this.props.location.pathname === '/update'){
       // Update to Notes field required on Institution data change 
