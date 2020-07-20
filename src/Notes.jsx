@@ -1,5 +1,5 @@
 import React from 'react'
-import InputText from './InputText'
+import InputTextArea from './InputTextArea'
 import { notesInput } from './constants/inputs'
 import { PropTypes } from 'prop-types'
 
@@ -10,17 +10,18 @@ const Notes = props => {
 
   if (required)
     return (
-      <InputText
+      <InputTextArea
         key={notesInput.id}
         value={notes || ''}
         {...notesInput}
         onChange={onChange}
         onBlur={onBlur}
+        placeholder="e.g. Case #123 - Updated Tax ID due to acquisition."
       />
     )
 
   return (
-    <InputText
+    <InputTextArea
       key={notesInput.id}
       {...notesInput}
       disabled={true}
