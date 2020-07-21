@@ -28,6 +28,7 @@
     "react-scripts": "3.4.1"
   },
   "devDependencies": {
+    "@testing-library/cypress": "6.0.0",
     "cypress": "4.11.0"
   },
   "browserslist": [
