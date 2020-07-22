@@ -33,30 +33,32 @@ describe('Institution', () => {
     cy.visit(HH_HOST)
 
     // Search for existing Instititution
-    /* TODO: Search by Label instead of ID once those changes are live */
-    cy.get('#lei').type(HH_INSTITUTION)
+    cy.findByLabelText("LEI").type(HH_INSTITUTION)
     cy.findByText('Search institutions').click()
     cy.findAllByText('Update')
       .first()
       .click()
 
+    const successMessage = 'The institution, FRONTENDTESTBANK9999, has been updated.'
+    const nameLabelText = 'Respondent Name'
+    const updateButtonText = 'Update the institution'
     const testName = 'Cypress Test Name Update'
 
-    cy.get('#respondentName').then($name => {
+    cy.findByLabelText(nameLabelText).then($name => {
       const savedName = $name.attr('value')
       expect($name.attr('value')).to.not.contain(testName)
 
       // Change Respondent Name
-      cy.get('#respondentName')
+      cy.findByLabelText(nameLabelText)
         .type('{selectAll}' + testName)
         .blur()
         .then($name2 => {
-          cy.findByText('Update the institution')
+          cy.findByText(updateButtonText)
             .should('be.enabled')
             .click()
             .then(() => {
               // Validate
-              cy.get('.alert-success')
+              cy.findAllByText(successMessage)
                 .should('exist')
                 .then(() => {
                   expect($name2.attr('value')).to.contain(testName)
@@ -65,16 +67,16 @@ describe('Institution', () => {
         })
 
       // Change it back
-      cy.get('#respondentName')
+      cy.findByLabelText(nameLabelText)
         .type('{selectAll}' + savedName)
         .blur()
         .then(() => {
-          cy.findByText('Update the institution')
+          cy.findByText(updateButtonText)
             .should('be.enabled')
             .click()
             .then(() => {
               // Validate
-              cy.get('.alert-success')
+              cy.findAllByText(successMessage)
                 .should('exist')
                 .then(() => {
                   expect($name.attr('value')).to.contain(savedName)

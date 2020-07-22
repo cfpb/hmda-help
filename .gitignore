@@ -16,6 +16,8 @@
 .env.test.local
 .env.production.local
 cypress.env.json
+cypress/videos
+cypress/snapshots
 
 npm-debug.log*
 yarn-debug.log*
