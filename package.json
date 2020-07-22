@@ -29,7 +29,8 @@
   },
   "devDependencies": {
     "@testing-library/cypress": "6.0.0",
-    "cypress": "4.11.0"
+    "cypress": "4.11.0",
+    "cypress-keycloak": "1.5.0"
   },
   "browserslist": [
     "Chrome >= 60",
