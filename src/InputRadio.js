@@ -26,7 +26,7 @@ class InputRadio extends Component {
   render() {
     return (
       <React.Fragment>
-        <label>{this.props.label}</label>
+        <label htmlFor={this.props.id}>{this.props.label}</label>
         <ul className="unstyled-list">
           {this.props.options.map((option, i) => {
             return (

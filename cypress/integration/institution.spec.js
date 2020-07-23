@@ -8,8 +8,9 @@ const {
   HH_AUTH_CLIENT_ID
 } = Cypress.env()
 
-describe('Institution', () => {
+describe('HMDA Help', () => {
   beforeEach(() => {
+    cy.logout({ root: HH_AUTH_URL, realm: HH_AUTH_REALM })
     cy.login({
       root: HH_AUTH_URL,
       realm: HH_AUTH_REALM,
@@ -18,20 +19,11 @@ describe('Institution', () => {
       username: HH_USERNAME,
       password: HH_PASSWORD
     })
-  })
-
-  afterEach(() => {
-    cy.logout({
-      root: HH_AUTH_URL,
-      realm: HH_AUTH_REALM,
-      redirect_uri: HH_HOST
-    })
-  })
-
-  it('Can update existing', () => {
     cy.viewport(1600, 900)
     cy.visit(HH_HOST)
+  })
 
+  it('Can update existing Institutions', () => {
     // Search for existing Instititution
     cy.findByLabelText("LEI").type(HH_INSTITUTION)
     cy.findByText('Search institutions').click()
@@ -39,7 +31,7 @@ describe('Institution', () => {
       .first()
       .click()
 
-    const successMessage = 'The institution, FRONTENDTESTBANK9999, has been updated.'
+    const successMessage = `The institution, ${HH_INSTITUTION}, has been updated.`
     const nameLabelText = 'Respondent Name'
     const updateButtonText = 'Update the institution'
     const testName = 'Cypress Test Name Update'
@@ -84,5 +76,40 @@ describe('Institution', () => {
             })
         })
     })
+  })
+
+  it('Can delete and create Institutions', () => {
+    const institution = 'MEISSADIATESTBANK001'
+    const year = '2020'
+
+    // Delete
+    cy.findByLabelText("LEI").type(`${institution}{enter}`)
+    cy.get('table.institutions tbody tr').first().get('td').first().should('contain', year)
+    cy.findAllByText('Delete').first().click()
+    cy.findAllByText('Yes').first().click()
+    cy.get('table.institutions tbody tr').first().get('td').first().should('not.contain', year)
+
+    // Create
+    cy.visit(HH_HOST)
+    cy.findByLabelText("LEI").type("MEISSADIATESTBANK001{enter}")
+    cy.findByText(`Add ${institution} for ${year}`).click()
+
+    cy.findByLabelText('Activity Year').select(year).should('have.value', year)
+    cy.findByLabelText('Respondent Name').type('MD Bank 1')
+    cy.findByLabelText('Email Domains').type('bank1.com')
+    cy.findByLabelText('Tax Id').type('53-0000001')
+    cy.findByLabelText('9 - Consumer Financial Protection Bureau (CFPB)').click()
+    
+    cy.findByText('Show other fields').click()
+    cy.findByLabelText('RSSD').type('-1')
+    cy.findByLabelText('Parent ID RSSD').type('-1')
+    cy.findByLabelText('Assets').type('-1')
+    cy.findByLabelText('Top Holder ID RSSD').type('-1')
+
+    cy.findByText('Add the institution')
+      .should('be.enabled')
+      .click()
+    
+    cy.findAllByText(`The institution, ${institution}, has been added!`).should('exist')
   })
 })
