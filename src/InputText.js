@@ -42,7 +42,7 @@ class InputText extends Component {
   render() {
     return (
       <React.Fragment>
-        <label>{this.props.label}</label>
+        <label htmlFor={this.props.id}>{this.props.label}</label>
         {this.state.error ? (
           <span className="input-error-message">{this.state.error}</span>
         ) : null}

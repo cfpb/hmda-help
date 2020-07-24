@@ -26,11 +26,11 @@ class InputSelect extends Component {
   render() {
     return (
       <React.Fragment>
-        <label>{this.props.label}</label>
+        <label htmlFor={this.props.id}>{this.props.label}</label>
         <select
           ref={this.props.innerRef}
           name={this.props.name}
-          id={this.props.inputId}
+          id={this.props.id}
           onChange={this.handleChange}
           disabled={this.props.disabled}
           value={this.state.value}
