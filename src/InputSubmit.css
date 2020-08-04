@@ -41,3 +41,30 @@
 .inputSubmit:visited:disabled:active {
   background-color: #d6d7d9;
 }
+
+
+.inputSubmit.secondary {
+  background-color: #5d3a85;
+  margin-left: 1rem;
+}
+.inputSubmit.secondary:hover,
+.inputSubmit.secondary:visited:hover {
+  background-color: #4a039b;
+}
+.inputSubmit.secondary:active,
+.inputSubmit.secondary:visited:active {
+  background-color: #7f54b0;
+}
+.inputSubmit.secondary:disabled,
+.inputSubmit.secondary:visited:disabled {
+  background-color: #aa9dba;
+  pointer-events: none;
+}
+.inputSubmit.secondary:disabled:hover,
+.inputSubmit.secondary:disabled:active,
+.inputSubmit.secondary:disabled:focus,
+.inputSubmit.secondary:visited:disabled:hover,
+.inputSubmit.secondary:visited:disabled:focus,
+.inputSubmit.secondary:visited:disabled:active {
+  background-color: #d6d7d9;
+}
