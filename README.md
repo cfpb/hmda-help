@@ -1,5 +1,16 @@
 # HMDA Help
 
+* [Overview](#overview)
+* [Installation](#installation)
+* [Building and viewing](#building-and-viewing)
+  + [1. package.json](#1-packagejson)
+  + [2. keycloak.json](#2-keycloakjson)
+  + [Start the development server](#start-the-development-server)
+  + [Blank screen](#blank-screen)
+* [Getting involved](#getting-involved)
+* [Open source licensing info](#open-source-licensing-info)
+
+## Overview
 The HMDA Help application allows for management (create, update, delete) of HMDA institutions.
 
 _This project was bootstrapped with [Create React App (CRA)](https://facebook.github.io/create-react-app/)._
@@ -51,9 +62,12 @@ For example:
 
 This will allow authentication using Keycloak.
 
-### `yarn start`
+### Start the development server
 
 Now you can run `yarn start` to begin using the UI in development mode. See the [available scripts](https://facebook.github.io/create-react-app/docs/available-scripts) in the CRA documentation for more details.
+
+### Blank screen
+If you don't have your local keycloak/proxy setup correct, you will get a blank white screen when loading the app (no UI errors, no console errors, no network errors).  Previously, the app would go through a visible, rapid cycle of attempting to connect to the Auth server before eventually erroring out. 
 
 ## Getting involved
 
