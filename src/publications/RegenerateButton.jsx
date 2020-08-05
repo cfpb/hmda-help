@@ -3,14 +3,13 @@ import Message from './Message'
 
 export const RegenerateButton = ({ onClick, error, message }) => (
   <>
-    <a
+    <span
       onClick={onClick}
       className="inputSubmit"
-      role="button"
       style={{ margin: '0 auto' }}
     >
       Regenerate
-    </a>
+    </span>
     <Message isError={error} message={message} />
   </>
 )
