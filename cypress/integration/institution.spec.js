@@ -45,6 +45,12 @@ describe('HMDA Help', () => {
         .type('{selectAll}' + testName)
         .blur()
         .then($name2 => {
+          // Notes field is required on Update
+          cy.findByText(updateButtonText)
+            .should('not.be.enabled')
+          cy.findByLabelText('Notes')
+            .type('Cypress - Change respondent name')
+            .blur()
           cy.findByText(updateButtonText)
             .should('be.enabled')
             .click()
@@ -62,6 +68,12 @@ describe('HMDA Help', () => {
       cy.findByLabelText(nameLabelText)
         .type('{selectAll}' + savedName)
         .blur()
+      // Notes field is required on Update  
+      cy.findByText(updateButtonText)
+        .should('not.be.enabled')
+      cy.findByLabelText('Notes')
+        .type('Cypress - Change respondent name back')
+        .blur()        
         .then(() => {
           cy.findByText(updateButtonText)
             .should('be.enabled')

@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import { InputErrorMsg } from './InputErrorMsg'
 import { validateInput } from './utils/validate'
 
-import './InputText.css'
+import './InputTextArea.css'
+
+const LINE_WIDTH = 42
 
 class InputText extends Component {
   constructor(props) {
@@ -30,16 +32,17 @@ class InputText extends Component {
   }
 
   render(){
-    const { disabled, id, innerRef, label, maxLength, placeholder, value } = this.props
+    const { disabled, id, innerRef, label, placeholder, value } = this.props
     const { error } = this.state
+
+    const rows = Math.ceil((value || placeholder).length/LINE_WIDTH) || 1
 
     return (
       <React.Fragment>
         <label htmlFor={id}>{label}</label>
         <InputErrorMsg msg={error} />
-        <input
+        <textarea
           ref={innerRef}
-          type="text"
           className={error ? 'input-error' : null}
           name={id}
           id={id}
@@ -48,8 +51,7 @@ class InputText extends Component {
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           disabled={disabled}
-          maxLength={maxLength || ''}
-          size={maxLength || 75}
+          rows={rows}
         />
       </React.Fragment>
     )
@@ -57,7 +59,9 @@ class InputText extends Component {
 }
 
 InputText.defaultProps = {
-  disabled: false
+  disabled: false,
+  value: '',
+  placeholder: ''
 }
 
 InputText.propTypes = {

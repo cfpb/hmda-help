@@ -175,7 +175,15 @@ const otherInputs = [
     name: 'topHolderName',
     value: '',
     placeholder: ''
-  }
+  },
 ]
+
+export const notesInput = {
+  label: 'Notes',
+  id: 'notes',
+  name: 'notes',
+  placeholder: '',
+  validation: [{ type: 'required' }]
+}
 
 export { searchInputs, requiredInputs, otherInputs }
