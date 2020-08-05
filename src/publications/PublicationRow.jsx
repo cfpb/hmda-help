@@ -16,14 +16,14 @@ const regenMsg = (label) => 'Begin the regeneration process for ' + label + '?'
 export const PublicationRow = ({
   notFound,
   fetched,
-  lei,
+  institution,
   token,
   type,
   url,
-  year,
 }) => {
   const label = LABELS[type]
   const topic = TOPICS[type]
+  const { lei, respondentName, activityYear: year } = institution
 
   const [state, setState] = useState(defaultState)
   const updateState = newState => setState((oldState) => ({...oldState, ...newState }))
@@ -53,6 +53,7 @@ export const PublicationRow = ({
   return (
     <tr>
       <td>{year}</td>
+      <td>{respondentName}</td>
       <td>{label}</td>
       <td>
         {!fetched ? (
@@ -68,8 +69,8 @@ export const PublicationRow = ({
           onClick={handleRegeneration}
           error={state.error}
           message={state.message}
+          waiting={state.waiting}
         />
-        {state.waiting && <LoadingIcon className="LoadingInline" />}
       </td>
     </tr>
   )

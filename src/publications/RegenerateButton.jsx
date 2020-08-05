@@ -1,15 +1,22 @@
 import React from 'react'
 import Message from './Message'
+import LoadingIcon from '../Loading'
 
-export const RegenerateButton = ({ onClick, error, message }) => (
-  <>
-    <span
-      onClick={onClick}
-      className="inputSubmit"
-      style={{ margin: '0 auto' }}
-    >
-      Regenerate
-    </span>
-    <Message isError={error} message={message} />
-  </>
-)
+export const RegenerateButton = ({ onClick, error, message, waiting }) => {
+  let cname = 'inputSubmit'
+  if(waiting) cname += ' disabled'
+
+  return (
+    <div className="regenerate-container">
+      <span
+        onClick={onClick}
+        className={cname}
+        style={{ margin: '0 auto' }}
+      >
+        Regenerate
+      </span>
+      {waiting && <LoadingIcon className="LoadingInline" />}
+      <Message isError={error} message={message} />
+    </div>
+  )
+}

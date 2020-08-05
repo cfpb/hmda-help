@@ -48,15 +48,13 @@ const PublicationRows = ({ institution, token }) => {
     <>
       <PublicationRow
         type="mlar"
-        year={activityYear}
-        lei={institution.lei}
+        institution={institution}
         token={token}
         {...mlar}
       />
       <PublicationRow
         type="irs"
-        year={activityYear}
-        lei={institution.lei}
+        institution={institution}
         token={token}
         {...irs}
       />

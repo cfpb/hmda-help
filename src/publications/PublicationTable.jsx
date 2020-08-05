@@ -7,7 +7,7 @@ const PublicationTable = ({ institutions, token }) => {
     return null
   
   institutions.sort((a, b) => (b.activityYear > a.activityYear ? 1 : -1))
-  const colWidth = 90 / 3
+  const colWidth = 90 / 4
 
   return (
     <section id="publications" className="SearchResults">
@@ -16,6 +16,7 @@ const PublicationTable = ({ institutions, token }) => {
         <thead>
           <tr>
             <th width="10%">Year</th>
+            <th width={colWidth}>Name</th>
             <th width={colWidth}>Publication</th>
             <th width={colWidth}>File</th>
             <th width={colWidth}>Actions</th>
