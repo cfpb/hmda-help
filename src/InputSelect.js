@@ -12,7 +12,7 @@ const InputSelect = props => {
 
   return (
     <React.Fragment>
-      <label>{label}</label>
+      <label htmlFor={id}>{label}</label>
       <select
         ref={innerRef}
         name={name}

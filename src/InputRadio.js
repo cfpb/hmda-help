@@ -12,7 +12,7 @@ const InputRadio = props => {
 
   return (
     <React.Fragment>
-      <label>{label}</label>
+      <label htmlFor={id}>{label}</label>
       <ul className="unstyled-list">
         {options.map((option, i) => {
           return (

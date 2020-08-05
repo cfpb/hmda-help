@@ -35,7 +35,7 @@ class InputText extends Component {
 
     return (
       <React.Fragment>
-        <label>{label}</label>
+        <label htmlFor={id}>{label}</label>
         <InputErrorMsg msg={error} />
         <input
           ref={innerRef}

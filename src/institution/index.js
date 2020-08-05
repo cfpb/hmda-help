@@ -181,6 +181,7 @@ class Institution extends Component {
       case '400': return 'Duplicate LEI'
       case '403': return 'Access Denied'
       case '404': return 'Not Found'
+      case '412': return 'Institution LEI is an LOU'
       case '601': return 'Invalid LEI format'
       default: return ''
     }
@@ -191,6 +192,7 @@ class Institution extends Component {
       case '400': return "Sorry, that LEI already exists. You can verify that by using the search."
       case '403': return "Sorry, you don't have the correct permissions. Please contact a HMDA Help administrator."
       case '404': return "Something went wrong. It doesn't look like this institution can be added. Please check your data and try again."
+      case '412': return "Local Operating Units (LOU) are not valid HMDA Filers."
       case '601': return "Please verify the format of the LEI and try again."
       default: return ''
     }
