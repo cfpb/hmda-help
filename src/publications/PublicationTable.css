@@ -1,0 +1,29 @@
+#publications * {
+  box-sizing: border-box;
+}
+
+#publications .message {
+  position: relative;
+  padding: 1rem 0 1rem 1.5rem;
+  background: rgb(212, 247, 212);
+  display: block;
+  margin-top: 1rem;
+}
+
+#publications .message::before {
+  content: '';
+  height: 100%;
+  width: 1rem;
+  background-color: green;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#publications .message.error {
+  background-color: rgb(247, 217, 222);
+}
+
+#publications .message.error::before {
+  background-color: red;
+}
