@@ -2,9 +2,9 @@ import React from 'react'
 import Message from './Message'
 import LoadingIcon from '../Loading'
 
-export const RegenerateButton = ({ onClick, error, message, waiting }) => {
+export const RegenerateButton = ({ onClick, error, message, waiting, disabled }) => {
   let cname = 'inputSubmit'
-  if(waiting) cname += ' disabled'
+  if(waiting || disabled) cname += ' disabled'
 
   return (
     <div className="regenerate-container">

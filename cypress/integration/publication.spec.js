@@ -37,8 +37,7 @@ describe('HMDA Help', () => {
     cy.get('@mlarRow').contains('td', 'Modified LAR')
     cy.get('@mlarRow').contains('td', 'No file')
     cy.get('@mlarRow').contains('td', 'Regenerate')
-    cy.findAllByText('Regenerate').eq(row).click()
-    cy.get('@mlarRow').contains('No Submissions exist for 2020')
+    cy.findAllByText('Regenerate').eq(row).should('have.class', 'disabled')
 
     // Can generate Publication for past year
     row = 3

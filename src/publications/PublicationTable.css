@@ -6,7 +6,7 @@
   position: relative;
   padding: 1rem 1.5rem;
   background: rgb(212, 235, 247);
-  display: inline-block;
+  display: block;
   margin-top: 1rem;
 }
 

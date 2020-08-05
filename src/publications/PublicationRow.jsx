@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LoadingIcon from '../Loading'
 import { LABELS, TOPICS } from './constants'
 import { fetchData } from '../utils/api'
@@ -23,30 +23,34 @@ export const PublicationRow = ({
 }) => {
   const label = LABELS[type]
   const topic = TOPICS[type]
+
   const { lei, respondentName, activityYear: year } = institution
+  const latestURL = `/v2/filing/institutions/${lei}/filings/${year}/submissions/latest`
+  const headers = { Authorization: `Bearer ${token}` }
 
   const [state, setState] = useState(defaultState)
+  const [seqNum, setSeqNum] = useState(null)
+
   const updateState = newState => setState((oldState) => ({...oldState, ...newState }))
   const saveError = message => updateState({ waiting: false, error: true, message})
 
+  // Determine if we are able to trigger a Regeneration
+  useEffect(() => {
+    fetchSequenceNumber(latestURL, { headers }, setSeqNum)
+  }, [headers, setSeqNum, latestURL])
+
   const handleRegeneration = () => {
     if (window.confirm(regenMsg(label))) {
-      const latestURL = `/v2/filing/institutions/${lei}/filings/${year}/submissions/latest`
-      const headers = { Authorization: `Bearer ${token}` }
-
       updateState({ ...defaultState, waiting: true })
 
-      fetchLatestSubmission(latestURL, { headers }, saveError)
-        .then((json) =>
-          triggerRegeneration(saveError, updateState, {
-            json,
-            topic,
-            lei,
-            year,
-            label,
-            headers,
-          })
-        )
+      triggerRegeneration(saveError, updateState, {
+        seqNum,
+        topic,
+        lei,
+        year,
+        label,
+        headers,
+      })
     }
   }
 
@@ -70,35 +74,30 @@ export const PublicationRow = ({
           error={state.error}
           message={state.message}
           waiting={state.waiting}
+          disabled={[null, undefined].indexOf(seqNum) > -1}
         />
       </td>
     </tr>
   )
 }
 
-// Fetch the latest Filing to get the require Submission sequenceNumber
-function fetchLatestSubmission(url, options, onError) {
+// Sequence Number is required for Regeneration
+function fetchSequenceNumber(url, options, setResult) {
   return fetchData(url, options)
-  .then(({ error, response }) => {
-    if (error) {
-      onError('Error reaching the /latest endpoint')
-      return {}
-    }
-
-    return response.json()
-  })
+    .then(({ error, response }) => {
+      if (error) return {}
+      return response.json()
+    })
+    .then((json) => {
+      const sequenceNumber = json && json.id && json.id.sequenceNumber
+      setResult(sequenceNumber)
+    })
 }
 
 // Send a Kafka topic
 function triggerRegeneration(onError, onSuccess, data) {
-  const { json, topic, lei, year, headers, label } = data
-  const sequenceNumber = json && json.id && json.id.sequenceNumber
-  const regenerationUrl = `/v2/admin/publish/${topic}/institutions/${lei}/filings/${year}/submissions/${sequenceNumber}`
-
-  if (!sequenceNumber) {
-    onError(`No Submissions exist for ${year}`)
-    return
-  }
+  const { seqNum, topic, lei, year, headers, label } = data
+  const regenerationUrl = `/v2/admin/publish/${topic}/institutions/${lei}/filings/${year}/submissions/${seqNum}`
 
   // Trigger Publication regeneration
   return fetchData(regenerationUrl, { method: 'POST', headers })
