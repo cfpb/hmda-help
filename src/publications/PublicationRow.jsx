@@ -20,6 +20,7 @@ export const PublicationRow = ({
   token,
   type,
   url,
+  error
 }) => {
   const label = LABELS[type]
   const topic = TOPICS[type]
@@ -62,8 +63,8 @@ export const PublicationRow = ({
       <td>
         {!fetched ? (
           <LoadingIcon />
-        ) : fetched && notFound ? (
-          "No file"
+        ) : error ? (
+          error
         ) : (
           <DownloadButton url={url} />
         )}

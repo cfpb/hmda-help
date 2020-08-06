@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { PublicationRow } from './PublicationRow'
 import { fileExists } from '../utils/file'
 
-const defaultPubState = { fetched: false, url: null, notFound: null }
+const defaultPubState = { fetched: false, url: null, error: null }
 
 const PublicationRows = ({ institution, token }) => {
   const [mlar, setMlar] = useState({ ...defaultPubState })
@@ -27,16 +27,16 @@ const PublicationRows = ({ institution, token }) => {
     targets.forEach(({ url, setter}) => {
       fileExists(url)
         .then(() =>
-          setter((state) => ({
-            ...state,
+          setter(() => ({
+            ...defaultPubState,
             fetched: true,
-            notFound: null,
             url,
           }))
         )
-        .catch(() =>
-          setter((state) => ({ ...state, fetched: true, notFound: true }))
-        )
+        .catch((status) => {
+          let error = status === 0 ? "CORS Error" : "No file"
+          setter((state) => ({ ...state, fetched: true, error }))
+        })
     })
   }, [lei, activityYear, loading])
 
