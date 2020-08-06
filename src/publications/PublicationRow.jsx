@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import LoadingIcon from '../Loading'
 import { LABELS, TOPICS } from './constants'
 import { fetchData } from '../utils/api'
@@ -14,31 +14,24 @@ const defaultState = {
 const regenMsg = (label) => 'Begin the regeneration process for ' + label + '?'
 
 export const PublicationRow = ({
-  notFound,
   fetched,
   institution,
   token,
   type,
   url,
-  error
+  error,
+  seqNum
 }) => {
   const label = LABELS[type]
   const topic = TOPICS[type]
 
   const { lei, respondentName, activityYear: year } = institution
-  const latestURL = `/v2/filing/institutions/${lei}/filings/${year}/submissions/latest`
   const headers = { Authorization: `Bearer ${token}` }
 
   const [state, setState] = useState(defaultState)
-  const [seqNum, setSeqNum] = useState(null)
 
   const updateState = newState => setState((oldState) => ({...oldState, ...newState }))
   const saveError = message => updateState({ waiting: false, error: true, message})
-
-  // Determine if we are able to trigger a Regeneration
-  useEffect(() => {
-    fetchSequenceNumber(latestURL, { headers }, setSeqNum)
-  }, [headers, setSeqNum, latestURL])
 
   const handleRegeneration = () => {
     if (window.confirm(regenMsg(label))) {
@@ -82,18 +75,6 @@ export const PublicationRow = ({
   )
 }
 
-// Sequence Number is required for Regeneration
-function fetchSequenceNumber(url, options, setResult) {
-  return fetchData(url, options)
-    .then(({ error, response }) => {
-      if (error) return {}
-      return response.json()
-    })
-    .then((json) => {
-      const sequenceNumber = json && json.id && json.id.sequenceNumber
-      setResult(sequenceNumber)
-    })
-}
 
 // Send a Kafka topic
 function triggerRegeneration(onError, onSuccess, data) {
