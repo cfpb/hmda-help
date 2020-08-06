@@ -1,4 +1,4 @@
-FROM node:8.16.0-alpine as build-stage
+FROM node:14.2.0-alpine3.11 as build-stage
 WORKDIR /usr/src/app
 
 # install build dependencies
