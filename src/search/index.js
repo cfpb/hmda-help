@@ -22,7 +22,8 @@ const defaultState = {
   year: null,
   notFound: [],
   searchType: null,
-  submitted: false
+  submitted: false,
+  lei: ''
 }
 
 class Form extends Component {
@@ -37,6 +38,7 @@ class Form extends Component {
       this
     )
     this.setState = this.setState.bind(this)
+    this.onInputTextChange = this.onInputTextChange.bind(this)
   }
 
   removeAnInstitutionFromState(key) {
@@ -87,7 +89,7 @@ class Form extends Component {
       errors: []
     })
 
-    Promise.all(fetchInstitution(this.lei.value, this.setState))
+    Promise.all(fetchInstitution(this.state.lei, this.setState))
       .then(() => this.setState({ fetching: false }))
       .catch(error =>
         this.setState(state => ({
@@ -103,6 +105,12 @@ class Form extends Component {
   }
 
   isBtnDisabled = (type) => this.state.searchType === type && this.state.fetching
+
+  onInputTextChange = event => {
+    let {id, value} = event.target
+    if(id === 'lei') value = value.toUpperCase()
+    this.setState({ [id]: value })
+  }
 
   render() {
     const {
@@ -133,6 +141,8 @@ class Form extends Component {
                       this[textInput.id] = input
                     }}
                     {...textInput}
+                    onChange={this.onInputTextChange}
+                    value={this.state[textInput.id]}
                   />
                 )
               })}

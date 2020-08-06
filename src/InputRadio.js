@@ -1,58 +1,43 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import './InputRadio.css'
 
-class InputRadio extends Component {
-  constructor(props) {
-    super(props)
+const InputRadio = props => {
+  const { id, label, onChange, options, value } = props
 
-    this.state = {
-      value: props.value || null
-    }
-
-    this.handleChange = this.handleChange.bind(this)
+  function handleChange(event) {
+    if (onChange) onChange(event)
   }
 
-  handleChange(event) {
-    this.setState({
-      value: event.target.value
-    })
-    if (this.props.onChange) {
-      this.props.onChange(event)
-    }
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <label htmlFor={this.props.id}>{this.props.label}</label>
-        <ul className="unstyled-list">
-          {this.props.options.map((option, i) => {
-            return (
-              <li key={i}>
-                <input
-                  type="radio"
-                  id={`radio${i}`}
-                  name={this.props.id}
-                  value={option.id}
-                  onChange={this.handleChange}
-                  checked={
-                    parseInt(this.state.value, 10) === parseInt(option.id, 10)
-                      ? true
-                      : false
-                  }
-                />
-                <label htmlFor={`radio${i}`}>
-                  {option.id} - {option.name}
-                </label>
-              </li>
-            )
-          })}
-        </ul>
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      <label htmlFor={id}>{label}</label>
+      <ul className="unstyled-list">
+        {options.map((option, i) => {
+          return (
+            <li key={i}>
+              <input
+                type="radio"
+                id={`radio${i}`}
+                name={id}
+                value={option.id}
+                onChange={handleChange}
+                checked={
+                  parseInt(value, 10) === parseInt(option.id, 10)
+                    ? true
+                    : false
+                }
+              />
+              <label htmlFor={`radio${i}`}>
+                {option.id} - {option.name}
+              </label>
+            </li>
+          )
+        })}
+      </ul>
+    </React.Fragment>
+  )
 }
 
 InputRadio.defaultProps = {

@@ -1,51 +1,36 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import './InputSelect.css'
 
-class InputSelect extends Component {
-  constructor(props) {
-    super(props)
+const InputSelect = props => {
+  const { disabled, id, innerRef, label, name, onChange, options, value } = props
 
-    this.state = {
-      value: props.value || ''
-    }
-
-    this.handleChange = this.handleChange.bind(this)
+  function handleChange(event) {
+    if (onChange) onChange(event)
   }
 
-  handleChange(event) {
-    this.setState({
-      value: event.target.value
-    })
-    if (this.props.onChange) {
-      this.props.onChange(event)
-    }
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <label htmlFor={this.props.id}>{this.props.label}</label>
-        <select
-          ref={this.props.innerRef}
-          name={this.props.name}
-          id={this.props.id}
-          onChange={this.handleChange}
-          disabled={this.props.disabled}
-          value={this.state.value}
-        >
-          {this.props.options.map((option, i) => {
-            return (
-              <option key={i} value={option.id}>
-                {option.name}
-              </option>
-            )
-          })}
-        </select>
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      <label htmlFor={id}>{label}</label>
+      <select
+        ref={innerRef}
+        name={name}
+        id={id}
+        onChange={handleChange}
+        disabled={disabled}
+        value={value}
+      >
+        {options.map((option, i) => {
+          return (
+            <option key={i} value={option.id}>
+              {option.name}
+            </option>
+          )
+        })}
+      </select>
+    </React.Fragment>
+  )
 }
 
 InputSelect.defaultProps = {

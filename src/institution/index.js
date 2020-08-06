@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { searchInputs, requiredInputs, otherInputs } from '../constants/inputs'
+import { searchInputs, requiredInputs, otherInputs, notesInput } from '../constants/inputs'
 import {
   nestInstitutionStateForAPI,
   flattenApiForInstitutionState
@@ -15,6 +15,7 @@ import InputSelect from '../InputSelect'
 import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
 import Loading from '../Loading.jsx'
+import Notes from '../Notes'
 
 import './Form.css'
 import '../Loading.css'
@@ -37,6 +38,7 @@ class Institution extends Component {
       showOtherFields: false,
       fetching: false,
       disabledSubmit: true,
+      requiresNewNotes: false,
       ...defaultInstitutionState
     }
 
@@ -66,6 +68,12 @@ class Institution extends Component {
     if(prevState.error !== this.state.error){
       let errorMsg = document.getElementById('bottomError') 
       errorMsg && errorMsg.scrollIntoView({ behavior: 'smooth' })
+    } else if( this.state.isSubmitted ) {
+      const successMsg = document.querySelectorAll('.alert-success')
+      if ( successMsg.length ) 
+        successMsg[successMsg.length - 1].scrollIntoView({
+          behavior: 'smooth'
+        })
     }
   }
 
@@ -76,21 +84,37 @@ class Institution extends Component {
   }
 
   onInputChange(event) {
+    let additionalKeys = { isSubmitted: false, error: null }
+
+    if(this.props.location.pathname === '/update'){
+      // Update to Notes field required on Institution data change 
+      additionalKeys.requiresNewNotes = true
+      if(event.target.id !== 'notes' && this.state.notes === this.state.prevNotes){
+        additionalKeys.notes = ''
+      }
+    }
+    
     if (['radio', 'select-one'].includes(event.target.type)) {
-      this.setState({ [event.target.name]: event.target.value }, () => {
+      this.setState({ [event.target.name]: event.target.value, ...additionalKeys }, () => {
         this.onInputBlur()
       })
     } else {
       let value = event.target.value
       if (event.target.name === 'lei') value = value.toUpperCase()
-      this.setState({ [event.target.name]: value })
+      this.setState({ [event.target.name]: value, ...additionalKeys }, () => {
+        this.onInputBlur()
+      })
     }
   }
 
   onInputBlur() {
+    const checkedInputs = searchInputs.concat(requiredInputs)
+
+    if(this.state.requiresNewNotes) checkedInputs.push(notesInput)
+
     this.setState({
       disabledSubmit: validateAll(
-        searchInputs.concat(requiredInputs),
+        checkedInputs,
         this.state
       )
     })
@@ -98,7 +122,7 @@ class Institution extends Component {
 
   handleSubmit(event, token) {
     event.preventDefault()
-    this.setState({ fetching: true, error: null })
+    this.setState({ fetching: true, error: null, isSubmitted: false })
 
     const method = this.props.location.pathname === '/add' ? 'POST' : 'PUT'
 
@@ -123,8 +147,9 @@ class Institution extends Component {
         // just in case something goes wrong
         // we then have the what the back-end has
         this.setState({
+          ...flattenApiForInstitutionState(json),
+          requiresNewNotes: false,
           isSubmitted: true,
-          institution: flattenApiForInstitutionState(json),
           wasAddition: false,
           fetching: false
         })
@@ -174,7 +199,7 @@ class Institution extends Component {
   }
 
   render() {
-    const { pathname, state } = this.props.location
+    const { pathname } = this.props.location
     const successAlert = this.state.isSubmitted ? (
       <Alert
         type="success"
@@ -222,11 +247,7 @@ class Institution extends Component {
                   {...searchInput}
                   onChange={this.onInputChange}
                   onBlur={this.onInputBlur}
-                  value={
-                    state && state.institution
-                      ? state.institution[searchInput.id]
-                      : searchInput.value
-                  }
+                  value={this.state[searchInput.id] || searchInput.value}
                 />
               )
             }
@@ -236,11 +257,7 @@ class Institution extends Component {
                   key={searchInput.id}
                   {...searchInput}
                   onChange={this.onInputChange}
-                  value={
-                    state && state.institution
-                      ? state.institution[searchInput.id]
-                      : searchInput.value
-                  }
+                  value={this.state[searchInput.id] || searchInput.value}
                 />
               )
             }
@@ -248,11 +265,7 @@ class Institution extends Component {
               <InputText
                 key={searchInput.id}
                 {...searchInput}
-                value={
-                  state && state.institution
-                    ? state.institution[searchInput.id]
-                    : searchInput.value
-                }
+                value={this.state[searchInput.id] || searchInput.value}
                 disabled={
                   pathname === '/update' && searchInput.id === 'lei'
                     ? true
@@ -264,6 +277,15 @@ class Institution extends Component {
             )
           })}
 
+          <Notes  
+            onChange={this.onInputChange}
+            onBlur={this.onInputBlur} 
+            required={this.state.requiresNewNotes}
+            notes={this.state.notes}
+            prevNotes={this.state.prevNotes}
+            hide={pathname !== '/update'}
+          />
+
           <button
             className="toggleButton"
             type="button"
@@ -274,9 +296,7 @@ class Institution extends Component {
 
           {this.state.showOtherFields ? (
             <OtherFields
-              institution={
-                state && state.institution ? state.institution : null
-              }
+              institution={this.state}
               onInputChange={this.onInputChange}
             />
           ) : null}
