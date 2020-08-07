@@ -13,6 +13,7 @@ import Loading from '../Loading.jsx'
 import InstitutionNotFound from './InstitutionNotFound'
 import ServerErrors from './ServerErrors'
 import { fetchInstitution } from './fetchInstitution'
+import PublicationTable from '../publications/PublicationTable'
 
 const defaultState = {
   errors: [],
@@ -20,6 +21,8 @@ const defaultState = {
   institutions: null,
   year: null,
   notFound: [],
+  searchType: null,
+  submitted: false,
   lei: ''
 }
 
@@ -30,6 +33,7 @@ class Form extends Component {
     this.state = defaultState
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
+    this.handleSubmitButton = this.handleSubmitButton.bind(this)
     this.removeAnInstitutionFromState = this.removeAnInstitutionFromState.bind(
       this
     )
@@ -95,6 +99,13 @@ class Form extends Component {
       )
   }
 
+  handleSubmitButton = (event, searchType) => {
+    this.setState({ searchType })
+    this.handleSubmit(event)
+  }
+
+  isBtnDisabled = (type) => this.state.searchType === type && this.state.fetching
+
   onInputTextChange = event => {
     let {id, value} = event.target
     if(id === 'lei') value = value.toUpperCase()
@@ -102,7 +113,17 @@ class Form extends Component {
   }
 
   render() {
-    const isFetching = this.state.fetching
+    const {
+      fetching: isFetching,
+      errors,
+      institutions,
+      notFound,
+      errorDelete,
+      searchType,
+    } = this.state
+
+    const { token } = this.props
+
     return (
       <React.Fragment>
           <div >
@@ -125,20 +146,34 @@ class Form extends Component {
                   />
                 )
               })}
-              <InputSubmit actionType="search" />
+              <InputSubmit 
+                actionType="search" 
+                onClick={event => this.handleSubmitButton(event, "search")} 
+                disabled={this.isBtnDisabled("search")} 
+              />
+              <InputSubmit 
+                actionType="publications" 
+                addClass='secondary' 
+                onClick={event => this.handleSubmitButton(event, "publications")} 
+                disabled={this.isBtnDisabled("publications")} 
+              />
               {isFetching && <Loading className="LoadingInline" />}
             </form>
           </div>
 
-        {!isFetching && <ServerErrors errors={this.state.errors} />}
-        {!isFetching && <InstitutionNotFound yearList={this.state.notFound} />}
+        {!isFetching && <ServerErrors errors={errors} />}
+        {!isFetching && <InstitutionNotFound yearList={notFound} />}
 
-        {!isFetching && this.state.institutions && (
+        {searchType === 'search' && !isFetching && institutions && (
           <Results
-            institutions={this.state.institutions}
+            institutions={institutions}
             handleDeleteClick={this.handleDeleteClick}
-            error={this.state.errorDelete}
+            error={errorDelete}
           />
+        )}
+
+        {searchType === 'publications' && !isFetching && institutions && (
+          <PublicationTable institutions={institutions} token={token}/>
         )}
       </React.Fragment>
     )
