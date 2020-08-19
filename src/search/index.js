@@ -89,7 +89,7 @@ class Form extends Component {
       errors: []
     })
 
-    Promise.all(fetchInstitution(this.state.lei, this.setState))
+    Promise.all(fetchInstitution(this.state.lei, this.setState, this.props.token))
       .then(() => this.setState({ fetching: false }))
       .catch(error =>
         this.setState(state => ({

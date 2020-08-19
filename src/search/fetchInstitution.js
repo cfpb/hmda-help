@@ -2,14 +2,15 @@ import FILING_PERIODS from '../constants/dates.js'
 import { flattenApiForInstitutionState } from '../utils/convert.js'
 
 // Returns an array of Promises, one for each year for which the institution is being fetched
-export const fetchInstitution = (lei, setState) => {
+export const fetchInstitution = (lei, setState, token) => {
   return Object.keys(FILING_PERIODS).map(y => {
     let year = FILING_PERIODS[y].id
 
     return fetch(`/v2/admin/institutions/${lei}/year/${year}`, {
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
