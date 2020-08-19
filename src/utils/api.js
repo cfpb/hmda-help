@@ -13,13 +13,14 @@ export const fetchData = (url, options) => {
 
 /**
  * @param {Response} response
- * @return {Object} {error, message, response}
+ * @return {Object} {error, message, status, response}
  */
 const checkError = response => {
   const result = { error: false, response}
   if(response.status >= 400) {
     result.error = true
     result.message = "Unable to fetch data"
+    result.status = response.status
   }
   return result 
 }

@@ -16,6 +16,7 @@ import InputSubmit from '../InputSubmit'
 import Alert from '../Alert'
 import Loading from '../Loading.jsx'
 import Notes from '../Notes'
+import NoteHistory from './NoteHistory/'
 
 import './Form.css'
 import '../Loading.css'
@@ -39,6 +40,7 @@ class Institution extends Component {
       fetching: false,
       disabledSubmit: true,
       requiresNewNotes: false,
+      fetchNotesHistory: true,
       ...defaultInstitutionState
     }
 
@@ -151,7 +153,8 @@ class Institution extends Component {
           requiresNewNotes: false,
           isSubmitted: true,
           wasAddition: false,
-          fetching: false
+          fetching: false,
+          fetchNotesHistory: true
         })
       })
       .then(() => {
@@ -237,9 +240,9 @@ class Institution extends Component {
         {successAlert}
         <form
           className="InstitutionForm"
-          onSubmit={event => this.handleSubmit(event, this.props.token)}
+          onSubmit={(event) => this.handleSubmit(event, this.props.token)}
         >
-          {searchInputs.concat(requiredInputs).map(searchInput => {
+          {searchInputs.concat(requiredInputs).map((searchInput) => {
             if (searchInput.type === 'select') {
               return (
                 <InputSelect
@@ -285,6 +288,15 @@ class Institution extends Component {
             prevNotes={this.state.prevNotes}
             hide={pathname !== '/update'}
           />
+
+          {pathname === '/update' && (
+            <NoteHistory
+              lei={this.state.lei}
+              year={this.state.activityYear}
+              fetchHistory={this.state.fetchNotesHistory}
+              setFetched={() => this.setState({ fetchNotesHistory: false })}
+            />
+          )}
 
           <button
             className="toggleButton"
