@@ -28,10 +28,18 @@ export const calcDiff = (curr, prev) => {
   const diffs = {}
 
   Object.keys(curr).forEach(key => {
-    if(typeof curr[key] === 'object'){
+    // Array
+    if (curr[key].push) { 
+      if(curr[key].toString() !== prev[key].toString()){
+        diffs[key] = {oldVal: prev[key], newVal: curr[key]}
+      }
+      return
+    } 
+    // Object
+    else if(typeof curr[key] === 'object'){
       diffs[key] = calcDiff(curr[key], prev[key])
       return
-    }
+    }  
     if(curr[key] !== prev[key]){
       diffs[key] = {oldVal: prev[key], newVal: curr[key]}
     }

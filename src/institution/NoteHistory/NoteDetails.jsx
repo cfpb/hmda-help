@@ -53,23 +53,23 @@ const DiffTableBody = ({ json }) => {
         if (key === 'notes') return null
         const current = json[key]
 
-        if (current && current.newVal) {
+        if (current && current.newVal !== undefined) {
           return (
             <tr key={`${key}-${idx}`}>
               <td>{key}</td>
               <td>{checkForNone(current.oldVal)}</td>
-              <td>{current.newVal}</td>
+              <td>{checkForNone(current.newVal)}</td>
             </tr>
           )
         }
         else if (typeof current !== 'string') {
-          return Object.keys(current).map(nestedKey => {
+          return Object.keys(current).map((nestedKey, nidx) => {
             const nestedCurrent = json[key][nestedKey]
             return (
-              <tr key={`${key}-${idx}`}>
+              <tr key={`${key}-${idx}-${nidx}`}>
                 <td>{key} {nestedKey}</td>
                 <td>{checkForNone(nestedCurrent.oldVal)}</td>
-                <td>{nestedCurrent.newVal}</td>
+                <td>{checkForNone(nestedCurrent.newVal)}</td>
               </tr>
             )
           })
@@ -82,7 +82,7 @@ const DiffTableBody = ({ json }) => {
 
 function checkForNone(val) {
   if([null, undefined].indexOf(val) > -1) return '<none>'
-  return val
+  return val.toString()
 }
 
 const NoChanges = ({ text = 'No Changes' }) => {
