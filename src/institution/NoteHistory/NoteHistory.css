@@ -142,7 +142,6 @@
   color: #e3e3f9;
 }
 
-
 #NoteHistory .note-list .item .details.open {
   max-height: 100vh;
   transition: max-height .3s;
@@ -198,10 +197,15 @@
   No Changes 
 */
 
+#NoteHistory .item.open .no-changes {
+  padding: 1rem;
+  max-height: 100vh;
+}
+
 #NoteHistory .no-changes {
   color: white;
-  padding: 1rem;
   text-align: center;
+  max-height: 0;
 }
 
 /* 
