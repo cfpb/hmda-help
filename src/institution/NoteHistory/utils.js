@@ -24,7 +24,7 @@ export const sortNotes = notes => notes.sort((a,b) => b.id - a.id)
  * @param {Object} prev 
  */
 export const calcDiff = (curr, prev) => {
-  if(!prev) return curr
+  if(!prev) return allDiff(curr)
   const diffs = {}
 
   Object.keys(curr).forEach(key => {
@@ -42,6 +42,34 @@ export const calcDiff = (curr, prev) => {
     }  
     if(curr[key] !== prev[key]){
       diffs[key] = {oldVal: prev[key], newVal: curr[key]}
+    }
+  })
+
+  Object.keys(diffs).forEach(key => diffs[key] === null && delete diffs[key])
+  if(!Object.keys(diffs).length) return null
+  return diffs
+}
+
+/**
+ * Treat every field with a non-null value as changed
+ * @param {Object} curr 
+ */
+const allDiff = (curr) => {
+  const diffs = {}
+
+  Object.keys(curr).forEach((key) => {
+    // Array
+    if (curr[key].push) {
+      diffs[key] = { oldVal: null, newVal: curr[key] }
+      return
+    }
+    // Object
+    else if (typeof curr[key] === 'object') {
+      diffs[key] = allDiff(curr[key], null)
+      return
+    }
+    if (curr[key] !== null) {
+      diffs[key] = { oldVal: null, newVal: curr[key] }
     }
   })
 

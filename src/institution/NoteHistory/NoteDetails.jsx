@@ -23,8 +23,6 @@ const DiffTable = ({ json }) => {
   if (!keys || (keys.length === 1 && keys.indexOf('notes') === 0))
     return <NoChanges />
   
-  if (json.LEI) return <NoChanges text="Start of History" />
-
   return (
     <>
       <table className='diff-table'>
