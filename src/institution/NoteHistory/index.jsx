@@ -32,8 +32,8 @@ const fetchNotesHistory = ({ lei, year, setFetched, setError, setNotes }) => {
   return fetchData(`/v2/public/institutions/${lei}/year/${year}/history`)
   .then((res) => {
     if (res.error) {
-      if(res.status === 404) return setError(<NoHistory />)
-      setError(res.message)
+      if(res.status === 404) return setError(<HistoryError />)
+      setError(<HistoryError text={res.message} />)
       return null
     }
     return res.response.json()
@@ -51,10 +51,10 @@ const NotesError = ({ error, isMenuOpen }) => {
 }
 
 
-const NoHistory = () => (
+const HistoryError = ({ text = 'No recorded History'}) => (
   <>
     <img className="icon" alt="yellow exclamation" src={warningIcon} />
-    No recorded History
+    {text}
   </>
 )
 
