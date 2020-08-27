@@ -6,5 +6,6 @@
     "HH_AUTH_REALM": "hmda2",
     "HH_AUTH_CLIENT_ID": "hmda2-api",
     "HH_HOST": "http://localhost:3000"
-  }
+  },
+  "integrationFolder": "cypress/tests/"
 }
