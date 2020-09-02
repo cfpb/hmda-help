@@ -154,6 +154,7 @@ class Institution extends Component {
           isSubmitted: true,
           wasAddition: false,
           fetching: false,
+          disabledSubmit: true,
           fetchNotesHistory: true
         })
       })
