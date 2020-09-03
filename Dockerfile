@@ -1,4 +1,4 @@
-FROM node:14.2.0-alpine3.11 as build-stage
+FROM node:14.9.0-alpine3.11 as build-stage
 WORKDIR /usr/src/app
 
 # install build dependencies
@@ -13,7 +13,7 @@ COPY public ./public
 
 RUN yarn build
 
-FROM nginx:1.19.0-alpine
+FROM nginx:1.19.2-alpine
 ENV NGINX_USER=svc_nginx_hmda
 RUN apk update; apk upgrade
 RUN rm -rf /etc/nginx/conf.d
