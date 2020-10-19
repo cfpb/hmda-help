@@ -34,9 +34,9 @@ describe('HMDA Help', () => {
     const successMessage = `The institution, ${HH_INSTITUTION}, has been updated.`
     const nameLabelText = 'Respondent Name'
     const updateButtonText = 'Update the institution'
-    const testName = 'Cypress Test Name Update'
-
     const timestamp1 = Date.now()
+    const testName = 'Cypress - Change respondent name ' + timestamp1
+
     cy.findByText("Note History").click()
     cy.get('.note-list li')
       .first()
@@ -45,7 +45,6 @@ describe('HMDA Help', () => {
 
     cy.findByLabelText(nameLabelText).then($name => {
       const savedName = $name.attr('value')
-      expect($name.attr('value')).to.not.contain(testName)
 
       // Change Respondent Name
       cy.findByLabelText(nameLabelText)
@@ -74,6 +73,7 @@ describe('HMDA Help', () => {
                     .find('button .text')
                     .should('contain.text', timestamp1)
                   cy.get('@firstNote')
+                    .click()
                     .find('.details tbody td')
                     .eq(0)
                     .should('contain.text', "respondent")
