@@ -49,91 +49,94 @@ describe('HMDA Help', () => {
     cy.findByLabelText(nameLabelText).then($name => {
       const savedName = $name.attr('value')
 
-
+      /**
+       * Make changes to the Institution data
+       */
       cy.findByLabelText(quarterlyFilerLabel).then($qFiler => {
-        const savedQFiler = getSelectedOptionValue($qFiler, "false")
-        const flippedQFilerVal = ['true'].indexOf(savedQFiler) > -1 ? "false" : "true"
+        const savedQFiler = getSelectedOptionValue($qFiler, 'false')
+        const flippedQFilerVal =
+          ['true'].indexOf(savedQFiler) > -1 ? 'false' : 'true'
 
         // Change Respondent Name [Text Field]
         cy.findByLabelText(nameLabelText)
           .type('{selectAll}' + testName)
           .blur()
-          .then($name2 => {
-
+          .then(($name2) => {
             // Flip Quarterly Filer value [Select Field]
             cy.findByLabelText(quarterlyFilerLabel)
-            .select(flippedQFilerVal)
-            .blur()
-            .then($qFiler2 => {
+              .select(flippedQFilerVal)
+              .blur()
+              .then(($qFiler2) => {
+                // Notes field is required on Update
+                cy.findByText(updateButtonText).should('not.be.enabled')
+                cy.findByLabelText('Notes')
+                  .type('Cypress - Change respondent name ' + timestamp1)
+                  .blur()
+                cy.findByText(updateButtonText)
+                  .should('be.enabled')
+                  .click()
+                  .then(() => {
+                    // Validate
+                    cy.findAllByText(successMessage)
+                      .should('exist')
+                      .then(() => {
+                        expect($name2.attr('value')).to.contain(testName)
+                        expect(getSelectedOptionValue($qFiler2)).to.contain(
+                          flippedQFilerVal
+                        )
 
-              // Notes field is required on Update
-              cy.findByText(updateButtonText)
-                .should('not.be.enabled')
-              cy.findByLabelText('Notes')
-                .type('Cypress - Change respondent name ' + timestamp1 )
-                .blur()
-              cy.findByText(updateButtonText)
-                .should('be.enabled')
-                .click()
-                .then(() => {
-                  // Validate
-                  cy.findAllByText(successMessage)
-                    .should('exist')
-                    .then(() => {
-                      expect($name2.attr('value')).to.contain(testName)
-                      expect(getSelectedOptionValue($qFiler2)).to.contain(flippedQFilerVal)
-
-                      // Check Note History entry correctly created
-                      cy.wait(2000)
-                      cy.get('.note-list li').first().as('firstNote')
-                      cy.get('@firstNote')
-                        .find('button .text')
-                        .should('contain.text', timestamp1)
-                      cy.get('@firstNote')
-                        .click()
-                        .find('.details tbody td')
-                        .eq(0)
-                        .should('contain.text', "respondent")
-                        .should('contain.text', "name")
-                      cy.get('@firstNote')
-                        .find('.details tbody td')
-                        .eq(1)
-                        .should('contain.text', savedName)
-                      cy.get('@firstNote')
-                        .find('.details tbody td')
-                        .eq(2)
-                        .should('contain.text', testName)
-                    })
-                })
+                        // Check Note History entry correctly created
+                        cy.wait(2000)
+                        cy.get('.note-list li').first().as('firstNote')
+                        cy.get('@firstNote')
+                          .find('button .text')
+                          .should('contain.text', timestamp1)
+                        cy.get('@firstNote')
+                          .click()
+                          .find('.details tbody td')
+                          .eq(0)
+                          .should('contain.text', 'respondent')
+                          .should('contain.text', 'name')
+                        cy.get('@firstNote')
+                          .find('.details tbody td')
+                          .eq(1)
+                          .should('contain.text', savedName)
+                        cy.get('@firstNote')
+                          .find('.details tbody td')
+                          .eq(2)
+                          .should('contain.text', testName)
+                      })
+                  })
               })
-            })
+          })
 
-        // Change values back
+        /**
+         * Revert changes to the Institution data
+         */
         cy.findByLabelText(nameLabelText)
           .type('{selectAll}' + savedName)
           .blur()
-        cy.findByLabelText(quarterlyFilerLabel)
-          .select(savedQFiler)
-          .blur()
+        cy.findByLabelText(quarterlyFilerLabel).select(savedQFiler).blur()
 
-        // Notes field is required on Update  
-        cy.findByText(updateButtonText)
-          .should('not.be.enabled')
+        // Notes field is required on Update
+        cy.findByText(updateButtonText).should('not.be.enabled')
         cy.findByLabelText('Notes')
           .type('Cypress - Revert changes')
-          .blur()        
+          .blur()
           .then(() => {
             cy.findByText(updateButtonText)
               .should('be.enabled')
               .click()
               .then(() => {
-
+                
                 // Validate
                 cy.findAllByText(successMessage)
                   .should('exist')
                   .then(() => {
                     expect($name.attr('value')).to.contain(savedName)
-                    expect(getSelectedOptionValue($qFiler)).to.contain(savedQFiler)
+                    expect(getSelectedOptionValue($qFiler)).to.contain(
+                      savedQFiler
+                    )
                   })
               })
           })
