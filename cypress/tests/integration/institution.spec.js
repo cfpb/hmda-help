@@ -49,13 +49,14 @@ describe('HMDA Help', () => {
     cy.findByLabelText(nameLabelText).then($name => {
       const savedName = $name.attr('value')
 
-      /**
-       * Make changes to the Institution data
-       */
       cy.findByLabelText(quarterlyFilerLabel).then($qFiler => {
         const savedQFiler = getSelectedOptionValue($qFiler, 'false')
         const flippedQFilerVal =
           ['true'].indexOf(savedQFiler) > -1 ? 'false' : 'true'
+
+        /**
+         * Make changes to the Institution data
+         */
 
         // Change Respondent Name [Text Field]
         cy.findByLabelText(nameLabelText)
@@ -128,7 +129,7 @@ describe('HMDA Help', () => {
               .should('be.enabled')
               .click()
               .then(() => {
-                
+
                 // Validate
                 cy.findAllByText(successMessage)
                   .should('exist')
