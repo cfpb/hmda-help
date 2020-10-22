@@ -1,3 +1,5 @@
+import { getSelectedOptionValue } from '../../support/helpers'
+
 const {
   HH_HOST,
   HH_USERNAME,
@@ -49,7 +51,7 @@ describe('HMDA Help', () => {
 
 
       cy.findByLabelText(quarterlyFilerLabel).then($qFiler => {
-        const savedQFiler = $qFiler.get(0).selectedOptions.item(0) && $qFiler.get(0).selectedOptions.item(0).value
+        const savedQFiler = getSelectedOptionValue($qFiler, "false")
         const flippedQFilerVal = ['true'].indexOf(savedQFiler) > -1 ? "false" : "true"
 
         // Change Respondent Name [Text Field]
@@ -79,7 +81,7 @@ describe('HMDA Help', () => {
                     .should('exist')
                     .then(() => {
                       expect($name2.attr('value')).to.contain(testName)
-                      expect($qFiler2.get(0).selectedOptions.item(0).value).to.contain(flippedQFilerVal)
+                      expect(getSelectedOptionValue($qFiler2)).to.contain(flippedQFilerVal)
 
                       // Check Note History entry correctly created
                       cy.wait(2000)
@@ -131,7 +133,7 @@ describe('HMDA Help', () => {
                   .should('exist')
                   .then(() => {
                     expect($name.attr('value')).to.contain(savedName)
-                    expect($qFiler.get(0).selectedOptions.item(0).value).to.contain(savedQFiler)
+                    expect(getSelectedOptionValue($qFiler)).to.contain(savedQFiler)
                   })
               })
           })
