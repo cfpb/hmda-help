@@ -143,10 +143,11 @@
 }
 
 #NoteHistory .note-list .item .details.open {
-  max-height: 100vh;
+  max-height: 110vh;
   transition: max-height .3s;
   padding: 2rem 1rem;
   background: #80807f;
+  /* overflow: auto; */
 }
 
 #NoteHistory .note-list .item:not(.open) button:hover {
